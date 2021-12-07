@@ -1,4 +1,4 @@
-import { BLACK, BLUE, GRAY } from '../../styles/colors'
+import { BLACK, BLUE, GRAY } from '../colors'
 
 type SetDefaultFontsProps = {
   regular?: string
