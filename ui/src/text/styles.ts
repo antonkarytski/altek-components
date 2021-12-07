@@ -1,14 +1,5 @@
 import { BLACK, BLUE, GRAY } from '../colors'
 
-type SetDefaultFontsProps = {
-  regular?: string
-  medium?: string
-  bold?: string
-  extraBold?: string
-  size?: number
-  color?: string
-}
-
 const FONTS = {
   REGULAR: 'IBMPlex-400',
   MEDIUM: 'IBMPlex-500',
@@ -64,28 +55,4 @@ export const textStyles = {
   font18: {
     fontSize: 18,
   },
-}
-
-export function setDefaults({
-  regular,
-  medium,
-  bold,
-  extraBold,
-  size,
-  color,
-}: SetDefaultFontsProps) {
-  if (regular) textStyles.regular.fontFamily = regular
-  if (medium) {
-    textStyles.medium.fontFamily = medium
-    textStyles.subLine.fontFamily = medium
-    textStyles.titleSmall.fontFamily = medium
-  }
-  if (bold) {
-    textStyles.bold.fontFamily = bold
-    textStyles.title.fontFamily = bold
-    textStyles.link.fontFamily = bold
-  }
-  if (extraBold) textStyles.extraBold.fontFamily = extraBold
-  if (size) textStyles.defaults.fontSize = size
-  if (color) textStyles.defaults.color = color
 }

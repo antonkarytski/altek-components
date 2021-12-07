@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Text as RawText, TextProps } from 'react-native'
-import { setDefaults, textStyles } from './styles'
+import { textStyles } from './styles'
 
 type ThemedTextProps = {
   medium?: true
@@ -35,7 +35,5 @@ export default function Text({
     </RawText>
   )
 }
-
-Text.setDefaults = setDefaults
 
 export { textStyles }
