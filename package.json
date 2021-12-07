@@ -1,17 +1,17 @@
 {
   "name": "altek-ui",
-  "version": "0.0.10",
-  "description": "altek ui components",
+  "version": "0.1.2",
+  "description": "Altek ui components library",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
   "react-native": "src/index.ts",
-  "types": "dist/typescript/src/index.d.ts",
+  "types": "dist/typescript/index.d.ts",
   "files": [
     "src",
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --declaration",
     "prepare": "bob build"
   },
   "repository": "https://github.com/AltekLLC/altek-components.git",

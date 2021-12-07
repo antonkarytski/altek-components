@@ -1,3 +1,4 @@
-export * as COLORS from './colors'
-export { default as Text } from './text'
-export { textStyles } from './text'
+import * as COLORS from './colors'
+import Text, { textStyles } from './text'
+
+export default { COLORS, Text, textStyles }
