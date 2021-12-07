@@ -1,7 +1,6 @@
 import { StyleSheet } from 'react-native'
 import { BLUE } from '../colors'
-import { shadowsStyles } from '../styles/shadows'
-import { elementsStyles } from '../styles'
+import { elementsStyles, shadowsStyles } from '../styles'
 
 export const blueCardStyles = StyleSheet.create({
   card: {

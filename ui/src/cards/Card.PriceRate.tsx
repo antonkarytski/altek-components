@@ -16,12 +16,16 @@ export default function PriceRateCard({
 }: PriceAreaComponentProps) {
   return (
     <View style={[blueCardStyles.card, styles.container, style]}>
-      <Text bold style={[blueCardStyles.text, styles.value]}>
-        ${value}
-      </Text>
-      <Text medium style={[blueCardStyles.text, styles.description]}>
-        {description}
-      </Text>
+      <Text
+        bold
+        style={[blueCardStyles.text, styles.value]}
+        label={`$${value}`}
+      />
+      <Text
+        medium
+        style={[blueCardStyles.text, styles.description]}
+        label={description}
+      />
     </View>
   )
 }
