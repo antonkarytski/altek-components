@@ -59,7 +59,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
     <>
       <Animated.View
         style={[
-          cardsPresets.deep,
+          cardsPresets.common,
           expandableCardStyles.openButton,
           aStyle.header,
         ]}
@@ -78,7 +78,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
       </Animated.View>
       <Animated.View
         style={[
-          cardsPresets.deep,
+          cardsPresets.common,
           expandableCardStyles.contentWrapper,
           !expandableContent ? expandableCardStyles.bottomBorderRadius : null,
           aStyle.body,
@@ -108,7 +108,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
       {expandableContent && isOpened ? (
         <Animated.View
           style={[
-            shadowsStyles.elevation5,
+            shadowsStyles.elevation2,
             expandableCardStyles.showMoreButton,
             expandableCardStyles.bottomBorderRadius,
           ]}
