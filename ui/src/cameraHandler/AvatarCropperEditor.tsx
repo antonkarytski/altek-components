@@ -1,5 +1,5 @@
 import React, { createRef, useEffect, useRef } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { Dimensions, View } from 'react-native'
 import {
   PanGestureHandler,
   PinchGestureHandler,
@@ -14,9 +14,9 @@ import { manipulateAsync } from 'expo-image-manipulator'
 import MaskedView from '@react-native-community/masked-view'
 import BackButton from '../buttons/Button.Back'
 import SendButton from '../buttons/Button.Send'
-import { getImageSize } from '../images/helpers'
+import { getImageSize } from 'altek-toolkit'
 import { EditorProps } from './types'
-import { avatarEditorStyles } from './styles'
+import { avatarEditorStyles, commonEditorStyles } from './styles'
 import { useScaleGestureHandler } from './hook.transformHandlers'
 
 type MoveContext = {
@@ -159,7 +159,7 @@ export default function AvatarCropperEditor({
               >
                 <Animated.Image
                   source={{ uri }}
-                  style={[styles.image, aStyle]}
+                  style={[avatarEditorStyles.image, aStyle]}
                 />
               </MaskedView>
             </Animated.View>
@@ -167,9 +167,9 @@ export default function AvatarCropperEditor({
         </Animated.View>
       </PanGestureHandler>
 
-      <BackButton style={avatarEditorStyles.backButton} onPress={onCancel} />
+      <BackButton style={commonEditorStyles.backButton} onPress={onCancel} />
       <SendButton
-        style={avatarEditorStyles.sendButton}
+        style={commonEditorStyles.sendButton}
         onPress={async () => {
           const croppedUri = await getCroppedImage()
           onAccept({ uri: croppedUri })
@@ -180,10 +180,3 @@ export default function AvatarCropperEditor({
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  image: {
-    resizeMode: 'contain',
-    alignSelf: 'flex-start',
-  },
-})
