@@ -16,6 +16,7 @@ const Avatar: FC<AvatarProps> = ({
   size = 80,
   uri,
   avatarColor = GRAY.COMMON,
+  style,
 }) => {
   const sizeStyle = {
     height: size,
@@ -23,7 +24,7 @@ const Avatar: FC<AvatarProps> = ({
   }
 
   return (
-    <View style={[avatarStyles.container, sizeStyle]}>
+    <View style={[avatarStyles.container, sizeStyle, style]}>
       {children}
       {uri ? (
         <Image style={avatarStyles.image} source={{ uri }} />
