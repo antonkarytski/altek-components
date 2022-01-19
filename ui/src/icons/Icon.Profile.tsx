@@ -3,7 +3,7 @@ import Svg, { ClipPath, Defs, G, Path } from 'react-native-svg'
 import { IconProps } from './_types'
 import { GRAY } from '../colors'
 
-export default function ProfileSVG({
+export default function ProfileIcon({
   style,
   color = GRAY.COMMON,
   size = 19,

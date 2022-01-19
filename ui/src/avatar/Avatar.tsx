@@ -1,29 +1,39 @@
-import React, {FC} from 'react'
-import {Image, StyleProp, View, ViewStyle} from 'react-native'
-import {avatarStyles} from "./styles";
+import React, { FC } from 'react'
+import { Image, StyleProp, View, ViewStyle } from 'react-native'
+import { avatarStyles } from './styles'
+import ProfileIcon from '../icons/Icon.Profile'
+import { GRAY } from '../colors'
 
 type AvatarProps = {
-	size?: number
-	style?: StyleProp<ViewStyle>
-	uri?: string
+  size?: number
+  style?: StyleProp<ViewStyle>
+  uri?: string
+  avatarColor?: string
 }
 
-const Avatar: FC<AvatarProps> = ({ children, size = 80, uri }) => {
-	const sizeStyle = {
-		height: size,
-		width: size,
-	}
-	
-	return (
-		<View style={[avatarStyles.container, sizeStyle]}>
-			{children}
-			{uri ? (
-				<Image style={avatarStyles.image} source={{ uri }} />
-			) : (
-				<View />
-			)}
-		</View>
-	)
+const Avatar: FC<AvatarProps> = ({
+  children,
+  size = 80,
+  uri,
+  avatarColor = GRAY.COMMON,
+}) => {
+  const sizeStyle = {
+    height: size,
+    width: size,
+  }
+
+  return (
+    <View style={[avatarStyles.container, sizeStyle]}>
+      {children}
+      {uri ? (
+        <Image style={avatarStyles.image} source={{ uri }} />
+      ) : (
+        <View>
+          <ProfileIcon size={size} color={avatarColor} />
+        </View>
+      )}
+    </View>
+  )
 }
 
 export default Avatar
