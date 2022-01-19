@@ -1,6 +1,7 @@
-import { StyleSheet } from 'react-native'
-import { screenWidth } from '../../lib/helpers/screen'
-import { BLUE_BORDER } from '../../styles/colors'
+import { Dimensions, StyleSheet } from 'react-native'
+import { BLUE } from '../colors'
+
+const { width } = Dimensions.get('window')
 
 export const avatarEditorStyles = StyleSheet.create({
   container: {
@@ -25,8 +26,8 @@ export const avatarEditorStyles = StyleSheet.create({
     alignItems: 'center',
   },
   circle: {
-    width: screenWidth * 0.9,
-    height: screenWidth * 0.9,
+    width: width * 0.9,
+    height: width * 0.9,
     alignSelf: 'center',
     borderRadius: 1000,
     backgroundColor: 'white',
@@ -43,7 +44,7 @@ export const avatarEditorStyles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: BLUE_BORDER,
+    backgroundColor: BLUE.BORDER,
     right: 20,
     zIndex: 100,
     elevation: 1,
