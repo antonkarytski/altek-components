@@ -17,12 +17,18 @@ type WithOptions<Params> = Params & { attempt?: number }
 
 type RepeatableEffectOptions<Params> = {
   /*
-   * if passed a number, then there will be equal delay between request.
-   * if passed array, then each next attempt will fire with corresponding delay
-   * if array if shorter than attempts count, next attempt get last element of array
+   if passed a number, then there will be equal delay between request.
+   if passed array, then each next attempt will fire with corresponding delay
+   if array if shorter than attempts count, next attempt get last element of array
    */
   delay?: number | number[]
+  /*
+   Count of attempts before onAttemptExceed event fires
+  */
   attemptsCount?: number
+  /*
+    If return true allow effect to repeat function again, otherwise, stop attempts and fire onAttemptExceed event
+   */
   attemptsFilter?: (
     params: WithOptions<Params>,
     error: Error
@@ -38,7 +44,9 @@ export type RepeatableEffect<Params extends object, Response> = Effect<
   Response
 > & {
   onAttemptsExceed: Event<WithOptions<Params & { error: Error }>>
+  onCancel: Event<WithOptions<Params>>
   withBlock: Effect<Params & { attempt?: number }, Response>
+  withCancelPreviousTask: Effect<Params & { attempt?: number }, Response>
   $inFlightProcess: Store<boolean>
 }
 
@@ -56,7 +64,7 @@ export type CreateRepeatableEffectProps<
 function getDelay(delay: OrArray<number> | undefined, attempt: number) {
   if (!delay) return 1000
   if (!Array.isArray(delay)) return delay
-  const { length } = delay
+  const length = delay.length
   if (attempt - 1 > length) return delay[length - 1]
   return delay[attempt - 2]
 }
@@ -83,17 +91,17 @@ export function createRepeatableEffect<
     fn
   ) as RepeatableEffect<Params, Response>
 
+  const onCancel = createEvent<WithOptions<Params>>()
   const onAttemptExceed = createEvent<WithOptions<Params & { error: Error }>>()
   const inFlight = createCounter()
     .inc(repeatableEffect, ({ attempt }) => !attempt)
     .dec(repeatableEffect.done)
     .dec(onAttemptExceed)
+    .dec(onCancel)
 
   const $isTriggerStoreOpened = !filter
     ? createStore(true)
-    : triggerSource.map((cSource) => {
-        return filter(cSource)
-      })
+    : triggerSource.map((cSource) => filter(cSource))
 
   const addTask = createEvent<Params>()
   const clearTasks = createEvent()
@@ -182,8 +190,27 @@ export function createRepeatableEffect<
     ),
   }) as RepeatableEffect<Params, Response>
 
+  const effectWithCancelPreviousTask = attach({
+    source: $tasks,
+    mapParams: (params: WithOptions<Params>, tasks) => ({
+      tasks,
+      params,
+    }),
+    effect: createEffect(
+      ({ tasks, params }: { tasks: Params[]; params: WithOptions<Params> }) => {
+        tasks.forEach((task) => {
+          onCancel(task)
+        })
+        clearTasks()
+        return repeatableEffect(params)
+      }
+    ),
+  })
+
   repeatableEffect.onAttemptsExceed = onAttemptExceed
+  repeatableEffect.onCancel = onCancel
   repeatableEffect.withBlock = effectWithBlock
+  repeatableEffect.withCancelPreviousTask = effectWithCancelPreviousTask
   repeatableEffect.$inFlightProcess = inFlight.$state
   return repeatableEffect
 }
