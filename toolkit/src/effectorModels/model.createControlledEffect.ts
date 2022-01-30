@@ -15,6 +15,7 @@ import { OrArray } from '../types'
 
 type WithOptions<Params> = { attempt?: number; props: Params }
 type WithErrorOptions<Params> = WithOptions<Params> & { error: Error }
+type FirePersistedTasksProps = { fromInside?: boolean }
 
 type RepeatableEffectOptions<Params> = {
   /*
@@ -52,7 +53,7 @@ export type RepeatableEffect<Params, Response> = Effect<Params, Response> & {
 }
 
 export type CreateRepeatableEffectProps<Params, Response, TriggerStore> = {
-  triggerSource: Store<TriggerStore>
+  triggerSource?: Store<TriggerStore>
   filter?: (cSource: TriggerStore, data?: WithOptions<Params>) => boolean
   fn: (params: Params) => Promise<Response>
   options?: RepeatableEffectOptions<Params>
@@ -78,6 +79,7 @@ export function createControlledEffect<Params, Response, TriggerStore>({
   fn,
   options,
 }: CreateRepeatableEffectProps<Params, Response, TriggerStore>) {
+  const dummyStore = createStore(true)
   const onAttempt = createEvent<WithOptions<Params>>()
   const onCancel = createEvent<WithOptions<Params>>()
   const onAttemptExceed = createEvent<WithErrorOptions<Params>>()
@@ -110,9 +112,10 @@ export function createControlledEffect<Params, Response, TriggerStore>({
     .dec(onAttemptExceed)
     .dec(onCancel)
 
-  const $isTriggerStoreOpened = !filter
-    ? createStore(true)
-    : triggerSource.map((cSource) => filter(cSource))
+  const $isTriggerStoreOpened =
+    !filter || !triggerSource
+      ? dummyStore
+      : triggerSource.map((cSource) => filter(cSource))
 
   const addTask = createEvent<WithOptions<Params>>()
   const clearTasks = createEvent()
@@ -127,47 +130,53 @@ export function createControlledEffect<Params, Response, TriggerStore>({
     .reset(clearTasks)
 
   const repeat = createEvent<WithOptions<Params>>()
-  sample({
-    source: triggerSource,
-    clock: repeat,
-    fn: (cSource, data) => ({ cSource, data }),
-  }).watch(({ cSource, data }) => {
-    if (filter && !filter(cSource, data)) return addTask(data)
-    repeatableEffect(data).catch(noop)
-  })
 
-  type FirePersistedTasksProps = { fromInside?: boolean }
-  const firePersistedTasks = createEvent<FirePersistedTasksProps | void>()
-  const setOnResend = createEvent<boolean>()
+  if (triggerSource) {
+    const firePersistedTasks = createEvent<FirePersistedTasksProps | void>()
+    const setOnResend = createEvent<boolean>()
+    const $isOnResend = restore(setOnResend, false)
 
-  const $isOnResend = restore(setOnResend, false)
-  sample({
-    source: {
-      tasks: $tasks,
-      isInFlight: inFlight.$state,
-      isAbleToFire: $isTriggerStoreOpened,
-      isOnResend: $isOnResend,
-    },
-    clock: firePersistedTasks,
-    fn: (source, props) => ({ ...source, props }),
-  }).watch(async ({ tasks, isInFlight, isAbleToFire, isOnResend, props }) => {
-    if (!isInFlight || !tasks.length) return
-    if (options?.sequential) {
-      if (!isAbleToFire || !tasks.length) return setOnResend(false)
-      if (isOnResend && !(props && props.fromInside)) return
-      setOnResend(true)
-      repeatableEffect(tasks[0])
-        .catch(noop)
-        .finally(() => firePersistedTasks({ fromInside: true }))
-      return shiftTask()
-    }
-    tasks.forEach((task) => repeatableEffect(task).catch(noop))
-    clearTasks()
-  })
+    sample({
+      source: triggerSource,
+      clock: repeat,
+      fn: (cSource, data) => ({ cSource, data }),
+    }).watch(({ cSource, data }) => {
+      if (filter && !filter(cSource, data)) return addTask(data)
+      repeatableEffect(data).catch(noop)
+    })
 
-  triggerSource.watch((cSource) => {
-    if (!filter || filter(cSource)) firePersistedTasks()
-  })
+    sample({
+      source: {
+        tasks: $tasks,
+        isInFlight: inFlight.$state,
+        isAbleToFire: $isTriggerStoreOpened,
+        isOnResend: $isOnResend,
+      },
+      clock: firePersistedTasks,
+      fn: (source, props) => ({ ...source, props }),
+    }).watch(async ({ tasks, isInFlight, isAbleToFire, isOnResend, props }) => {
+      if (!isInFlight || !tasks.length) return
+      if (options?.sequential) {
+        if (!isAbleToFire || !tasks.length) return setOnResend(false)
+        if (isOnResend && !(props && props.fromInside)) return
+        setOnResend(true)
+        repeatableEffect(tasks[0])
+          .catch(noop)
+          .finally(() => firePersistedTasks({ fromInside: true }))
+        return shiftTask()
+      }
+      tasks.forEach((task) => repeatableEffect(task).catch(noop))
+      clearTasks()
+    })
+
+    triggerSource.watch((cSource) => {
+      if (!filter || filter(cSource)) firePersistedTasks()
+    })
+  } else {
+    repeat.watch((props) => {
+      repeatableEffect(props).catch(noop)
+    })
+  }
 
   repeatableEffect.fail.watch(async ({ params, error }) => {
     const newParams = addOptions(params)
@@ -226,3 +235,9 @@ export function createControlledEffect<Params, Response, TriggerStore>({
   repeatableEffectWrapper.$inFlightProcess = inFlight.$state
   return repeatableEffectWrapper
 }
+
+const c = createControlledEffect({
+  fn: async (p: void) => {
+    return false
+  },
+})
