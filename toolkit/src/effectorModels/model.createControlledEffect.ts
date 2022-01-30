@@ -43,6 +43,8 @@ type RepeatableEffectOptions<Params> = {
 export type RepeatableEffect<Params, Response> = Effect<Params, Response> & {
   onAttempt: Event<WithOptions<Params>>
   onAttemptsExceed: Event<WithErrorOptions<Params>>
+  onError: Event<WithErrorOptions<Params>>
+  onSuccess: Event<WithOptions<Params> & { result: Response }>
   onCancel: Event<WithOptions<Params>>
   withBlock: Effect<Params, Response>
   withCancelPreviousTask: Effect<Params, Response>
@@ -79,6 +81,8 @@ export function createControlledEffect<Params, Response, TriggerStore>({
   const onAttempt = createEvent<WithOptions<Params>>()
   const onCancel = createEvent<WithOptions<Params>>()
   const onAttemptExceed = createEvent<WithErrorOptions<Params>>()
+  const onSuccess = createEvent<WithOptions<Params> & { result: Response }>()
+  const onError = createEvent<WithErrorOptions<Params>>()
 
   const repeatableEffect = createEffect<WithOptions<Params>, Response>(
     ({ props }) => fn(props)
@@ -90,6 +94,14 @@ export function createControlledEffect<Params, Response, TriggerStore>({
 
   repeatableEffect.watch((params) => {
     onAttempt(params)
+  })
+
+  repeatableEffect.done.watch(({ params: { props, attempt }, result }) => {
+    onSuccess({ props, attempt, result })
+  })
+
+  repeatableEffect.fail.watch(({ params: { attempt, props }, error }) => {
+    onError({ props, attempt, error })
   })
 
   const inFlight = createCounter()
@@ -204,6 +216,8 @@ export function createControlledEffect<Params, Response, TriggerStore>({
     ),
   })
 
+  repeatableEffectWrapper.onSuccess = onSuccess
+  repeatableEffectWrapper.onError = onError
   repeatableEffectWrapper.onAttempt = onAttempt
   repeatableEffectWrapper.onAttemptsExceed = onAttemptExceed
   repeatableEffectWrapper.onCancel = onCancel
