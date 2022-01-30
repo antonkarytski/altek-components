@@ -94,9 +94,7 @@ export function createControlledEffect<Params, Response, TriggerStore>({
     repeatableEffect({ props })
   ) as RepeatableEffect<Params, Response>
 
-  repeatableEffect.watch((params) => {
-    onAttempt(params)
-  })
+  repeatableEffect.watch((params) => onAttempt(params))
 
   repeatableEffect.done.watch(({ params: { props, attempt }, result }) => {
     onSuccess({ props, attempt, result })
@@ -235,9 +233,3 @@ export function createControlledEffect<Params, Response, TriggerStore>({
   repeatableEffectWrapper.$inFlightProcess = inFlight.$state
   return repeatableEffectWrapper
 }
-
-const c = createControlledEffect({
-  fn: async (p: void) => {
-    return false
-  },
-})
