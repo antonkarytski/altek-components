@@ -25,11 +25,12 @@ export class AsyncDbManager<
   P extends Record<UnionFrom<F>, any>,
   Field extends string = UnionFrom<F>
 > {
-  private readonly fields
+  public readonly fields
   private readonly logger = dummyLogger
 
   constructor(fields: F, setting?: AsyncDbSettings) {
     this.fields = fields
+    Object.freeze(this.fields)
     if (setting?.logger) this.logger = setting?.logger
   }
 
