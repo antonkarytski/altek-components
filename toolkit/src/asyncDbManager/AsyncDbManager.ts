@@ -39,7 +39,12 @@ export class AsyncDbManager<
   ): Promise<V | undefined> => {
     try {
       const value = await AsyncStorage.getItem(name as string)
-      if (value) return JSON.parse(value)
+      if (!value) return
+      try {
+        return JSON.parse(value)
+      } catch {
+        return (value as any) as V
+      }
     } catch (e) {
       this.logger.error('Get db', e)
       throw e
