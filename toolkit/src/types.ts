@@ -5,3 +5,4 @@ export type Size = {
   width: number
   height: number
 }
+export type UnionFrom<T> = T[keyof T]
