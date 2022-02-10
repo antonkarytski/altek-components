@@ -28,5 +28,5 @@ export class AsyncDbRequest<T = string> {
 }
 
 export function createDbRequest<T = string>(key: string) {
-  return new AsyncDbRequest(key)
+  return new AsyncDbRequest<T>(key)
 }
