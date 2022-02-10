@@ -25,6 +25,8 @@ export class AsyncDbRequest<T = string> {
   public readonly setSync = (value: T) => {
     this.set(value).catch(noop)
   }
+
+  public readonly reset = () => AsyncStorage.setItem(this.key, '')
 }
 
 export function createDbRequest<T = string>(key: string) {
