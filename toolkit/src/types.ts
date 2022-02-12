@@ -6,3 +6,4 @@ export type Size = {
   height: number
 }
 export type UnionFrom<T> = T[keyof T]
+export type Timer = ReturnType<typeof setTimeout>
