@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import { $blockScroll } from './blockScroll'
 
 export function useModal() {
   const [isVisible, setVisible] = useState(false)
@@ -15,7 +16,7 @@ export function useModal() {
   }, [])
 
   useEffect(() => {
-    //blockParentScroll(isVisible)
+    $blockScroll.set(isVisible)
   }, [isVisible])
 
   return {
