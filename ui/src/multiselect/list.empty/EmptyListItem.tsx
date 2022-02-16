@@ -1,7 +1,6 @@
 import React from 'react'
 import ListItem from '../list/ListItem'
-import { StyleSheet } from 'react-native'
-import { IS_IOS } from '../../../lib/platform'
+import { Platform, StyleSheet } from 'react-native'
 import { multiSelectStyles } from '../styles'
 import { ListItemProps } from '../types'
 
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
   listItemEmptySelected: {},
 
   checkbox: {
-    marginRight: IS_IOS ? 5 : 0,
+    marginRight: Platform.OS === 'ios' ? 5 : 0,
   },
   listItemTextWrap: {
     flex: 1,

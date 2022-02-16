@@ -1,7 +1,12 @@
 import React, { FC } from 'react'
-import { BLACK } from '../../../styles/colors'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { IS_IOS } from '../../../lib/platform'
+import { BLACK } from '../../colors'
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native'
 import { ListItemProps } from '../types'
 
 export const ListItem: FC<ListItemProps> = ({
@@ -48,6 +53,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   checkbox: {
-    marginRight: IS_IOS ? 5 : 0,
+    marginRight: Platform.OS === 'ios' ? 5 : 0,
   },
 })

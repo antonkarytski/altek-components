@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
-import Text from '../../../ui/text'
+import Text from '../../text'
 import { SpecifiedMultiSelectInputProps } from '../types'
 
 export const InsideMultiSelectInput: FC<SpecifiedMultiSelectInputProps> = ({

@@ -1,6 +1,6 @@
 import React, { ReactComponentElement } from 'react'
 import { StyleProp, StyleSheet, ViewStyle } from 'react-native'
-import ConditionalScroll from '../../../ui/conditional/ConditionalScroll'
+import ConditionalScroll from '../../conditional/ConditionalScroll'
 import { SelectedValueProps } from '../types'
 
 type ListProps<V extends string, L extends string> = {

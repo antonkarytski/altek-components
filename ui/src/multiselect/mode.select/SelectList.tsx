@@ -7,18 +7,17 @@ import {
   View,
   ViewStyle,
   BackHandler,
+  Dimensions,
 } from 'react-native'
 import { MultiSelectListProps } from '../types'
-import { screenWidth } from '../../../lib/helpers/screen'
-import { Fn } from '../../../types'
 
 type SelectListProps<V extends string, L extends string> = {
   itemType?: MultiSelectListProps<V, L>['type']
-  onBgClick: Fn
+  onBgClick: () => void
   style?: MultiSelectListProps<V, L>['style'] & {
     selectListContainer?: StyleProp<ViewStyle>
   }
-  onRequestClose?: Fn
+  onRequestClose?: () => void
 } & Omit<MultiSelectListProps<V, L>, 'type' | 'style'>
 
 export default function SelectList<V extends string, L extends string>({
@@ -62,6 +61,7 @@ export default function SelectList<V extends string, L extends string>({
   )
 }
 
+const screenWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',

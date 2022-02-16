@@ -2,7 +2,7 @@ import React from 'react'
 import ListItem from '../list/ListItem'
 import { ListItemProps } from '../types'
 import { StyleSheet } from 'react-native'
-import { GRAY } from '../../../styles/colors'
+import { GRAY } from '../../colors'
 
 type RowListItemProps = Omit<ListItemProps, 'style'>
 
