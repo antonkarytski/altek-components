@@ -17,3 +17,4 @@ export {
   AsyncDbRequest,
   createDbRequest,
 } from './asyncDbManager/AsyncDbRequest'
+export { useObservable, createObservable } from './observable'
