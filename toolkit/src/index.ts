@@ -18,3 +18,5 @@ export {
   createDbRequest,
 } from './asyncDbManager/AsyncDbRequest'
 export { useObservable, createObservable } from './observable'
+export * from './timer/hook.controlledTimer'
+export { Timeout } from './timer/Timeout'

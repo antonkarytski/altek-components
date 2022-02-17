@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useFnRef } from '../hooks'
 
 type IntervalProps = {
   onTick: () => unknown
@@ -11,14 +12,15 @@ export const useInterval = ({
   interval,
   condition = true,
 }: IntervalProps) => {
+  const onTickRef = useFnRef(onTick)
+
   useEffect(() => {
-    if (condition) {
-      const timer = setInterval(() => {
-        onTick()
-      }, interval)
-      return () => clearInterval(timer)
-    }
-  }, [onTick, interval, condition])
+    if (!condition) return
+    const timer = setInterval(() => {
+      onTickRef.current()
+    }, interval)
+    return () => clearInterval(timer)
+  }, [onTickRef, interval, condition])
 }
 
 type ControlledTimerProps = {
@@ -49,34 +51,25 @@ export const useControlledTimer = ({
   const reloadTimer = useCallback(() => {
     uncontrolledIterator.current = time
     if (!controlled) return
-    if (iteratorMode === 'dec') {
-      setControlledIterator(time)
-      return
-    }
+    if (iteratorMode === 'dec') return setControlledIterator(time)
     setControlledIterator(0)
   }, [time, controlled, iteratorMode])
 
-  const generatorCounter = useCallback(() => {
+  function generatorCounter() {
     if (uncontrolledIterator.current > 0) {
       if (onTick) onTick()
-      uncontrolledIterator.current = uncontrolledIterator.current - tick
-      if (controlled) {
-        if (iteratorMode === 'dec') {
-          setControlledIterator((current) => current - tick)
-          return
-        }
-        setControlledIterator((current) => current + tick)
+      uncontrolledIterator.current -= tick
+      if (!controlled) return
+      if (iteratorMode === 'dec') {
+        return setControlledIterator((current) => current - tick)
       }
-      return
+      return setControlledIterator((current) => current + tick)
     }
 
     if (onGenerate) onGenerate()
-    if (!cycle) {
-      setCycleCondition(false)
-      return
-    }
+    if (!cycle) return setCycleCondition(false)
     reloadTimer()
-  }, [onGenerate, tick, onTick, controlled, cycle, reloadTimer, iteratorMode])
+  }
 
   useEffect(() => {
     uncontrolledIterator.current = time
@@ -90,16 +83,13 @@ export const useControlledTimer = ({
   })
 
   const startAgain = useCallback(() => {
-    if (!cycleCondition) {
-      reloadTimer()
-      setCycleCondition(true)
-    }
+    if (cycleCondition) return
+    reloadTimer()
+    setCycleCondition(true)
   }, [reloadTimer, cycleCondition])
 
   const timerInterface = useMemo(() => {
-    return {
-      startAgain,
-    }
+    return { startAgain }
   }, [startAgain])
 
   return {
