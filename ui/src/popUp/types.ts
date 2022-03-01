@@ -21,7 +21,7 @@ export type BasePopUpModalProps<Names extends string> = {
 } & CardModalProps
 
 type PopUpPropsWithChildren<P extends BasePopUpModalProps<string>> = P &
-  PickOne<PopUpContentType, 'children'>
+  PickOne<PopUpContentType, 'text'>
 
 type PopUpPropsWithText<P extends BasePopUpModalProps<string>> = P &
   PickOne<PopUpContentType, 'children'>
