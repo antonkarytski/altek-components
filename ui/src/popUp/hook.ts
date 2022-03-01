@@ -32,10 +32,13 @@ export function useCommonPopUp<
   })
 }
 
-export function createPopUpHook<Names extends string>(
-  manager: PopUpManager<Names>
-) {
+export function createPopUpHook<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>(manager: PopUpManager<Names, S>) {
   return <N extends Names>(name: N) => {
     return useCommonPopUp(name, manager)
   }
 }
+
+
