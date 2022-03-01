@@ -9,9 +9,13 @@ import { noop } from './helpers'
 import Text from '../text'
 import { PopUpManager } from './model.popUpManager'
 import { PopUpSubmitProps, PopUpSubmitTextDriver } from './types'
+import { AdditionalPropsStructure } from './types.model'
 
-type CommonPopUpSubmitProps<Names extends string> = PopUpSubmitProps<Names> & {
-  manager: PopUpManager<Names>
+type CommonPopUpSubmitProps<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+> = PopUpSubmitProps<Names> & {
+  manager: PopUpManager<Names, S>
 }
 
 const defaultTextDriver: PopUpSubmitTextDriver = {
@@ -21,14 +25,17 @@ const defaultTextDriver: PopUpSubmitTextDriver = {
 
 export function createPopUpSubmitComponent<
   Names extends string,
-  M extends PopUpManager<Names>
->(manager: M) {
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>(manager: PopUpManager<Names, S>) {
   return (props: PopUpSubmitProps<Names>) => {
     return <PopUpSubmit {...props} manager={manager} />
   }
 }
 
-export default function PopUpSubmit<Names extends string>({
+export default function PopUpSubmit<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>({
   popUpName,
   text: popUpText,
   title,
@@ -42,7 +49,7 @@ export default function PopUpSubmit<Names extends string>({
   preset,
   manager,
   textDriver = defaultTextDriver,
-}: CommonPopUpSubmitProps<Names>) {
+}: CommonPopUpSubmitProps<Names, S>) {
   const {
     isMounted,
     autoCloseTime,

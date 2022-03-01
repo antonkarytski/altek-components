@@ -8,23 +8,28 @@ import { PopUpModalProps } from './types'
 import Text from '../text'
 import { getPopUpAnimatedStyles } from './helpers'
 import { PopUpManager } from './model.popUpManager'
+import { AdditionalPropsStructure } from './types.model'
 
 type CommonPopUpNotificationProps<
-  Names extends string
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 > = PopUpModalProps<Names> & {
-  manager: PopUpManager<Names>
+  manager: PopUpManager<Names, S>
 }
 
 export function createPopUpNotificationComponent<
   Names extends string,
-  M extends PopUpManager<Names>
->(manager: M) {
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>(manager: PopUpManager<Names, S>) {
   return (props: PopUpModalProps<Names>) => {
     return <PopUpNotification {...props} manager={manager} />
   }
 }
 
-export function PopUpNotification<Names extends string>({
+export function PopUpNotification<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>({
   text,
   title,
   preset,
@@ -38,7 +43,7 @@ export function PopUpNotification<Names extends string>({
   onMount,
   onUnmount,
   manager,
-}: CommonPopUpNotificationProps<Names>) {
+}: CommonPopUpNotificationProps<Names, S>) {
   const {
     isMounted,
     autoCloseTime,

@@ -2,11 +2,13 @@ import { useEffect, useRef } from 'react'
 import { useStoreMap } from 'effector-react'
 import { initialState, PopUpManager } from './model.popUpManager'
 import { AdditionalPropsStructure, PopUpModel, PopUpsSet } from './types.model'
+import { createPopUpSubmitComponent } from './PopUpSubmit'
+import { createPopUpNotificationComponent } from './PopUpNotification'
 
-export function usePopUpRegistration<Name extends string>(
-  popUpName: Name,
-  popUpManager: PopUpManager<Name>
-) {
+export function usePopUpRegistration<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>(popUpName: Names, popUpManager: PopUpManager<Names, S>) {
   const name = useRef(popUpName).current
   const manager = useRef(popUpManager).current
 

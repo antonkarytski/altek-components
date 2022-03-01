@@ -1,15 +1,19 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useCommonPopUp } from './hook'
 import { PopUpManager } from './model.popUpManager'
+import { AdditionalPropsStructure } from './types.model'
 
 type UsePopUpAutoMountProps = {
   autoMount?: boolean
   preventAutoUnmount?: boolean
 }
 
-export function usePopUpAutoMount<Name extends string>(
-  popUpName: Name,
-  manager: PopUpManager<Name>,
+export function usePopUpAutoMount<
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>(
+  popUpName: Names,
+  manager: PopUpManager<Names, S>,
   { autoMount, preventAutoUnmount }: UsePopUpAutoMountProps
 ) {
   const [forceUnmounted, setIsForceUnmounted] = useState(false)

@@ -5,7 +5,10 @@ export type PopUpNameProp<Names extends string> = {
   popUp: Names
 }
 
-export type AdditionalProps = {
+export type AdditionalProps<
+  M extends string | undefined = undefined,
+  P extends object | undefined = undefined
+> = {
   mode?: string
   props?: object
 }
@@ -23,7 +26,7 @@ export type PopUpOptions = {
 
 export type PopUpOptionsExt<
   A extends AdditionalProps = AdditionalProps
-> = Partial<PopUpOptions> & A
+> = Partial<PopUpOptions> & AdditionalProps<A['mode'], A['props']>
 
 export type PopUpShowOptions<
   Names extends string,
