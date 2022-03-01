@@ -46,7 +46,9 @@ export class PopUpManager<
   public readonly hide = createEvent<Names>()
   public readonly register = createEvent<Names>()
   public readonly unregister = createEvent<Names>()
-  public readonly $store = createStore<PopUpsSet>({})
+  public readonly $store = createStore<PopUpsSet<Names, S>>(
+    {} as PopUpsSet<Names, S>
+  )
     .on(this.register, (state, popUp) => {
       return {
         ...state,
@@ -71,7 +73,7 @@ export class PopUpManager<
     source: this.$store,
     mapParams: (
       { to, popUp }: StartAnimationProps<Names>,
-      state: PopUpsSet
+      state: PopUpsSet<Names, S>
     ) => ({ to, state: state[popUp].animatedValue }),
     effect: createEffect(async ({ state, to }: StartAnimationEffectProps) => {
       return new Promise((resolve) => {
