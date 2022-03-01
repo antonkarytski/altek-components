@@ -2,8 +2,6 @@ import { useEffect, useRef } from 'react'
 import { useStoreMap } from 'effector-react'
 import { initialState, PopUpManager } from './model.popUpManager'
 import { AdditionalPropsStructure, PopUpModel, PopUpsSet } from './types.model'
-import { createPopUpSubmitComponent } from './submit/PopUpSubmit'
-import { createPopUpNotificationComponent } from './notification/PopUpNotification'
 
 export function usePopUpRegistration<
   Names extends string,
@@ -43,26 +41,3 @@ export function createPopUpHook<
     return useCommonPopUp(name, manager)
   }
 }
-
-export enum PopUp {
-  BID_PLACED = 'bidPlaced',
-}
-
-export type PopUpProps = {
-  [PopUp.BID_PLACED]:
-    | {
-        mode: 'withCredits'
-        props: {
-          go: 2
-        }
-      }
-    | {
-        mode: 'failed'
-        props?: never
-      }
-}
-
-export const popUps = new PopUpManager<PopUp, PopUpProps>()
-export const usePopUp = createPopUpHook(popUps)
-export const PopUpSubmit = createPopUpSubmitComponent(popUps)
-export const PopUpNotification = createPopUpNotificationComponent(popUps)

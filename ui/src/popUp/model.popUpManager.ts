@@ -46,9 +46,14 @@ export class PopUpManager<
   private readonly updateState = createEvent<SetOptionsProps<Names>>()
 
   private readonly _show = createEvent<PopUpShowOptions<Names>>()
+  private readonly _showHidden = createEvent<PopUpShowOptions<Names>>()
   public readonly show = <N extends Names, A extends S[N]>(
     props: PopUpShowOptions<N, A>
   ) => this._show(props)
+  public readonly showHidden = <N extends Names, A extends S[N]>(
+    props: PopUpShowOptions<N, A>
+  ) => this._showHidden(props)
+
   public readonly hide = createEvent<Names>()
   public readonly register = createEvent<Names>()
   public readonly unregister = createEvent<Names>()
@@ -109,6 +114,15 @@ export class PopUpManager<
         props.autoCloseTime = autoCloseTime
       this.updateState(props)
       this.startAnimation({ to: 1, popUp }).catch(noop)
+    })
+
+    sample({
+      source: this.$store,
+      clock: this._showHidden,
+      fn: (popUpsSet, props) => ({ props, popUpsSet }),
+    }).watch(async ({ props, popUpsSet }) => {
+      if (popUpsSet[props.popUp]?.isMounted) return
+      this._show(props)
     })
 
     sample({
