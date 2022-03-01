@@ -9,4 +9,4 @@ export {
 export { createPopUpManager, PopUpManager } from './model.popUpManager'
 export { createPopUpHook } from './hook'
 export type { SpecifiedPopUpSubmitProps } from './submit/types'
-export { SpecifiedPopUpNotificationProps } from './notification/types'
+export type { SpecifiedPopUpNotificationProps } from './notification/types'
