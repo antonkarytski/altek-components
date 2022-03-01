@@ -1,4 +1,5 @@
 import {
+  AdditionalProps,
   AdditionalPropsStructure,
   PopUpModel,
   PopUpOptions,
@@ -31,6 +32,11 @@ export const initialState: PopUpModel = {
   isMounted: false,
   animatedValue: new Animated.Value(0),
   ...initialOptions,
+}
+
+const dummyAdditionalProps: AdditionalProps = {
+  props: undefined,
+  mode: undefined,
 }
 
 export class PopUpManager<
@@ -66,7 +72,12 @@ export class PopUpManager<
     })
     .on(this.updateState, (state, { popUp, isMounted, ...options }) => ({
       ...state,
-      [popUp]: { ...state[popUp], ...options, isMounted },
+      [popUp]: {
+        ...state[popUp],
+        ...dummyAdditionalProps,
+        ...options,
+        isMounted,
+      },
     }))
 
   private startAnimation = attach({
