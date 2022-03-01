@@ -110,3 +110,8 @@ export class PopUpManager<
     })
   }
 }
+
+export const createPopUpManager = <
+  Names extends string,
+  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
+>() => new PopUpManager<Names, S>()

@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { GRAY } from '../../styles/colors'
+import { GRAY } from '../colors'
 
 export const colorHeaderStyles = StyleSheet.create({
   arrow: {
