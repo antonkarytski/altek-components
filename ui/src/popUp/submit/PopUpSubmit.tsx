@@ -1,22 +1,18 @@
 import React from 'react'
 import { StyleSheet } from 'react-native'
-import SubmitModal from '../modal/SubmitModal'
-import { useCommonPopUp, usePopUpRegistration } from './hook'
-import { getPopUpAnimatedStyles } from './helpers'
+import SubmitModal from '../../modal/SubmitModal'
+import { useCommonPopUp, usePopUpRegistration } from '../hook'
+import { getPopUpAnimatedStyles, noop } from '../helpers'
 import { useControlledTimer } from 'altek-toolkit'
-import { usePopUpAutoMount } from './hook.popUpHelpers'
-import { noop } from './helpers'
-import Text from '../text'
-import { PopUpManager } from './model.popUpManager'
-import { PopUpSubmitProps, PopUpSubmitTextDriver } from './types'
-import { AdditionalPropsStructure } from './types.model'
-
-type CommonPopUpSubmitProps<
-  Names extends string,
-  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
-> = PopUpSubmitProps<Names> & {
-  manager: PopUpManager<Names, S>
-}
+import { usePopUpAutoMount } from '../hook.popUpHelpers'
+import Text from '../../text'
+import { PopUpManager } from '../model.popUpManager'
+import { AdditionalPropsStructure } from '../types.model'
+import {
+  CommonPopUpSubmitProps,
+  PopUpSubmitProps,
+  PopUpSubmitTextDriver,
+} from './types'
 
 const defaultTextDriver: PopUpSubmitTextDriver = {
   no: 'No',

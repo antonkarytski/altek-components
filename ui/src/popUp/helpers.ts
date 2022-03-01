@@ -1,7 +1,12 @@
 import { Animated } from 'react-native'
 import { animationInterpolate } from 'altek-toolkit'
+import { AdditionalProps } from './types.model'
 
 export const noop = () => {}
+export const dummyAdditionalProps: AdditionalProps = {
+  mode: '',
+  props: {},
+}
 
 export function getPopUpAnimatedStyles(animatedValue: Animated.Value) {
   const modalInterpolateY = animationInterpolate(

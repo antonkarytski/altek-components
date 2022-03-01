@@ -1,21 +1,15 @@
 import React, { useEffect, useRef } from 'react'
 import { Animated, StyleSheet } from 'react-native'
-import CardModal from '../modal/CardModal'
-import { useCommonPopUp, usePopUpRegistration } from './hook'
+import CardModal from '../../modal/CardModal'
+import { useCommonPopUp, usePopUpRegistration } from '../hook'
 import { useControlledTimer } from 'altek-toolkit'
-import { usePopUpAutoMount } from './hook.popUpHelpers'
-import { PopUpModalProps } from './types'
-import Text from '../text'
-import { getPopUpAnimatedStyles } from './helpers'
-import { PopUpManager } from './model.popUpManager'
-import { AdditionalPropsStructure } from './types.model'
-
-type CommonPopUpNotificationProps<
-  Names extends string,
-  S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
-> = PopUpModalProps<Names> & {
-  manager: PopUpManager<Names, S>
-}
+import { usePopUpAutoMount } from '../hook.popUpHelpers'
+import { PopUpModalProps } from '../types'
+import Text from '../../text'
+import { getPopUpAnimatedStyles } from '../helpers'
+import { PopUpManager } from '../model.popUpManager'
+import { AdditionalPropsStructure } from '../types.model'
+import { CommonPopUpNotificationProps } from './types'
 
 export function createPopUpNotificationComponent<
   Names extends string,
@@ -26,7 +20,7 @@ export function createPopUpNotificationComponent<
   }
 }
 
-export function PopUpNotification<
+export default function PopUpNotification<
   Names extends string,
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >({

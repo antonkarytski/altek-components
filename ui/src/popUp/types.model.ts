@@ -1,14 +1,11 @@
 import { Fn } from 'altek-toolkit'
 import { Animated } from 'react-native'
 
-export type PopUpNameProp<Names extends string> = {
-  popUp: Names
+export type PopUpNameProp<N extends string> = {
+  popUp: N
 }
 
-export type AdditionalProps<
-  M extends string | undefined = undefined,
-  P extends object | undefined = undefined
-> = {
+export type AdditionalProps = {
   mode?: string
   props?: object
 }
@@ -24,14 +21,13 @@ export type PopUpOptions = {
   onUnmount: Fn
 }
 
-export type PopUpOptionsExt<
-  A extends AdditionalProps = AdditionalProps
-> = Partial<PopUpOptions> & AdditionalProps<A['mode'], A['props']>
-
 export type PopUpShowOptions<
   Names extends string,
-  A = AdditionalProps
-> = PopUpNameProp<Names> & PopUpOptionsExt<A> & Partial<PopUpSubmitOptions>
+  A extends AdditionalProps | undefined = AdditionalProps
+> = PopUpNameProp<Names> &
+  Partial<PopUpOptions> &
+  Partial<PopUpSubmitOptions> &
+  A
 
 export type SetOptionsProps<Names extends string> = PopUpShowOptions<Names> & {
   isMounted: boolean
@@ -41,9 +37,7 @@ export type AdditionalPropsStructure<Names extends string> = Partial<
   Record<Names, AdditionalProps>
 >
 
-export type PopUpModel<
-  A extends AdditionalProps | undefined = AdditionalProps
-> = {
+export type PopUpModel<A extends AdditionalProps | undefined = undefined> = {
   isMounted: boolean
   animatedValue: Animated.Value
 } & PopUpOptions &
@@ -51,9 +45,9 @@ export type PopUpModel<
   (A extends undefined ? AdditionalProps : A)
 
 export type PopUpsSet<
-  Names extends string,
-  Props extends AdditionalPropsStructure<Names>
-> = { [key in Names]: PopUpModel<Props[key]> }
+  N extends string,
+  P extends AdditionalPropsStructure<N>
+> = { [key in N]: PopUpModel<P[key]> }
 
 export type StartAnimationEffectProps = { state: Animated.Value; to: number }
 export type StartAnimationProps<Names extends string> = {

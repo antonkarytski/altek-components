@@ -1,20 +1,32 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useCommonPopUp } from './hook'
 import { PopUpManager } from './model.popUpManager'
-import { AdditionalPropsStructure } from './types.model'
+import {
+  AdditionalProps,
+  AdditionalPropsStructure,
+  PopUpShowOptions,
+} from './types.model'
 
-type UsePopUpAutoMountProps = {
+type UsePopUpAutoMountProps<
+  D extends AdditionalProps | undefined = AdditionalProps
+> = {
   autoMount?: boolean
   preventAutoUnmount?: boolean
+  defaultAdditionalProps?: D
 }
 
 export function usePopUpAutoMount<
   Names extends string,
+  Name extends Names,
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >(
-  popUpName: Names,
+  popUpName: Name,
   manager: PopUpManager<Names, S>,
-  { autoMount, preventAutoUnmount }: UsePopUpAutoMountProps
+  {
+    autoMount,
+    preventAutoUnmount,
+    defaultAdditionalProps,
+  }: UsePopUpAutoMountProps<S[Name]>
 ) {
   const [forceUnmounted, setIsForceUnmounted] = useState(false)
   const { isMounted } = useCommonPopUp(popUpName, manager)
@@ -26,7 +38,10 @@ export function usePopUpAutoMount<
   useEffect(() => {
     if (autoMount === undefined) return
     if (autoMount && !isMounted && !forceUnmounted) {
-      manager.show({ popUp: popUpName })
+      manager.show({
+        popUp: popUpName,
+        ...defaultAdditionalProps,
+      } as PopUpShowOptions<Name, S[Name]>)
       return
     }
     if (preventAutoUnmount) return
@@ -34,12 +49,20 @@ export function usePopUpAutoMount<
       manager.hide(popUpName)
       return
     }
-  }, [isMounted, autoMount, preventAutoUnmount, forceUnmounted, manager])
+  }, [
+    isMounted,
+    autoMount,
+    preventAutoUnmount,
+    forceUnmounted,
+    manager,
+    defaultAdditionalProps,
+    popUpName,
+  ])
 
   const forceUnmount = useCallback(() => {
     manager.hide(popUpName)
     setIsForceUnmounted(true)
-  }, [manager])
+  }, [manager, popUpName])
 
   return { forceUnmount }
 }
