@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useStoreMap } from 'effector-react'
-import { PopUpManager } from './model.popUpManager'
+import { initialState, PopUpManager } from './model.popUpManager'
 import { AdditionalPropsStructure, PopUpModel, PopUpsSet } from './types.model'
 
 export function usePopUpRegistration<Name extends string>(
@@ -19,15 +19,16 @@ export function usePopUpRegistration<Name extends string>(
 }
 
 export function useCommonPopUp<
-  Name extends string,
-  S extends AdditionalPropsStructure<Name>,
-  Props extends S[Name]
->(popUpName: Name, popUpManager: PopUpManager<Name, S>) {
-  const name = useRef<Name>(popUpName).current
-  return useStoreMap<PopUpsSet<Name, S>, PopUpModel<Props>, [Name]>({
+  Names extends string,
+  N extends Names,
+  S extends AdditionalPropsStructure<Names>,
+  Props extends S[N]
+>(popUpName: N, popUpManager: PopUpManager<Names, S>) {
+  const name = useRef<N>(popUpName).current
+  return useStoreMap<PopUpsSet<Names, S>, PopUpModel<Props>, [Names]>({
     store: popUpManager.$store,
     keys: [name],
-    fn: (state) => state[name] as PopUpModel<Props>,
+    fn: (state) => (state[name] || initialState) as PopUpModel<Props>,
     updateFilter: (prev, next) => prev !== next,
   })
 }
@@ -40,5 +41,3 @@ export function createPopUpHook<
     return useCommonPopUp(name, manager)
   }
 }
-
-
