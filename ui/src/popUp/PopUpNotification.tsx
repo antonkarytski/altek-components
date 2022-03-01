@@ -15,9 +15,10 @@ type CommonPopUpNotificationProps<
   manager: PopUpManager<Names>
 }
 
-export function createPopUpNotificationComponent<Names extends string>(
-  manager: PopUpManager<Names>
-) {
+export function createPopUpNotificationComponent<
+  Names extends string,
+  M extends PopUpManager<Names>
+>(manager: M) {
   return (props: PopUpModalProps<Names>) => {
     return <PopUpNotification {...props} manager={manager} />
   }

@@ -19,9 +19,10 @@ const defaultTextDriver: PopUpSubmitTextDriver = {
   yes: 'Yes',
 }
 
-export function createPopUpSubmitComponent<Names extends string>(
-  manager: PopUpManager<Names>
-) {
+export function createPopUpSubmitComponent<
+  Names extends string,
+  M extends PopUpManager<Names>
+>(manager: M) {
   return (props: PopUpSubmitProps<Names>) => {
     return <PopUpSubmit {...props} manager={manager} />
   }
