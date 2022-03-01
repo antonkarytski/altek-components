@@ -5,7 +5,7 @@ import { Fn } from 'altek-toolkit'
 export type PickOne<T, Field extends keyof T> = Required<Pick<T, Field>> &
   Partial<Record<Exclude<keyof T, Field>, never>>
 
-type PopUpContentType = {
+export type PopUpContentType = {
   children: ReactNode
   text: string
 }
@@ -20,23 +20,16 @@ export type BasePopUpModalProps<Names extends string> = {
   onUnmount?: Fn
 } & CardModalProps
 
-export type PopUpModalPropsWithChildren<
-  Names extends string
-> = BasePopUpModalProps<Names> & PickOne<PopUpContentType, 'children'>
+type PopUpPropsWithChildren<P extends BasePopUpModalProps<string>> = P &
+  PickOne<PopUpContentType, 'children'>
 
-export type PopUpModalPropsWithText<
-  Names extends string
-> = BasePopUpModalProps<Names> & PickOne<PopUpContentType, 'text'>
+type PopUpPropsWithText<P extends BasePopUpModalProps<string>> = P &
+  PickOne<PopUpContentType, 'children'>
 
-export type PopUpModalProps<Names extends string> =
-  | PopUpModalPropsWithChildren<Names>
-  | PopUpModalPropsWithText<Names>
+export type PopUpPropsWithContent<P extends BasePopUpModalProps<string>> =
+  | PopUpPropsWithChildren<P>
+  | PopUpPropsWithText<P>
 
 export type SpecifiedModalOptions = {
   popUpNameModifier?: string
 }
-
-export type SpecifiedPopUpModalProps<Names extends string> = Partial<
-  Omit<PopUpModalProps<Names>, 'popUp'>
-> &
-  SpecifiedModalOptions

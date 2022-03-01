@@ -8,5 +8,5 @@ export {
 } from './submit/PopUpSubmit'
 export { createPopUpManager, PopUpManager } from './model.popUpManager'
 export { createPopUpHook } from './hook'
-export type { SpecifiedPopUpModalProps } from './types'
 export type { SpecifiedPopUpSubmitProps } from './submit/types'
+export { SpecifiedPopUpNotificationProps } from './notification/types'
