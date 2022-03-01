@@ -111,7 +111,9 @@ export class PopUpManager<
   }
 }
 
-export const createPopUpManager = <
+export function createPopUpManager<
   Names extends string,
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
->() => new PopUpManager<Names, S>()
+>() {
+  return new PopUpManager<Names, S>()
+}
