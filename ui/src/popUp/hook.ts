@@ -24,10 +24,10 @@ export function useCommonPopUp<
   Props extends S[Name]
 >(popUpName: Name, popUpManager: PopUpManager<Name, S>) {
   const name = useRef<Name>(popUpName).current
-  return useStoreMap<PopUpsSet, PopUpModel, [Name]>({
+  return useStoreMap<PopUpsSet<Name, S>, PopUpModel<Props>, [Name]>({
     store: popUpManager.$store,
     keys: [name],
-    fn: (state) => state[name],
+    fn: (state) => state[name] as PopUpModel<Props>,
     updateFilter: (prev, next) => prev !== next,
   })
 }

@@ -38,14 +38,19 @@ export type AdditionalPropsStructure<Names extends string> = Partial<
   Record<Names, AdditionalProps>
 >
 
-export type PopUpModel = {
+export type PopUpModel<
+  A extends AdditionalProps | undefined = AdditionalProps
+> = {
   isMounted: boolean
   animatedValue: Animated.Value
 } & PopUpOptions &
-  AdditionalProps &
-  PopUpSubmitOptions
+  PopUpSubmitOptions &
+  (A extends undefined ? AdditionalProps : A)
 
-export type PopUpsSet = Record<string, PopUpModel>
+export type PopUpsSet<
+  Names extends string,
+  Props extends AdditionalPropsStructure<Names>
+> = { [key in Names]: PopUpModel<Props[key]> }
 
 export type StartAnimationEffectProps = { state: Animated.Value; to: number }
 export type StartAnimationProps<Names extends string> = {
