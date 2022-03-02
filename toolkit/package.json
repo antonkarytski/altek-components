@@ -1,6 +1,6 @@
 {
   "name": "altek-toolkit",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "Altek toolkit library",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
