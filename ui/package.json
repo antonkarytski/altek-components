@@ -1,6 +1,6 @@
 {
   "name": "altek-ui",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "description": "Altek ui components library",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
@@ -17,6 +17,7 @@
   "repository": "https://github.com/AltekLLC/altek-components.git",
   "author": "Anton Karytski <heyheyjude23@gmail.com>",
   "license": "MIT",
+
   "peerDependencies": {
     "@react-native-community/checkbox": ">=0.5.7",
     "@react-native-community/masked-view": ">=0.1.10",

@@ -24,11 +24,11 @@ export function createPopUpSubmitComponent<
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >(manager: PopUpManager<Names, S>) {
   return (props: PopUpSubmitProps<Names>) => {
-    return <PopUpSubmit {...props} manager={manager} />
+    return <CommonPopUpSubmit {...props} manager={manager} />
   }
 }
 
-export default function PopUpSubmit<
+export default function CommonPopUpSubmit<
   Names extends string,
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >({

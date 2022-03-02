@@ -15,11 +15,11 @@ export function createPopUpNotificationComponent<
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >(manager: PopUpManager<Names, S>) {
   return (props: PopUpNotificationProps<Names>) => {
-    return <PopUpNotification {...props} manager={manager} />
+    return <CommonPopUpNotification {...props} manager={manager} />
   }
 }
 
-export default function PopUpNotification<
+export default function CommonPopUpNotification<
   Names extends string,
   S extends AdditionalPropsStructure<Names> = AdditionalPropsStructure<Names>
 >({
