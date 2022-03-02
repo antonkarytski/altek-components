@@ -9,11 +9,8 @@ export default function EmptyListItem(props: Omit<ListItemProps, 'style'>) {
     <ListItem
       style={{
         item: [multiSelectStyles.emptyCard, styles.listItemEmpty],
-        selected: [
-          multiSelectStyles.emptyCardSelected,
-          styles.listItemEmptySelected,
-        ],
-        textWrap: styles.textWrap,
+        selected: multiSelectStyles.emptyCardSelected,
+        textWrap: [multiSelectStyles.button, styles.textWrap],
         text: [multiSelectStyles.cardText, styles.text],
         textSelected: multiSelectStyles.emptyCardSelectedText,
       }}
@@ -29,7 +26,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  listItemEmptySelected: {},
 
   checkbox: {
     marginRight: Platform.OS === 'ios' ? 5 : 0,
@@ -43,6 +39,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   textWrap: {
+    padding: 7,
+    paddingHorizontal: 11,
     justifyContent: 'center',
     alignItems: 'center',
   },

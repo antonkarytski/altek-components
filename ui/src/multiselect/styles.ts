@@ -3,8 +3,6 @@ import { BLUE } from '../colors'
 
 export const multiSelectStyles = StyleSheet.create({
   emptyCard: {
-    padding: 7,
-    paddingHorizontal: 11,
     borderRadius: 12,
     backgroundColor: '#FFFFFF',
     borderColor: BLUE.BORDER,
@@ -14,9 +12,15 @@ export const multiSelectStyles = StyleSheet.create({
     flex: 0,
     justifyContent: 'center',
   },
+  button: {
+    padding: 7,
+    paddingHorizontal: 11,
+    borderRadius: 12,
+  },
   emptyCardSelected: {
     backgroundColor: BLUE.COMMON,
-    borderWidth: 0,
+    borderColor: BLUE.COMMON,
+    borderWidth: 1,
   },
   emptyCardSelectedText: {
     color: 'white',
