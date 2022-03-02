@@ -153,11 +153,9 @@ export default function BigButton({
       {children ? (
         children(presetState)
       ) : (
-        <Text
-          label={label}
-          bold
-          style={[bigButtonStyles.label, activeStyles.label]}
-        />
+        <Text bold style={[bigButtonStyles.label, activeStyles.label]}>
+          {label}
+        </Text>
       )}
     </TouchableHighlight>
   )
