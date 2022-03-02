@@ -1,6 +1,6 @@
 {
   "name": "altek-ui",
-  "version": "0.3.15",
+  "version": "0.3.16",
   "description": "Altek ui components library",
   "main": "dist/module/index.js",
   "module": "dist/module/index.js",
