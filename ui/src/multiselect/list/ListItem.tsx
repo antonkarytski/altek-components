@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    //paddingHorizontal: 15,
+    paddingHorizontal: 15,
   },
   checkbox: {
     marginRight: Platform.OS === 'ios' ? 5 : 0,
