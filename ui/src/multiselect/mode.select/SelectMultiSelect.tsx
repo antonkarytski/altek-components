@@ -44,10 +44,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         withShadow
         style={[isModalVisible ? styles.visibleModalInput : null, style?.input]}
         type={containType}
-        onPress={() => {
-          console.log(1)
-          listController.current?.toggle()
-        }}
+        onPress={() => listController.current?.toggle()}
         placeholder={placeholder}
       >
         <SelectedItems
