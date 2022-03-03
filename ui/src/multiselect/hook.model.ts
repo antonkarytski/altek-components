@@ -2,17 +2,17 @@ import { MultiSelectProps, SelectedValueProps } from './types'
 import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
 import {
   MultiSelectStates,
-  useMultiSelectMode,
-  UseMultiSelectModes,
   useMultiSelectStates,
   useMultiSelectValues,
 } from './hook'
+import { routeMultiSelectMode, MultiSelectModesRouter } from './helpers'
+import { useFnRef } from 'altek-toolkit'
 
 export type UseMultiSelectStatesActionsProps<
   V extends string,
   L extends string
 > = {
-  mode: UseMultiSelectModes
+  mode: MultiSelectModesRouter
   states: MultiSelectStates
   setItems: Dispatch<SetStateAction<SelectedValueProps<V, L>[]>>
 }
@@ -79,13 +79,14 @@ export function useMultiSelectModel<V extends string, L extends string>(
     values,
     initialValue = [],
   }: MultiSelectProps<V, L>,
-  { onSelect, onChange }: MultiSelectActions<V> = {}
+  { onSelect = () => {}, onChange }: MultiSelectActions<V> = {}
 ) {
-  const mode = useMultiSelectMode({
+  const mode = routeMultiSelectMode({
     type,
     containType,
     topButtonBehavior,
   })
+  const onSelectRef = useFnRef(onSelect)
   const [items, setItems] = useMultiSelectValues(values, { initialValue, mode })
   const states = useMultiSelectStates({ values: items, topButtonBehavior })
   useMultiSelectStatesActions({ mode, states, setItems })
@@ -105,8 +106,7 @@ export function useMultiSelectModel<V extends string, L extends string>(
               return setValue
             })
           })
-          if (onSelect) onSelect()
-          return
+          return onSelectRef.current()
         }
         setItems((currentValues) => {
           const valuesList = [...currentValues]
@@ -128,19 +128,17 @@ export function useMultiSelectModel<V extends string, L extends string>(
           valuesList[index].selected = value
           return valuesList
         })
-        if (value && onSelect) onSelect()
+        if (value) onSelectRef.current()
         return
       }
       setItems((currentValues) => {
         const valuesList = [...currentValues]
-        if (!valuesList[index].selected && onSelect) {
-          onSelect()
-        }
+        if (!valuesList[index].selected) onSelectRef.current()
         valuesList[index].selected = !valuesList[index].selected
         return valuesList
       })
     },
-    [setItems, items, mode.topButtonAll, mode.topButtonNone, onSelect]
+    [setItems, items, mode.topButtonAll, mode.topButtonNone, onSelectRef]
   )
 
   useEffect(() => {

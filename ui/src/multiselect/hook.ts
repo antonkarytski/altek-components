@@ -1,10 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
-import {
-  MultiSelectModes,
-  SelectedValueProps,
-  SelectValue,
-  MultiSelectStateProps,
-} from './types'
+import { MultiSelectStateProps, SelectedValueProps, SelectValue } from './types'
+import { MultiSelectModesRouter } from './helpers'
 
 export function useNormalisedMultiSelectValues<
   V extends string,
@@ -15,24 +11,6 @@ export function useNormalisedMultiSelectValues<
       return { ...value, selected: false, disabled: false }
     })
   }, [values]) as SelectedValueProps<V, L>[]
-}
-
-export type UseMultiSelectModes = ReturnType<typeof useMultiSelectMode>
-
-export function useMultiSelectMode({
-  type,
-  containType,
-  topButtonBehavior,
-}: Partial<Omit<MultiSelectModes, 'itemType' | 'selectedItemsType'>>) {
-  return {
-    modal: type === 'modal',
-    select: type === 'select',
-    row: type === 'row',
-    containInside: containType === 'inside',
-    containUnder: containType === 'under',
-    topButtonNone: topButtonBehavior === 'none',
-    topButtonAll: topButtonBehavior === 'all',
-  }
 }
 
 export type MultiSelectStates = ReturnType<typeof useMultiSelectStates>
@@ -66,7 +44,7 @@ export function useMultiSelectStates<V extends string, L extends string>({
 }
 
 type MultiSelectInitProps = {
-  mode: UseMultiSelectModes
+  mode: MultiSelectModesRouter
   initialValue: string[]
 }
 
