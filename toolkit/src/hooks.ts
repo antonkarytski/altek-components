@@ -1,4 +1,11 @@
-import { Dispatch, SetStateAction, useCallback, useState, useRef } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useState,
+  useRef,
+  MutableRefObject,
+} from 'react'
 import { Fn } from './types'
 
 export function useToggle(
@@ -16,4 +23,16 @@ export function useFnRef<T extends Function>(fn: T) {
   const ref = useRef(fn)
   ref.current = fn
   return ref
+}
+
+export function useConst<T>(initGenerator: () => T) {
+  const ref = useRef<T>(null) as MutableRefObject<T>
+  if (ref.current === null) {
+    ref.current = initGenerator()
+  }
+  return ref.current
+}
+
+export function useModel<T>(Model: { new (): T }) {
+  return useConst(() => new Model())
 }
