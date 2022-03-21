@@ -21,3 +21,4 @@ export {
 export { useObservable, createObservable } from './observable'
 export * from './timer/hook.controlledTimer'
 export { Timeout } from './timer/Timeout'
+export { ServerManager } from './serverManager/ServerManager'
