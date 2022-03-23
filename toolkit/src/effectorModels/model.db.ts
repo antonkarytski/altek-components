@@ -33,5 +33,8 @@ export function addPersist<F extends string, S>($store: Store<S>, saveTo: F) {
   init.finally.watch(() => setInitiated())
   init().catch(noop)
 
-  return { onInit: init.done.watch }
+  return {
+    onInit: init.done.watch,
+    resetDb: db.reset
+  }
 }
