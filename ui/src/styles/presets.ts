@@ -8,7 +8,7 @@ type Phrases = {
 }
 
 export type ColorPresetStructure = {
-  label: (text: Phrases) => void
+  label: (text: Phrases) => string
   wrapperStyle: StyleProp<ViewStyle>
   color: string
 }
@@ -24,49 +24,49 @@ export enum ColorPreset {
 }
 
 export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure> = {
-  BLANK: {
+  [ColorPreset.BLANK]: {
     label: () => '',
     color: GRAY.COMMON,
     wrapperStyle: {
       backgroundColor: COMMON.TRANSPARENT,
     },
   },
-  WHITE: {
+  [ColorPreset.WHITE]: {
     label: () => '',
     color: BLACK.COMMON,
     wrapperStyle: {
       backgroundColor: COMMON.TRANSPARENT,
     },
   },
-  BLUE: {
+  [ColorPreset.BLUE]: {
     label: (text: Phrases) => text.pending,
     color: BLUE.COMMON,
     wrapperStyle: {
       backgroundColor: BLUE.BODY,
     },
   },
-  GREEN: {
+  [ColorPreset.GREEN]: {
     label: (text: Phrases) => text.completed,
     color: GREEN.TEXT,
     wrapperStyle: {
       backgroundColor: GREEN.BODY,
     },
   },
-  RED: {
+  [ColorPreset.RED]: {
     label: (t: Phrases) => t.rejected,
     color: RED.TEXT,
     wrapperStyle: {
       backgroundColor: RED.BODY,
     },
   },
-  GRAY: {
+  [ColorPreset.GRAY]: {
     label: () => '',
     color: GRAY.COMMON,
     wrapperStyle: {
       backgroundColor: GRAY.BODY,
     },
   },
-  YELLOW: {
+  [ColorPreset.YELLOW]: {
     label: () => '',
     color: YELLOW.COMMON,
     wrapperStyle: {
