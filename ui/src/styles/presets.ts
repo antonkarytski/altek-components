@@ -7,21 +7,23 @@ type Phrases = {
   rejected: string
 }
 
-export type ColorPreset = {
+export type ColorPresetStructure = {
   label: (text: Phrases) => void
   wrapperStyle: StyleProp<ViewStyle>
   color: string
 }
-type PresetsName =
-  | 'BLANK'
-  | 'BLUE'
-  | 'GREEN'
-  | 'RED'
-  | 'GRAY'
-  | 'YELLOW'
-  | 'WHITE'
 
-export const COLOR_PRESET: Record<PresetsName, ColorPreset> = {
+export enum ColorPreset {
+  BLANK = 'BLANK',
+  BLUE = 'BLUE',
+  GREEN = 'GREEN',
+  RED = 'RED',
+  GRAY = 'GRAY',
+  YELLOW = 'YELLOW',
+  WHITE = 'WHITE',
+}
+
+export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure> = {
   BLANK: {
     label: () => '',
     color: GRAY.COMMON,

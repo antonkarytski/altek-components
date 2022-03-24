@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { COLOR_PRESET, ColorPreset } from '../styles/presets'
+import { COLOR_PRESET, ColorPresetStructure } from '../styles/presets'
 import { Fn } from 'altek-toolkit'
 import { shadowsStyles } from '../styles'
 import { submitModalStyles } from './styles'
@@ -8,7 +8,7 @@ import Text from '../text'
 
 export type SubmitModalInnerProps = {
   title: string
-  preset?: ColorPreset
+  preset?: ColorPresetStructure
   disableSubmit?: boolean
   submitLabel: string
   rejectLabel?: string

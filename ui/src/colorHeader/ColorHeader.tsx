@@ -2,11 +2,11 @@ import React, { FC } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { RightArrowIcon } from '../icons'
 import Text from '../text'
-import { COLOR_PRESET, ColorPreset } from '../styles/presets'
+import { COLOR_PRESET, ColorPresetStructure } from '../styles/presets'
 import { colorHeaderStyles } from './styles'
 
 type ColorHeaderProps = {
-  preset?: ColorPreset
+  preset?: ColorPresetStructure
   useStatusText?: boolean
   style?: StyleProp<ViewStyle>
   withArrow?: boolean

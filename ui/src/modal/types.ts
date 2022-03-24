@@ -1,7 +1,7 @@
-import { ColorPreset } from '../styles/presets'
+import { ColorPresetStructure } from '../styles/presets'
 
 export type CardModalProps = {
-  preset?: ColorPreset
+  preset?: ColorPresetStructure
   title: string
   style?: any
   onTouch?: () => void
