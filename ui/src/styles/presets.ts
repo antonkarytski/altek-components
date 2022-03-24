@@ -7,8 +7,8 @@ type Phrases = {
   rejected: string
 }
 
-export type ColorPresetStructure = {
-  label: (text: Phrases) => string
+export type ColorPresetStructure<P extends Record<string, string>> = {
+  label: (text: P) => string
   wrapperStyle: StyleProp<ViewStyle>
   color: string
 }
@@ -23,7 +23,7 @@ export enum ColorPreset {
   WHITE = 'WHITE',
 }
 
-export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure> = {
+export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure<Phrases>> = {
   [ColorPreset.BLANK]: {
     label: () => '',
     color: GRAY.COMMON,
