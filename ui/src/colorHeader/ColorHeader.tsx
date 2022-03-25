@@ -1,27 +1,28 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { RightArrowIcon } from '../icons'
 import Text from '../text'
 import { COLOR_PRESET, ColorPresetStructure } from '../styles/presets'
 import { colorHeaderStyles } from './styles'
 
-type ColorHeaderProps = {
-  preset?: ColorPresetStructure
+type ColorHeaderProps<T extends Record<string, string>> = {
+  preset?: ColorPresetStructure<T>
   useStatusText?: boolean
   style?: StyleProp<ViewStyle>
   withArrow?: boolean
-  label?: string
-  styleOverride?: StyleProp<ViewStyle>
-}
 
-const ColorHeader: FC<ColorHeaderProps> = ({
+  styleOverride?: StyleProp<ViewStyle>
+} & ({ label?: string; textDriver: T } | { label: string; textDriver?: T })
+
+function ColorHeader<T extends Record<string, string>>({
   style,
   withArrow,
   label = '',
-  preset = COLOR_PRESET.BLANK,
+  textDriver: t,
+  preset = (COLOR_PRESET.BLANK as unknown) as ColorPresetStructure<T>,
   children,
   styleOverride,
-}) => {
+}: PropsWithChildren<ColorHeaderProps<T>>) {
   const { wrapperStyle, color } = preset
 
   return (
@@ -39,7 +40,7 @@ const ColorHeader: FC<ColorHeaderProps> = ({
         <Text
           bold
           style={[colorHeaderStyles.headerTitle, { color }]}
-          label={label}
+          label={t ? preset.label(t) || label : label}
         />
       )}
       {withArrow ? (

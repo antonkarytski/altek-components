@@ -1,13 +1,13 @@
 import { StyleProp, ViewStyle } from 'react-native'
 import { BLACK, BLUE, COMMON, GRAY, GREEN, RED, YELLOW } from '../colors'
 
-type Phrases = {
+export type Phrases = {
   pending: string
   completed: string
   rejected: string
 }
 
-export type ColorPresetStructure<P extends Record<string, string>> = {
+export type ColorPresetStructure<P extends Record<string, string> = Phrases> = {
   label: (text: P) => string
   wrapperStyle: StyleProp<ViewStyle>
   color: string
@@ -23,7 +23,7 @@ export enum ColorPreset {
   WHITE = 'WHITE',
 }
 
-export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure<Phrases>> = {
+export const COLOR_PRESET: Record<ColorPreset, ColorPresetStructure> = {
   [ColorPreset.BLANK]: {
     label: () => '',
     color: GRAY.COMMON,
