@@ -1,23 +1,23 @@
 export const COMMON = {
   WHITE: '#FFFFFF',
   TRANSPARENT: 'transparent',
-}
+} as const
 
 export const BLACK = {
   COMMON: '#1F2934',
-}
+} as const
 
 export const RED = {
   BORDER: '#F95875',
   TEXT: '#FF4869',
   BODY: '#FEE8E7',
   SHADOW: '#FFC5C5',
-}
+} as const
 
 export const GREEN = {
   BODY: '#D3FCDE',
   TEXT: '#309716',
-}
+} as const
 
 export const BLUE = {
   DISABLED: '#5E7C9C',
@@ -27,7 +27,7 @@ export const BLUE = {
   BORDER: '#3B8AE0',
   BORDER_LIGHT: '#BBD6FF',
   BODY: '#E3F1FF',
-}
+} as const
 
 export const GRAY = {
   LIGHT: '#EDEDED',
@@ -37,9 +37,9 @@ export const GRAY = {
   BORDER: '#DCE1F0',
   DARK_BORDER: '#C0C0C0',
   PLACEHOLDER: '#8E8E8E',
-}
+} as const
 
 export const YELLOW = {
   COMMON: '#ECC664',
   BODY: '#fffac9',
-}
+} as const

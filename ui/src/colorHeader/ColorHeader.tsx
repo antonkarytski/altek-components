@@ -5,7 +5,7 @@ import Text from '../text'
 import { COLOR_PRESET, ColorPresetStructure } from '../styles/presets'
 import { colorHeaderStyles } from './styles'
 
-type ColorHeaderProps<T extends Record<string, string>> = {
+export type ColorHeaderProps<T extends Record<string, string>> = {
   preset?: ColorPresetStructure<T>
   useStatusText?: boolean
   style?: StyleProp<ViewStyle>
