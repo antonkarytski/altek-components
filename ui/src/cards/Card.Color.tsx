@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react'
-import { StyleProp, StyleSheet, TextStyle, View } from 'react-native'
+import { StyleProp, StyleSheet, TextStyle, View, ViewStyle } from 'react-native'
 import Text from '../text'
 import { ColorPresetStructure } from '../styles/presets'
 
@@ -15,6 +15,7 @@ type SingleValueProps<T extends Record<string, string>> =
 
 type ColorCardProps<T extends Record<string, string>> = {
   preset: ColorPresetStructure<T>
+  style?: StyleProp<ViewStyle>
 } & (
   | (SingleValueProps<T> & { valuesList?: never })
   | { valuesList: ValuesListItem[]; textDriver?: never; label?: never }
@@ -25,9 +26,10 @@ export default function ColorCard<T extends Record<string, string>>({
   textDriver: t,
   label,
   valuesList,
+  style,
 }: PropsWithChildren<ColorCardProps<T>>) {
   return (
-    <View style={[preset.wrapperStyle, styles.wrapper]}>
+    <View style={[preset.wrapperStyle, styles.wrapper, style]}>
       {valuesList ? (
         valuesList.map(({ label, style, fontWeight = 'regular' }, index) => {
           return (
