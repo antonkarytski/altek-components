@@ -3,10 +3,10 @@ import { Text as RawText, TextProps } from 'react-native'
 import { textStyles } from './styles'
 
 type ThemedTextProps = {
-  medium?: true
-  bold?: true
-  extraBold?: true
-  subline?: true
+  medium?: boolean
+  bold?: boolean
+  extraBold?: boolean
+  subline?: boolean
   children?: ReactNode
   label?: string
 } & TextProps
