@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { StyleProp, ViewStyle, View, StyleSheet } from 'react-native'
 import { shadowsStyles } from '../styles'
+import { COMMON } from '../colors'
 
 type WhiteCardProps = {
   style?: StyleProp<ViewStyle>
@@ -22,7 +23,7 @@ export default WhiteCard
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    backgroundColor: '#ffffff',
+    backgroundColor: COMMON.WHITE,
     borderRadius: 6,
     justifyContent: 'center',
   },
