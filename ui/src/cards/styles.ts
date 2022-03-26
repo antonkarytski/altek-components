@@ -11,9 +11,6 @@ export const blueCardStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  text: {
-    color: BLUE.DEEP,
-  },
 })
 
 export const cardsPresets = {
