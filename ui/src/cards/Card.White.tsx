@@ -17,6 +17,8 @@ const WhiteCard: FC<WhiteCardProps> = ({ children, style, shadowStyle }) => {
   )
 }
 
+export default WhiteCard
+
 const styles = StyleSheet.create({
   container: {
     width: '100%',
