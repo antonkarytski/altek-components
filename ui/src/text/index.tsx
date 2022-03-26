@@ -8,7 +8,7 @@ type ThemedTextProps = {
   extraBold?: boolean
   subline?: boolean
   children?: ReactNode
-  label?: string
+  label?: string | number
 } & TextProps
 
 export default function Text({
