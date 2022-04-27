@@ -5,6 +5,7 @@ export const COMMON = {
 
 export const BLACK = {
   COMMON: '#1F2934',
+  SCREEN_BACKGROUND: '#1F1F21',
 } as const
 
 export const RED = {
