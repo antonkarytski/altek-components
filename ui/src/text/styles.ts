@@ -5,7 +5,7 @@ const FONTS = {
   MEDIUM: 'IBMPlex-500',
   BOLD: 'IBMPlex-600',
   EXTRA_BOLD: 'IBMPlex-700',
-}
+} as const
 
 export const textStyles = {
   defaults: {
@@ -55,4 +55,4 @@ export const textStyles = {
   font18: {
     fontSize: 18,
   },
-}
+} as const

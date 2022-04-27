@@ -37,6 +37,7 @@ export const GRAY = {
   BORDER: '#DCE1F0',
   DARK_BORDER: '#C0C0C0',
   PLACEHOLDER: '#8E8E8E',
+  SCREEN_BACKGROUND: '#F9F9FB',
 } as const
 
 export const YELLOW = {
