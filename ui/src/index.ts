@@ -17,6 +17,7 @@ export {
   BIG_BUTTON_PRESET_DARK,
   ButtonPresetsNames,
 } from './buttons/BigButton'
+export type { BigButtonProps } from './buttons/BigButton'
 export * from './cameraHandler/types'
 export * from './icons'
 export * from './popUp'
