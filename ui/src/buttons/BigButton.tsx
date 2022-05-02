@@ -6,7 +6,7 @@ import {
   ViewStyle,
 } from 'react-native'
 import Text from '../text'
-import { BLUE, COMMON, GRAY, RED } from '../colors'
+import { BLACK, BLUE, COMMON, GRAY, RED, YELLOW } from '../colors'
 import { Fn, NodeFn } from 'altek-toolkit'
 import { bigButtonStyles } from './styles'
 
@@ -22,9 +22,15 @@ type StatesPreset = {
   disabled: Preset
 }
 
-type PresetsNames = 'BLUE' | 'WHITE' | 'RED' | 'TRANSPARENT'
-export const BIG_BUTTON_PRESET: Record<PresetsNames, StatesPreset> = {
-  BLUE: {
+export enum ButtonPresetsNames {
+  BLUE = 'BLUE',
+  WHITE = 'WHITE',
+  RED = 'RED',
+  TRANSPARENT = 'TRANSPARENT',
+}
+
+export const BIG_BUTTON_PRESET: Record<ButtonPresetsNames, StatesPreset> = {
+  [ButtonPresetsNames.BLUE]: {
     common: {
       background: BLUE.COMMON,
       label: COMMON.WHITE,
@@ -41,7 +47,7 @@ export const BIG_BUTTON_PRESET: Record<PresetsNames, StatesPreset> = {
       border: COMMON.TRANSPARENT,
     },
   },
-  WHITE: {
+  [ButtonPresetsNames.WHITE]: {
     common: {
       background: COMMON.WHITE,
       label: BLUE.COMMON,
@@ -58,7 +64,7 @@ export const BIG_BUTTON_PRESET: Record<PresetsNames, StatesPreset> = {
       border: GRAY.DARK_BORDER,
     },
   },
-  RED: {
+  [ButtonPresetsNames.RED]: {
     common: {
       background: COMMON.TRANSPARENT,
       label: RED.TEXT,
@@ -75,7 +81,7 @@ export const BIG_BUTTON_PRESET: Record<PresetsNames, StatesPreset> = {
       border: GRAY.DARK_BORDER,
     },
   },
-  TRANSPARENT: {
+  [ButtonPresetsNames.TRANSPARENT]: {
     common: {
       background: COMMON.TRANSPARENT,
       label: BLUE.COMMON,
@@ -90,6 +96,80 @@ export const BIG_BUTTON_PRESET: Record<PresetsNames, StatesPreset> = {
       background: COMMON.TRANSPARENT,
       label: GRAY.COMMON,
       border: GRAY.DARK_BORDER,
+    },
+  },
+} as const
+
+export const BIG_BUTTON_PRESET_DARK: Record<
+  ButtonPresetsNames,
+  StatesPreset
+> = {
+  [ButtonPresetsNames.BLUE]: {
+    common: {
+      background: YELLOW.DARK_BODY,
+      label: BLACK.COMMON,
+      border: COMMON.TRANSPARENT,
+    },
+    active: {
+      background: YELLOW.DARK_BODY,
+      label: BLACK.COMMON,
+      border: COMMON.TRANSPARENT,
+    },
+    disabled: {
+      background: BLACK.DARK_LIGHT_CARD,
+      label: COMMON.WHITE,
+      border: COMMON.TRANSPARENT,
+    },
+  },
+  [ButtonPresetsNames.WHITE]: {
+    common: {
+      background: BLACK.SCREEN_BACKGROUND,
+      label: YELLOW.DARK_BODY,
+      border: YELLOW.DARK_BODY,
+    },
+    active: {
+      background: YELLOW.DARK_BODY,
+      label: COMMON.WHITE,
+      border: COMMON.TRANSPARENT,
+    },
+    disabled: {
+      background: COMMON.TRANSPARENT,
+      label: BLACK.DARK_LIGHT_CARD,
+      border: BLACK.DARK_LIGHT_CARD,
+    },
+  },
+  [ButtonPresetsNames.RED]: {
+    common: {
+      background: COMMON.TRANSPARENT,
+      label: RED.TEXT,
+      border: RED.BORDER,
+    },
+    active: {
+      background: COMMON.TRANSPARENT,
+      label: GRAY.COMMON,
+      border: GRAY.DARK_BORDER,
+    },
+    disabled: {
+      background: COMMON.TRANSPARENT,
+      label: GRAY.COMMON,
+      border: GRAY.DARK_BORDER,
+    },
+  },
+  [ButtonPresetsNames.TRANSPARENT]: {
+    common: {
+      background: COMMON.TRANSPARENT,
+      label: YELLOW.DARK_BODY,
+      border: YELLOW.DARK_BODY,
+    },
+    active: {
+      background: YELLOW.DARK_BODY,
+      label: BLACK.COMMON,
+      border: COMMON.TRANSPARENT,
+    },
+    disabled: {
+      background: COMMON.TRANSPARENT,
+      label: BLACK.DARK_LIGHT_CARD,
+      border: BLACK.DARK_LIGHT_CARD,
     },
   },
 } as const
@@ -153,9 +233,11 @@ export default function BigButton({
       {children ? (
         children(presetState)
       ) : (
-        <Text bold style={[bigButtonStyles.label, activeStyles.label]}>
-          {label}
-        </Text>
+        <Text
+          label={label}
+          bold
+          style={[bigButtonStyles.label, activeStyles.label]}
+        />
       )}
     </TouchableHighlight>
   )

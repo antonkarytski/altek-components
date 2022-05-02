@@ -6,6 +6,7 @@ export const COMMON = {
 export const BLACK = {
   COMMON: '#1F2934',
   SCREEN_BACKGROUND: '#1F1F21',
+  DARK_LIGHT_CARD: '#363742',
 } as const
 
 export const RED = {
@@ -44,4 +45,5 @@ export const GRAY = {
 export const YELLOW = {
   COMMON: '#ECC664',
   BODY: '#fffac9',
+  DARK_BODY: '#F9D286',
 } as const

@@ -11,6 +11,12 @@ export { default as ImageEditor } from './cameraHandler/ImageEditor'
 export { default as MultiSelect } from './multiselect/MultiSelect'
 export { useMultiSelectScrollBlock } from './multiselect/blockScroll'
 export { default as ScreenWrapper } from './screenWrapper/ScreenWrapper'
+export {
+  default as BigButton,
+  BIG_BUTTON_PRESET,
+  BIG_BUTTON_PRESET_DARK,
+  ButtonPresetsNames,
+} from './buttons/BigButton'
 export * from './cameraHandler/types'
 export * from './icons'
 export * from './popUp'
