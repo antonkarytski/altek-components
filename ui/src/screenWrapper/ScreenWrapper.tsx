@@ -3,19 +3,17 @@ import { Keyboard, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 import SafeArea from './SafeArea'
 import ConditionalKeyboardDismiss from '../conditional/ConditionalKeyboardDismiss'
 import { GRAY } from '../colors'
+import { Fn } from 'altek-toolkit'
 
 type ScreenWrapperProps = {
-  safeAreaStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
-  isEnabledHeightController?: boolean
   disableKeyBoardClose?: boolean
   useKeyboardDismiss?: boolean
-  onTouch?: () => void
+  onTouch?: Fn
 }
 
 const ScreenWrapper: FC<ScreenWrapperProps> = ({
   children,
-  safeAreaStyle,
   style,
   disableKeyBoardClose,
   useKeyboardDismiss: shouldDismissKeyboard,
@@ -27,7 +25,7 @@ const ScreenWrapper: FC<ScreenWrapperProps> = ({
   }
 
   return (
-    <SafeArea style={safeAreaStyle}>
+    <SafeArea>
       <ConditionalKeyboardDismiss isWrap={shouldDismissKeyboard}>
         <View
           onTouchStart={() => {
