@@ -3,12 +3,12 @@ import { StyleProp, ViewStyle, View, StyleSheet } from 'react-native'
 import { shadowsStyles } from '../styles'
 import { COMMON } from '../colors'
 
-type WhiteCardProps = {
+type CardProps = {
   style?: StyleProp<ViewStyle>
   shadowStyle?: ViewStyle
 }
 
-const WhiteCard: FC<WhiteCardProps> = ({ children, style, shadowStyle }) => {
+const Card: FC<CardProps> = ({ children, style, shadowStyle }) => {
   return (
     <View
       style={[styles.container, shadowStyle ?? shadowsStyles.elevation2, style]}
@@ -18,7 +18,7 @@ const WhiteCard: FC<WhiteCardProps> = ({ children, style, shadowStyle }) => {
   )
 }
 
-export default WhiteCard
+export default Card
 
 const styles = StyleSheet.create({
   container: {
