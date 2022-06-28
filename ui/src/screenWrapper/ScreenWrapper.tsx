@@ -5,7 +5,7 @@ import ConditionalKeyboardDismiss from '../conditional/ConditionalKeyboardDismis
 import { GRAY } from '../colors'
 import { Fn } from 'altek-toolkit'
 
-type ScreenWrapperProps = {
+export type ScreenWrapperProps = {
   style?: StyleProp<ViewStyle>
   disableKeyBoardClose?: boolean
   useKeyboardDismiss?: boolean
@@ -29,7 +29,7 @@ const ScreenWrapper: FC<ScreenWrapperProps> = ({
       <ConditionalKeyboardDismiss isWrap={shouldDismissKeyboard}>
         <View
           onTouchStart={() => {
-            if (onTouch) onTouch()
+            onTouch?.()
             closeKeyboard()
           }}
           style={[styles.container, style]}

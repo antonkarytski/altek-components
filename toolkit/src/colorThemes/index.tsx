@@ -49,8 +49,8 @@ export function createColorTheme<
     S extends ViewStyle | TextStyle | undefined,
     P extends ComponentStyleProps<S>
   >(
-    Component: (props: P) => ReactElement<any, any>,
-    styleFn: (theme: ColorTheme, props: P) => StyleProp<S>
+    Component: (props: P) => ReactElement<any, any> | null,
+    styleFn: (theme: ColorTheme, props: P) => S
   ) {
     return (props: P & { children?: ReactNode }) => {
       const theme = useColors()
@@ -80,3 +80,81 @@ export function createColorTheme<
     setColorTheme,
   }
 }
+
+// export type ColorThemeStructure = Record<keyof typeof LIGHT, string>
+// export type ColorThemes = 'LIGHT' | 'DARK'
+//
+// const LIGHT = {
+//   navigationElements: COLORS.COMMON.WHITE,
+//   screenBackground: COLORS.GRAY.SCREEN_BACKGROUND,
+//   screenBackgroundWhite: COLORS.COMMON.WHITE,
+//   backgroundLight: COLORS.GRAY.LIGHT,
+//   card: COLORS.COMMON.WHITE,
+//   text: COLORS.BLACK.COMMON,
+//   subText: COLORS.GRAY.COMMON,
+//   textInverted: COLORS.COMMON.WHITE,
+//   line: '#F4F4F4',
+//   switch: COLORS.BLUE.BORDER,
+//   blueCard: COLORS.BLUE.BODY,
+//   blueCardText: COLORS.BLUE.COMMON,
+//   linkActiveText: COLORS.BLUE.COMMON,
+//   dispatcherIcon: '#00A1DB80',
+//   darkIcon: COLORS.GRAY.ICON,
+// }
+//
+// const DARK: Record<keyof ColorThemeStructure, string> = {
+//   navigationElements: COLORS.BLACK.SCREEN_BACKGROUND,
+//   screenBackground: COLORS.BLACK.SCREEN_BACKGROUND,
+//   screenBackgroundWhite: COLORS.BLACK.SCREEN_BACKGROUND,
+//   backgroundLight: '#363742',
+//   card: '#2E2E38',
+//   text: COLORS.COMMON.WHITE,
+//   textInverted: COLORS.BLACK.COMMON,
+//   subText: '#9E9FA8',
+//   line: '#636570',
+//   switch: '#F9D286',
+//   blueCard: '#F9D286',
+//   blueCardText: COLORS.COMMON.WHITE,
+//   linkActiveText: '#F9D286',
+//   dispatcherIcon: '#F9D286',
+//   darkIcon: COLORS.GRAY.LIGHT,
+// }
+//
+// export const COLOR_THEMES: Record<ColorThemes, ColorThemeStructure> = {
+//   LIGHT,
+//   DARK,
+// }
+//
+// export const {
+//   useColors,
+//   themed,
+//   useColorTheme,
+//   withThemedProps,
+//   $colorTheme,
+// } = createColorTheme(COLOR_THEMES, 'LIGHT')
+//
+// export type GrayLineProps = {
+//   style?: StyleProp<ViewStyle>
+// }
+//
+// export const GrayLine: React.FC<GrayLineProps> = ({ style }) => {
+//   return <View style={[styles.container, style]} />
+// }
+//
+// const styles = StyleSheet.create({
+//   container: {
+//     height: 1,
+//     backgroundColor: '#F4F4F4',
+//     width: '100%',
+//   },
+// })
+//
+// export const ThemedLine = themed(GrayLine, (colors) => {
+//   return {
+//     backgroundColor: colors.line,
+//   }
+// })
+//
+// export function Go() {
+//   return <ThemedLine style={{}} />
+// }

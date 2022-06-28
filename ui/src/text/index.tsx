@@ -1,15 +1,15 @@
 import React, { ReactNode } from 'react'
-import { Text as RawText, TextProps } from 'react-native'
+import { Text as RawText, TextProps as NativeTextProps } from 'react-native'
 import { textStyles } from './styles'
 
-type ThemedTextProps = {
+export type TextProps = {
   medium?: boolean
   bold?: boolean
   extraBold?: boolean
   subline?: boolean
   children?: ReactNode
   label?: string | number
-} & TextProps
+} & NativeTextProps
 
 export default function Text({
   medium,
@@ -19,7 +19,7 @@ export default function Text({
   style,
   label,
   ...props
-}: ThemedTextProps) {
+}: TextProps) {
   const fontStyle = [
     textStyles.regular,
     textStyles.defaults,
