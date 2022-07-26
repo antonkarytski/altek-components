@@ -68,7 +68,7 @@ function getDelay(delay: OrArray<number> | undefined, attempt: number) {
 }
 
 function addOptions<Params>(params: WithOptions<Params> | void) {
-  if (!params) return { attempt: 1, props: (undefined as any) as Params }
+  if (!params) return { attempt: 1, props: undefined as any as Params }
   if (!params.attempt) return { props: params.props, attempt: 1 }
   return { props: params.props, attempt: params.attempt + 1 }
 }
@@ -94,12 +94,10 @@ export function createControlledEffect<Params, Response, TriggerStore>({
     repeatableEffect({ props })
   ) as RepeatableEffect<Params, Response>
 
-  repeatableEffect.watch((params) => onAttempt(params))
-
+  repeatableEffect.watch(onAttempt)
   repeatableEffect.done.watch(({ params: { props, attempt }, result }) => {
     onSuccess({ props, attempt, result })
   })
-
   repeatableEffect.fail.watch(({ params: { attempt, props }, error }) => {
     onError({ props, attempt, error })
   })

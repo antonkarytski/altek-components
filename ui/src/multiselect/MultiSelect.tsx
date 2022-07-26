@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import RowMultiSelect from './mode.row/RowMultiSelect'
 import ModalMultiSelect from './mode.modal/ModalMultiSelect'
 import SelectMultiSelect from './mode.select/SelectMultiSelect'
-import { useMultiSelectMode } from './hook'
 import { MultiSelectProps } from './types'
+import { routeMultiSelectMode } from './helpers'
 
 const noop = () => {}
 
@@ -14,7 +14,7 @@ export default function MultiSelect<V extends string, L extends string>({
   topButtonBehavior = 'all',
   ...props
 }: MultiSelectProps<V, L>) {
-  const mode = useMultiSelectMode({ type })
+  const mode = routeMultiSelectMode({ type })
 
   useEffect(() => {
     if (!deleteAction) return

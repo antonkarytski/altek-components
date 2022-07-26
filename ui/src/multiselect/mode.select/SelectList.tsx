@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { MutableRefObject, useEffect, useState } from 'react'
 import MultiSelectItemsList from '../list/MultiSelectItemsList'
 import {
   StyleProp,
@@ -10,41 +10,66 @@ import {
   Dimensions,
 } from 'react-native'
 import { MultiSelectListProps } from '../types'
+import { Fn, useFnRef } from 'altek-toolkit'
+
+export type SelectListController = {
+  show: Fn
+  hide: Fn
+  toggle: Fn
+}
 
 type SelectListProps<V extends string, L extends string> = {
   itemType?: MultiSelectListProps<V, L>['type']
-  onBgClick: () => void
   style?: MultiSelectListProps<V, L>['style'] & {
     selectListContainer?: StyleProp<ViewStyle>
   }
-  onRequestClose?: () => void
+  controller: MutableRefObject<SelectListController | null>
+  onVisibleChange?: (state: boolean) => void
 } & Omit<MultiSelectListProps<V, L>, 'type' | 'style'>
+
+const noop = () => {}
 
 export default function SelectList<V extends string, L extends string>({
   style,
   itemType,
   onItemSelect,
   data,
-  onBgClick,
-  onRequestClose,
+  controller,
+  onVisibleChange = noop,
 }: SelectListProps<V, L>) {
-  useEffect(() => {
-    function backAction() {
-      if (onRequestClose) onRequestClose()
-      return true
-    }
+  const [isVisible, setVisible] = useState(false)
+  const onVisibleChangeRef = useFnRef(onVisibleChange)
 
+  useEffect(() => {
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
-      backAction
+      () => {
+        setVisible(false)
+        return true
+      }
     )
 
     return () => backHandler.remove()
-  }, [onRequestClose])
+  }, [])
+
+  useEffect(() => {
+    onVisibleChangeRef.current(isVisible)
+  }, [isVisible, onVisibleChangeRef])
+
+  controller.current = {
+    hide: () => setVisible(false),
+    show: () => setVisible(true),
+    toggle: () => setVisible((current) => !current),
+  }
+
+  if (!isVisible) return null
 
   return (
     <>
-      <TouchableOpacity style={styles.closeOverlay} onPress={onBgClick} />
+      <TouchableOpacity
+        style={styles.closeOverlay}
+        onPress={() => setVisible(false)}
+      />
       <View style={[styles.container, style?.selectListContainer]}>
         <MultiSelectItemsList
           type={itemType}
@@ -55,7 +80,7 @@ export default function SelectList<V extends string, L extends string>({
       </View>
       <TouchableOpacity
         style={[styles.closeOverlay, styles.closeOverlayBottom]}
-        onPress={onBgClick}
+        onPress={() => setVisible(false)}
       />
     </>
   )

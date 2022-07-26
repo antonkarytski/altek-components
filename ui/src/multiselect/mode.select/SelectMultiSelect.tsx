@@ -1,10 +1,9 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
 import { StyleSheet } from 'react-native'
 import MultiSelectInput from '../input/MultiSelectInput'
 import SelectedItems from '../SelectedItems'
-import SelectList from './SelectList'
+import SelectList, { SelectListController } from './SelectList'
 import { useMultiSelectModel } from '../hook.model'
-import { useModal } from '../hook.modal'
 import { MultiSelectProps } from '../types'
 
 export default function SelectMultiSelect<V extends string, L extends string>({
@@ -19,7 +18,8 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   onChange,
   style,
 }: Omit<MultiSelectProps<V, L>, 'type'>) {
-  const { isVisible, hide, show, toggle } = useModal()
+  const [isModalVisible, setIsVisible] = useState(false)
+  const listController = useRef<SelectListController | null>(null)
   const { items, onItemSelect, mode } = useMultiSelectModel(
     {
       type: 'select',
@@ -30,7 +30,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
     },
     {
       onChange,
-      onSelect: hide,
+      onSelect: () => listController.current?.hide(),
     }
   )
 
@@ -42,9 +42,9 @@ export default function SelectMultiSelect<V extends string, L extends string>({
     <>
       <MultiSelectInput
         withShadow
-        style={[isVisible ? styles.visibleModalInput : null, style?.input]}
+        style={[isModalVisible ? styles.visibleModalInput : null, style?.input]}
         type={containType}
-        onPress={toggle}
+        onPress={() => listController.current?.toggle()}
         placeholder={placeholder}
       >
         <SelectedItems
@@ -53,19 +53,17 @@ export default function SelectMultiSelect<V extends string, L extends string>({
           topButtonBehavior={topButtonBehavior}
           values={items}
           onPressItem={onItemSelect}
-          onPressGeneralItem={show}
+          onPressGeneralItem={() => listController.current?.show()}
         />
       </MultiSelectInput>
-      {isVisible ? (
-        <SelectList
-          onBgClick={hide}
-          style={listStyle}
-          data={items}
-          onItemSelect={onItemSelect}
-          itemType={itemType}
-          onRequestClose={hide}
-        />
-      ) : null}
+      <SelectList
+        style={listStyle}
+        data={items}
+        onItemSelect={onItemSelect}
+        itemType={itemType}
+        onVisibleChange={setIsVisible}
+        controller={listController}
+      />
     </>
   )
 }
