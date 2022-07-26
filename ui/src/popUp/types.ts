@@ -1,6 +1,7 @@
 import { ReactNode } from 'react'
 import { CardModalProps } from '../modal/types'
 import { Fn } from 'altek-toolkit'
+import { StyleProp, ViewStyle } from 'react-native'
 
 export type PickOne<T, Field extends keyof T> = Required<Pick<T, Field>> &
   Partial<Record<Exclude<keyof T, Field>, never>>
@@ -18,7 +19,8 @@ export type BasePopUpModalProps<Names extends string> = {
   preventAutoUnmount?: boolean
   onMount?: Fn
   onUnmount?: Fn
-} & CardModalProps
+  style?: StyleProp<ViewStyle>
+} & Omit<CardModalProps, 'style' | 'animatedStyle'>
 
 type PopUpPropsWithChildren<P extends BasePopUpModalProps<string>> = P &
   PickOne<PopUpContentType, 'text'>

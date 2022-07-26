@@ -12,20 +12,28 @@ const CardModal: FC<CardModalProps> = ({
   title,
   style,
   onTouch,
+  animatedStyle,
 }) => {
   return (
     <Animated.View
       onTouchStart={onTouch}
-      style={[style, cardModalStyles.container, shadowsStyles.elevation5]}
+      style={[
+        cardModalStyles.container,
+        shadowsStyles.elevation5,
+        style?.container,
+        animatedStyle,
+      ]}
     >
       {title ? (
         <ColorHeader
-          styleOverride={cardModalStyles.labelWrapper}
+          styleOverride={[cardModalStyles.labelWrapper, style?.header]}
           preset={preset}
           label={title}
         />
       ) : null}
-      <View style={cardModalStyles.content}>{children}</View>
+      <View style={[cardModalStyles.content, style?.contentWrapper]}>
+        {children}
+      </View>
     </Animated.View>
   )
 }

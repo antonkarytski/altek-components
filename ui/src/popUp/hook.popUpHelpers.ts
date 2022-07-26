@@ -25,7 +25,6 @@ export function usePopUpAutoMount<
   {
     autoMount,
     preventAutoUnmount,
-    defaultAdditionalProps,
   }: UsePopUpAutoMountProps<S[Name]>
 ) {
   const [forceUnmounted, setIsForceUnmounted] = useState(false)
@@ -38,10 +37,7 @@ export function usePopUpAutoMount<
   useEffect(() => {
     if (autoMount === undefined) return
     if (autoMount && !isMounted && !forceUnmounted) {
-      manager.show({
-        popUp: popUpName,
-        ...defaultAdditionalProps,
-      } as PopUpShowOptions<Name, S[Name]>)
+      manager.show({popUp: popUpName,} as PopUpShowOptions<Name, S[Name]>)
       return
     }
     if (preventAutoUnmount) return
@@ -55,7 +51,6 @@ export function usePopUpAutoMount<
     preventAutoUnmount,
     forceUnmounted,
     manager,
-    defaultAdditionalProps,
     popUpName,
   ])
 

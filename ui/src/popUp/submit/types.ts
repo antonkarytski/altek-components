@@ -16,7 +16,7 @@ export type PopUpSubmitBaseProps<Names extends string> = {
   rejectButtonLabel?: string
   disableRejectButton?: boolean
   textDriver?: PopUpSubmitTextDriver
-} & Omit<BasePopUpModalProps<Names>, 'closable' | 'statusColor'> &
+} & Omit<BasePopUpModalProps<Names>, 'statusColor'> &
   PopUpSubmitOptions
 
 export type PopUpSubmitProps<Names extends string> = PopUpPropsWithContent<

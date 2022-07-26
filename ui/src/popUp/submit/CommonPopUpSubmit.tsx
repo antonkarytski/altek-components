@@ -45,26 +45,34 @@ export default function CommonPopUpSubmit<
   preset,
   manager,
   textDriver = defaultTextDriver,
+  preventAutoUnmount,
+  closable = true,
 }: CommonPopUpSubmitProps<Names, S>) {
   const {
     isMounted,
+    isClosable,
     autoCloseTime,
     animatedValue,
-    onSubmit: onPassedSubmit = () => {},
-    onReject: onPassedReject = () => {},
+    onSubmit: onPassedSubmit = noop,
+    onReject: onPassedReject = noop,
   } = useCommonPopUp(popUpName, manager)
 
   const { forceUnmount } = usePopUpAutoMount(popUpName, manager, {
     autoMount,
+    preventAutoUnmount,
   })
-
-  const { opacity } = getPopUpAnimatedStyles(animatedValue)
 
   useControlledTimer({
     onGenerate: () => manager.hide(popUpName),
     time: autoCloseTime,
     condition: autoCloseTime > 0,
   })
+
+  usePopUpRegistration(popUpName, manager)
+
+  if (!isMounted) return null
+
+  const { opacity } = getPopUpAnimatedStyles(animatedValue)
 
   const closeModal = () => {
     forceUnmount()
@@ -73,14 +81,11 @@ export default function CommonPopUpSubmit<
   }
 
   const submitModal = () => {
-    forceUnmount()
+    if(closable && isClosable) forceUnmount()
     onSubmit()
     onPassedSubmit()
   }
 
-  usePopUpRegistration(popUpName, manager)
-
-  if (!isMounted) return null
   return (
     <SubmitModal
       title={title}

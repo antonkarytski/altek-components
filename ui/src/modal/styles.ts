@@ -73,7 +73,7 @@ export const submitModalStyles = StyleSheet.create({
   button: {
     borderRadius: 8,
     height: 39,
-    width: 57,
+    minWidth: 57,
     alignItems: 'center',
     justifyContent: 'center',
   },
