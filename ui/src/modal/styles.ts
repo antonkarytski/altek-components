@@ -76,6 +76,7 @@ export const submitModalStyles = StyleSheet.create({
     minWidth: 57,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 4,
   },
   leftButton: {
     backgroundColor: '#FFFFFF',
