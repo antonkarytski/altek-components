@@ -3,6 +3,11 @@ export const COMMON = {
   TRANSPARENT: 'transparent',
 } as const
 
+export const SPECIAL = {
+  LOGO_DARK: '#1c4350',
+  LOGO_LIGHT: COMMON.WHITE,
+}
+
 export const BLACK = {
   COMMON: '#1F2934',
   SCREEN_BACKGROUND: '#1F1F21',
