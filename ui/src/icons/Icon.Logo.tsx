@@ -3,8 +3,28 @@ import Svg, { G, Path } from 'react-native-svg'
 import { IconProps } from './_types'
 import { SPECIAL } from '../colors'
 
+export enum LogoIconVariant {
+  LIGHT = 'LIGHT',
+  DARK = 'DARK',
+}
+
+const LOGO_VARIANTS_COLOR_MAP: Record<LogoIconVariant, string> = {
+  [LogoIconVariant.LIGHT]: SPECIAL.LOGO_LIGHT,
+  [LogoIconVariant.DARK]: SPECIAL.LOGO_DARK,
+}
+
+type LogoIconProps = IconProps & {
+  variant?: LogoIconVariant
+}
+
 const LogoIcon = React.memo(
-  ({ size = 700, style, color = SPECIAL.LOGO_LIGHT }: IconProps) => {
+  ({
+    size = 700,
+    style,
+    variant = LogoIconVariant.DARK,
+    color,
+  }: LogoIconProps) => {
+
     return (
       <Svg
         width={size * 1.714}
@@ -15,7 +35,7 @@ const LogoIcon = React.memo(
       >
         <G
           transform={'translate(0.000000,700.000000) scale(0.100000,-0.100000)'}
-          fill={color}
+          fill={color ?? LOGO_VARIANTS_COLOR_MAP[variant]}
           stroke={'none'}
         >
           <Path
@@ -30,17 +50,17 @@ const LogoIcon = React.memo(
           />
           <Path
             d={
-              'M4965 5024 c-44 -42 -178 -168 -297 -281 -120 -112 -218 -209 -218 - 215 0 -13 130 -148 142 -148 9 0 67 53 318 289 86 80 187 176 227 212 l71 66 -70 77 c-38 42 -75 76 -81 76 -7 -1 -48 -35 -92 -76z'
+              'M4965 5024 c-44 -42 -178 -168 -297 -281 -120 -112 -218 -209 -218 -215 0 -13 130 -148 142 -148 9 0 67 53 318 289 86 80 187 176 227 212 l71 66 -70 77 c-38 42 -75 76 -81 76 -7 -1 -48 -35 -92 -76z'
             }
           />
           <Path
             d={
-              'M3930 4073 c-135 -125 -274 -255 -309 -289 l-65 -61 74 -81 73 -8256 52 c31 28 124 115 206 193 83 78 196 184 253 235 56 52 102 97 102 100 0 3 -33 40 -73 83 l-73 79 -244 -229z'
+              'M3930 4073 c-135 -125 -274 -255 -309 -289 l-65 -61 74 -81 73 -82 56 52 c31 28 124 115 206 193 83 78 196 184 253 235 56 52 102 97 102 100 0 3 -33 40 -73 83 l-73 79 -244 -229z'
             }
           />
           <Path
             d={
-              'M7760 4219 c-69 -76 -72 -82 -55 -95 10 -8 48 -42 84 -76 253 -242471 -444 501 -465 21 -15 25 -13 91 58 37 41 68 77 69 80 0 4 -62 64 -137 135 -75 71 -148 139 -161 152 -38 37 -276 256 -298 274 -20 17 -22 16 -94 -63z'
+              'M7760 4219 c-69 -76 -72 -82 -55 -95 10 -8 48 -42 84 -76 253 -242 471 -444 501 -465 21 -15 25 -13 91 58 37 41 68 77 69 80 0 4 -62 64 -137 135 -75 71 -148 139 -161 152 -38 37 -276 256 -298 274 -20 17 -22 16 -94 -63z'
             }
           />
           <Path
