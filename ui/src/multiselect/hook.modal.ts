@@ -24,5 +24,6 @@ export function useModal() {
     toggle,
     hide,
     show,
+    setVisible,
   }
 }

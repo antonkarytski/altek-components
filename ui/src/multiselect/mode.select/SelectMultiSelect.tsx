@@ -1,10 +1,11 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { StyleSheet } from 'react-native'
 import MultiSelectInput from '../input/MultiSelectInput'
 import SelectedItems from '../SelectedItems'
 import SelectList, { SelectListController } from './SelectList'
 import { useMultiSelectModel } from '../hook.model'
 import { MultiSelectProps } from '../types'
+import { useModal } from '../hook.modal'
 
 export default function SelectMultiSelect<V extends string, L extends string>({
   containType,
@@ -18,7 +19,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   onChange,
   style,
 }: Omit<MultiSelectProps<V, L>, 'type'>) {
-  const [isModalVisible, setIsVisible] = useState(false)
+  const { isVisible, setVisible } = useModal()
   const listController = useRef<SelectListController | null>(null)
   const { items, onItemSelect, mode } = useMultiSelectModel(
     {
@@ -42,7 +43,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
     <>
       <MultiSelectInput
         withShadow
-        style={[isModalVisible ? styles.visibleModalInput : null, style?.input]}
+        style={[isVisible ? styles.visibleModalInput : null, style?.input]}
         type={containType}
         onPress={() => listController.current?.toggle()}
         placeholder={placeholder}
@@ -61,7 +62,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         data={items}
         onItemSelect={onItemSelect}
         itemType={itemType}
-        onVisibleChange={setIsVisible}
+        onVisibleChange={setVisible}
         controller={listController}
       />
     </>
