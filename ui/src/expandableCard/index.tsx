@@ -80,10 +80,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
       <ExpandablePart
         isInitiated={isInitiated}
         animateValue={openedValue}
-        style={[
-          expandableCardStyles.part,
-          !expandableContent ? expandableCardStyles.nonExpandableBody : null,
-        ]}
+        style={expandableCardStyles.part}
       >
         {children}
       </ExpandablePart>
