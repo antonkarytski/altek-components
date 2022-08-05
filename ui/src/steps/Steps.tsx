@@ -66,7 +66,7 @@ function HorizontalSteps<T>({ style, data, children }: SpecifiedStepsProps<T>) {
       <View style={horizontalStepsStyles.contentWrap}>
         {data.map((props, index) => {
           return (
-            <View style={horizontalStepsStyles.content} key={index}>
+            <View style={horizontalStepsStyles.part} key={index}>
               {children(props, index)}
             </View>
           )

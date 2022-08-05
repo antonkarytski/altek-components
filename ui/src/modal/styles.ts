@@ -14,7 +14,7 @@ export const cardModalStyles = StyleSheet.create({
     borderTopLeftRadius: 12,
     paddingHorizontal: 14,
   },
-  content: {
+  part: {
     padding: 16,
   },
 })
@@ -55,7 +55,7 @@ export const submitModalStyles = StyleSheet.create({
     fontFamily: 'IBMPlex-600',
     lineHeight: 23,
   },
-  content: {
+  part: {
     minHeight: 92,
     justifyContent: 'center',
     paddingHorizontal: 16,

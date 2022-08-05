@@ -39,7 +39,7 @@ export const horizontalStepsStyles = StyleSheet.create({
     width: '100%',
     justifyContent: 'space-between',
   },
-  content: {
+  part: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,

@@ -36,7 +36,7 @@ export const SubmitModalInner: React.FC<SubmitModalInnerProps> = ({
             label={title}
           />
         </View>
-        <View style={submitModalStyles.content}>{children}</View>
+        <View style={submitModalStyles.part}>{children}</View>
         <View style={submitModalStyles.buttonWrapper}>
           {onReject ? (
             <TouchableOpacity

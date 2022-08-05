@@ -4,14 +4,14 @@ import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { ArrowTopIcon } from '../icons'
 
 type AnimatedArrowIconProps = {
-  rotation: Animated.SharedValue<number>
+  animatedValue: Animated.SharedValue<number>
 }
 
 export default function AnimatedArrowIcon({
-  rotation,
+  animatedValue,
 }: AnimatedArrowIconProps) {
   const dStyle = useAnimatedStyle(() => ({
-    transform: [{ rotate: `${180 - rotation.value}deg` }],
+    transform: [{ rotate: `${180 - animatedValue.value * 180}deg` }],
   }))
 
   return (

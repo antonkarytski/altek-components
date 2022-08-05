@@ -1,18 +1,17 @@
-import React, { FC, ReactNode } from 'react'
-import {
-  ScrollView,
-  StyleProp,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from 'react-native'
-import Animated from 'react-native-reanimated'
+import React, { FC, ReactNode, useEffect, useState } from 'react'
+import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
+import Animated, {
+  SharedValue,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated'
 import Text, { textStyles } from '../text'
-import { useExpandableCard, useExpandableCardStyle } from './hook'
 import { shadowsStyles } from '../styles'
 import { cardsPresets } from '../cards/styles'
-import AnimatedArrowIcon from '../iconsAnimated/AnimatedIcon.Arrow'
 import { expandableCardStyles } from './styles'
+import { Fn, useToggle } from 'altek-toolkit'
+import ExpandablePart from './ExpandablePart'
+import ExpandableCardHeader from './ExpandableCardHeader'
 
 type Phrases = {
   showMore: string
@@ -35,6 +34,14 @@ type ExpandableCardProps = {
   style?: StyleProp<ViewStyle>
 }
 
+function useSharedToggle(initialValue: number, secondValue: number) {
+  const shared = useSharedValue(initialValue)
+  function toggle() {
+    shared.value = shared.value === initialValue ? secondValue : initialValue
+  }
+  return [shared, toggle] as [SharedValue<number>, Fn]
+}
+
 const ExpandableCard: FC<ExpandableCardProps> = ({
   style,
   headerLabel = '',
@@ -42,90 +49,68 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
   children,
   expandableContent,
 }) => {
-  const {
-    height,
-    rotation,
-    onExpandedBodyMount,
-    onBodyMount,
-    toggleOpen,
-    toggleExpanded,
-    isExpanded,
-    isOpened,
-  } = useExpandableCard()
+  const [isInitiated, setIsInitiated] = useState(false)
+  const [isExpanded, toggleExpanded] = useToggle(false)
+  const [openedValue, toggleOpened] = useSharedToggle(1, 0)
+  const expandedValue = useSharedValue(0)
 
-  const aStyle = useExpandableCardStyle({ height, isOpened })
+  const openedAndExpanded = useDerivedValue(() => {
+    return expandedValue.value * openedValue.value
+  }, [])
+
+  useEffect(() => {
+    expandedValue.value = Number(isExpanded)
+  }, [isExpanded, openedValue])
 
   return (
-    <>
-      <Animated.View
+    <Animated.View
+      style={[
+        cardsPresets.common,
+        shadowsStyles.elevation2,
+        expandableCardStyles.container,
+        style,
+      ]}
+      onLayout={() => setIsInitiated(true)}
+    >
+      <ExpandableCardHeader
+        label={headerLabel || t?.info}
+        onPress={toggleOpened}
+        animatedValue={openedValue}
+      />
+      <ExpandablePart
+        isInitiated={isInitiated}
+        animateValue={openedValue}
         style={[
-          cardsPresets.common,
-          expandableCardStyles.openButton,
-          aStyle.header,
+          expandableCardStyles.part,
+          !expandableContent ? expandableCardStyles.nonExpandableBody : null,
         ]}
       >
-        <TouchableOpacity
-          style={expandableCardStyles.openButtonInner}
-          onPress={toggleOpen}
-        >
-          <Text
-            bold
-            style={[textStyles.link, textStyles.font18]}
-            label={headerLabel || t.info || ''}
-          />
-          <AnimatedArrowIcon rotation={rotation} />
-        </TouchableOpacity>
-      </Animated.View>
-      <Animated.View
-        style={[
-          cardsPresets.common,
-          expandableCardStyles.contentWrapper,
-          !expandableContent ? expandableCardStyles.bottomBorderRadius : null,
-          aStyle.body,
-        ]}
-      >
-        <ScrollView
-          nestedScrollEnabled={true}
-          scrollEnabled={false}
-          showsVerticalScrollIndicator={false}
-        >
-          <View
-            style={[
-              expandableContent
-                ? expandableCardStyles.mainBlockExpandable
-                : expandableCardStyles.mainBlock,
-              style,
-            ]}
-            onLayout={onBodyMount}
+        {children}
+      </ExpandablePart>
+      {expandableContent ? (
+        <>
+          <ExpandablePart
+            isInitiated={isInitiated}
+            animateValue={openedAndExpanded}
+            style={expandableCardStyles.part}
           >
-            {children}
-          </View>
-          {expandableContent ? (
-            <View onLayout={onExpandedBodyMount}>{expandableContent}</View>
-          ) : null}
-        </ScrollView>
-      </Animated.View>
-      {expandableContent && isOpened ? (
-        <Animated.View
-          style={[
-            shadowsStyles.elevation2,
-            expandableCardStyles.showMoreButton,
-            expandableCardStyles.bottomBorderRadius,
-          ]}
-        >
-          <TouchableOpacity
-            style={expandableCardStyles.showMoreButtonInner}
-            onPress={toggleExpanded}
-          >
-            <Text
-              medium
-              style={textStyles.link}
-              label={!isExpanded ? t.showMore : t.showLess}
-            />
-          </TouchableOpacity>
-        </Animated.View>
+            {expandableContent}
+          </ExpandablePart>
+          <ExpandablePart isInitiated={isInitiated} animateValue={openedValue}>
+            <TouchableOpacity
+              onPress={toggleExpanded}
+              style={expandableCardStyles.expandButton}
+            >
+              <Text
+                medium
+                style={textStyles.link}
+                label={!isExpanded ? t.showMore : t.showLess}
+              />
+            </TouchableOpacity>
+          </ExpandablePart>
+        </>
       ) : null}
-    </>
+    </Animated.View>
   )
 }
 

@@ -31,7 +31,7 @@ const CardModal: FC<CardModalProps> = ({
           label={title}
         />
       ) : null}
-      <View style={[cardModalStyles.content, style?.contentWrapper]}>
+      <View style={[cardModalStyles.part, style?.contentWrapper]}>
         {children}
       </View>
     </Animated.View>
