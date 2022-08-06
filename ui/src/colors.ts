@@ -53,6 +53,8 @@ export const GRAY = {
   PLACEHOLDER: '#8E8E8E',
   SCREEN_BACKGROUND: '#F9F9FB',
   ICON: '#5B5B5B',
+  DARK_THEME_DARK_BORDER: '#636570',
+  DARK_THEME_LIGHT_BORDER: '#505261'
 } as const
 
 export const YELLOW = {
