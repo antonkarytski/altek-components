@@ -19,11 +19,14 @@ export const RED = {
   TEXT: '#FF4869',
   BODY: '#FEE8E7',
   SHADOW: '#FFC5C5',
+  DARK_TEXT: '#790808',
 } as const
 
 export const GREEN = {
   BODY: '#D3FCDE',
   TEXT: '#309716',
+  SHADOW: '#A6E3B0',
+  DARK_TEXT: '#0C5201'
 } as const
 
 export const BLUE = {
