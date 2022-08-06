@@ -19,6 +19,7 @@ import {
 } from 'effector'
 import { Animated } from 'react-native'
 import { noop } from './helpers'
+import { fastSpringAnimation } from 'altek-toolkit'
 
 export const initialOptions: PopUpOptions & PopUpSubmitOptions = {
   isClosable: true,
@@ -91,15 +92,8 @@ export class PopUpManager<
       { to, popUp }: StartAnimationProps<Names>,
       state: PopUpsSet<Names, S>
     ) => ({ to, state: state[popUp].animatedValue }),
-    effect: createEffect(async ({ state, to }: StartAnimationEffectProps) => {
-      return new Promise((resolve) => {
-        Animated.spring(state, {
-          toValue: to,
-          tension: 10,
-          friction: 5,
-          useNativeDriver: true,
-        }).start(resolve)
-      })
+    effect: createEffect(({ state, to }: StartAnimationEffectProps) => {
+      return new Promise(fastSpringAnimation(state, to).start)
     }),
   })
 
