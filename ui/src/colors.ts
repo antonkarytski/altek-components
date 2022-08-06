@@ -16,17 +16,21 @@ export const BLACK = {
 
 export const RED = {
   BORDER: '#F95875',
-  TEXT: '#FF4869',
   BODY: '#FEE8E7',
   SHADOW: '#FFC5C5',
+  TEXT: '#FF4869',
   DARK_TEXT: '#790808',
+  NOT_AVAILABLE_BODY: '#F99B86',
+  NOT_AVAILABLE_TEXT: '#B71515'
 } as const
 
 export const GREEN = {
   BODY: '#D3FCDE',
-  TEXT: '#309716',
   SHADOW: '#A6E3B0',
-  DARK_TEXT: '#0C5201'
+  TEXT: '#309716',
+  DARK_TEXT: '#0C5201',
+  AVAILABLE_BODY: '#86F998',
+  AVAILABLE_TEXT: '#15B72E',
 } as const
 
 export const BLUE = {
