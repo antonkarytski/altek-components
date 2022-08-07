@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
     height: 7,
     alignSelf: 'flex-start',
     borderRadius: 50,
-    transform: [{ translateX: -4 }, { translateY: -3 }],
+    transform: [{ translateX: -6 }, { translateY: -3 }],
   },
 })
