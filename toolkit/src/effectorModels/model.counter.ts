@@ -1,39 +1,34 @@
-import { createStore, Effect, Event, Store } from 'effector'
+import { createStore, Effect, Event } from 'effector'
 import { FnExt } from '../types'
 
 type AnyEvent<P> = Event<P> | Effect<P, any>
 type Filter<P> = FnExt<P, boolean | void>
+type Modifier = <T>(event: AnyEvent<T>, filter?: Filter<T>) => CounterModel
 
-export function createCounter() {
-  const $value: Store<number> = createStore(0)
-  const $state: Store<boolean> = $value.map((state) => !!state)
+class CounterModel {
+  public readonly $value = createStore(0)
+  public readonly $state = this.$value.map((state) => !!state)
 
-  const counterModel = {
-    $value,
-    $state,
-    inc,
-    dec,
-    reset: $value.reset,
-  }
-
-  function inc<I>(event: AnyEvent<I>, filter?: Filter<I>) {
-    $value.on(event, (state, payload) => {
+  public readonly inc: Modifier = (event, filter) => {
+    this.$value.on(event, (state, payload) => {
       if (!filter || filter(payload)) return state + 1
     })
-    return counterModel
+    return this
   }
 
-  function dec<D>(event: AnyEvent<D>, filter?: Filter<D>) {
-    $value.on(event, (state, payload) => {
-      if (!filter || filter(payload)) return state > 0 ? state - 1 : 0
+  public readonly dec: Modifier = (event, filter) => {
+    this.$value.on(event, (state, payload) => {
+      if (!filter || filter(payload)) return Math.max(state - 1, 0)
     })
-    return counterModel
+    return this
   }
 
-  return {
-    $value,
-    $state,
-    inc,
-    dec,
+  public readonly reset = (event: Parameters<typeof this.$value.reset>[0]) => {
+    this.$value.reset(event)
+    return this
   }
+}
+
+export function createCounter() {
+  return new CounterModel()
 }
