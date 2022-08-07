@@ -2,10 +2,11 @@ import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import Svg, { ClipPath, Defs, G, Path } from 'react-native-svg'
 import { IconProps } from './_types'
-import { BLACK } from '../colors'
+import { BLACK, BLUE } from '../colors'
 
 type FilterIconProps = {
   enableBadge?: boolean
+  badgeColor?: string
 } & IconProps
 
 function FilterSVG({ size = 23, color = BLACK.COMMON, style }: IconProps) {
@@ -34,12 +35,15 @@ function FilterSVG({ size = 23, color = BLACK.COMMON, style }: IconProps) {
 
 export default function FilterIcon({
   enableBadge = false,
+  badgeColor = BLUE.COMMON,
   ...iconProps
 }: FilterIconProps) {
   return (
     <View style={styles.container}>
       <FilterSVG {...iconProps} />
-      {enableBadge && <View style={styles.badge} />}
+      {enableBadge ? (
+        <View style={[styles.badge, { backgroundColor: badgeColor }]} />
+      ) : null}
     </View>
   )
 }
@@ -55,7 +59,6 @@ const styles = StyleSheet.create({
     height: 7,
     alignSelf: 'flex-start',
     borderRadius: 50,
-    backgroundColor: '#1672D4',
     transform: [{ translateX: -4 }, { translateY: -3 }],
   },
 })
