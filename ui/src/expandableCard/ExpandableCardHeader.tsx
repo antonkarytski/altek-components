@@ -14,12 +14,14 @@ type ExpandableCardHeaderProps = {
   onPress: Fn
   label?: string
   animatedValue: SharedValue<number>
+  textColor?: string
 }
 
 export default function ExpandableCardHeader({
   onPress,
   label,
   animatedValue,
+  textColor,
 }: ExpandableCardHeaderProps) {
   const aStyles = useAnimatedStyle(() => {
     return {
@@ -33,8 +35,16 @@ export default function ExpandableCardHeader({
         style={expandableCardStyles.openButton}
         onPress={onPress}
       >
-        <Text bold style={[textStyles.link, textStyles.font18]} label={label} />
-        <AnimatedArrowIcon animatedValue={animatedValue} />
+        <Text
+          bold
+          style={[
+            textStyles.link,
+            textStyles.font18,
+            textColor ? { color: textColor } : null,
+          ]}
+          label={label}
+        />
+        <AnimatedArrowIcon color={textColor} animatedValue={animatedValue} />
       </TouchableOpacity>
     </Animated.View>
   )

@@ -27,11 +27,10 @@ const PHRASES: Phrases = {
 
 type ExpandableCardProps = {
   headerLabel?: string
-  showMoreLabel?: string
-  showLessLabel?: string
   textPreset?: Phrases
   expandableContent?: ReactNode
   style?: StyleProp<ViewStyle>
+  buttonsColor?: string
 }
 
 function useSharedToggle(initialValue: number, secondValue: number) {
@@ -48,6 +47,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
   textPreset: t = PHRASES,
   children,
   expandableContent,
+  buttonsColor,
 }) => {
   const [isInitiated, setIsInitiated] = useState(false)
   const [isExpanded, toggleExpanded] = useToggle(false)
@@ -76,6 +76,7 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
         label={headerLabel || t?.info}
         onPress={toggleOpened}
         animatedValue={openedValue}
+        textColor={buttonsColor}
       />
       <ExpandablePart
         isInitiated={isInitiated}
@@ -100,7 +101,10 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
             >
               <Text
                 medium
-                style={textStyles.link}
+                style={[
+                  textStyles.link,
+                  buttonsColor ? { color: buttonsColor } : null,
+                ]}
                 label={!isExpanded ? t.showMore : t.showLess}
               />
             </TouchableOpacity>
