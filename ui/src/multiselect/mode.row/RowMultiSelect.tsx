@@ -7,7 +7,6 @@ import { MultiSelectProps } from '../types'
 
 export default function RowMultiSelect<V extends string, L extends string>({
   containType = 'inside',
-  selectedItemsType,
   values,
   topButtonBehavior = 'all',
   initialValue,
@@ -32,7 +31,6 @@ export default function RowMultiSelect<V extends string, L extends string>({
       <RowList
         onItemSelect={onItemSelect}
         data={items}
-        selectedItemsType={selectedItemsType}
       />
     </MultiSelectInput>
   )
