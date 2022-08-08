@@ -39,7 +39,7 @@ const Step: FC<StepProps> = ({
             style={[
               elementsStyles.verticalLine,
               stepStyles.line,
-              colors?.line ? { backgroundColor: colors.line } : null,
+              colors?.line ? { borderColor: colors.line } : null,
             ]}
           />
         ) : null}
