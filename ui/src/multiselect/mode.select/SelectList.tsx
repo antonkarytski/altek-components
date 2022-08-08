@@ -1,5 +1,4 @@
-import React, { MutableRefObject, useEffect, useState } from 'react'
-import MultiSelectItemsList from '../list/MultiSelectItemsList'
+import React, { MutableRefObject, useEffect, useMemo, useState } from 'react'
 import {
   StyleProp,
   StyleSheet,
@@ -11,6 +10,7 @@ import {
 } from 'react-native'
 import { MultiSelectListProps } from '../types'
 import { Fn, useFnRef } from 'altek-toolkit'
+import CheckboxItemsList from '../list.checkbox/CheckboxItemsList'
 
 export type SelectListController = {
   show: Fn
@@ -19,23 +19,22 @@ export type SelectListController = {
 }
 
 type SelectListProps<V extends string, L extends string> = {
-  itemType?: MultiSelectListProps<V, L>['type']
   style?: MultiSelectListProps<V, L>['style'] & {
     selectListContainer?: StyleProp<ViewStyle>
   }
   controller: MutableRefObject<SelectListController | null>
   onVisibleChange?: (state: boolean) => void
-} & Omit<MultiSelectListProps<V, L>, 'type' | 'style'>
+} & Omit<MultiSelectListProps<V, L>, 'style'>
 
 const noop = () => {}
 
 export default function SelectList<V extends string, L extends string>({
   style,
-  itemType,
   onItemSelect,
   data,
   controller,
   onVisibleChange = noop,
+  children,
 }: SelectListProps<V, L>) {
   const [isVisible, setVisible] = useState(false)
   const onVisibleChangeRef = useFnRef(onVisibleChange)
@@ -49,7 +48,7 @@ export default function SelectList<V extends string, L extends string>({
       }
     )
 
-    return () => backHandler.remove()
+    return backHandler.remove
   }, [])
 
   useEffect(() => {
@@ -61,7 +60,29 @@ export default function SelectList<V extends string, L extends string>({
     show: () => setVisible(true),
     toggle: () => setVisible((current) => !current),
   }
+  const listWithProps = useMemo(() => {
+    if (children) {
+      return React.Children.map(children, (child) => {
+        return React.cloneElement(child, {
+          onItemSelect,
+          data,
+          ...child.props,
+          style: {
+            ...child.props.style,
+            container: [styles.list, child.props.style?.container],
+          },
+        })
+      })
+    }
 
+    return (
+      <CheckboxItemsList
+        onItemSelect={onItemSelect}
+        data={data}
+        style={{ container: styles.list }}
+      />
+    )
+  }, [onItemSelect, data, children])
   if (!isVisible) return null
 
   return (
@@ -71,12 +92,7 @@ export default function SelectList<V extends string, L extends string>({
         onPress={() => setVisible(false)}
       />
       <View style={[styles.container, style?.selectListContainer]}>
-        <MultiSelectItemsList
-          type={itemType}
-          onItemSelect={onItemSelect}
-          data={data}
-          style={{ container: styles.list }}
-        />
+        {listWithProps}
       </View>
       <TouchableOpacity
         style={[styles.closeOverlay, styles.closeOverlayBottom]}

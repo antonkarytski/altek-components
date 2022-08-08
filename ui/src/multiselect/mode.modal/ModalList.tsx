@@ -6,12 +6,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native'
-import MultiSelectItemsList from '../list/MultiSelectItemsList'
 import { MultiSelectListProps } from '../types'
+import CheckboxItemsList from '../list.checkbox/CheckboxItemsList'
 
 export type ModalListProps<V extends string, L extends string> = {
   onBgClick: () => void
-  itemType?: MultiSelectListProps<V, L>['type']
 } & ModalProps &
   Omit<MultiSelectListProps<V, L>, 'type'>
 
@@ -20,7 +19,6 @@ export default function ModalList<V extends string, L extends string>({
   onBgClick,
   onItemSelect,
   onRequestClose,
-  itemType,
 }: ModalListProps<V, L>) {
   return (
     <Modal
@@ -35,8 +33,7 @@ export default function ModalList<V extends string, L extends string>({
         style={styles.background}
       >
         <View style={styles.modalWrap} onStartShouldSetResponder={() => true}>
-          <MultiSelectItemsList
-            type={itemType}
+          <CheckboxItemsList
             onItemSelect={onItemSelect}
             data={data}
             style={{

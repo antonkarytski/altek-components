@@ -1,22 +1,18 @@
 import React from 'react'
-import MultiSelectItemsList from '../list/MultiSelectItemsList'
 import { StyleSheet, View } from 'react-native'
-import { MultiSelectListProps, MultiSelectModes } from '../types'
+import { MultiSelectListProps } from '../types'
+import EmptyItemsList from '../list.empty/EmptyItemsList'
 
-type RowListProps<V extends string, L extends string> = {
-  selectedItemsType?: MultiSelectModes['selectedItemsType']
-} & Omit<MultiSelectListProps<V, L>, 'type' | 'style'>
+type RowListProps<V extends string, L extends string> = Omit<MultiSelectListProps<V, L>, 'style'>
 
 export default function RowList<V extends string, L extends string>({
   onItemSelect,
   data,
-  selectedItemsType = 'empty',
 }: RowListProps<V, L>) {
   return (
     <View>
-      <MultiSelectItemsList
+      <EmptyItemsList
         inRow
-        type={selectedItemsType}
         onItemSelect={onItemSelect}
         data={data}
         style={{

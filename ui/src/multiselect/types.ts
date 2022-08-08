@@ -1,4 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
+import { ReactElement, ReactNode } from 'react'
 
 export type SelectValue<V extends string, L extends string> = {
   value: V
@@ -13,11 +14,12 @@ export type SelectedValueProps<
 }
 
 export type MultiSelectModes = {
-  itemType: 'checkbox' | 'row' | 'filled' | 'empty'
+  //itemType: 'checkbox' | 'row' | 'filled' | 'empty'
   containType: 'under' | 'inside'
   topButtonBehavior: 'all' | 'none'
   selectedItemsType: 'filled' | 'empty'
 }
+
 export type MultiSelectProps<V extends string, L extends string> = {
   values: SelectValue<V, L>[]
   initialValue?: V[]
@@ -27,6 +29,7 @@ export type MultiSelectProps<V extends string, L extends string> = {
   style?: {
     input?: StyleProp<ViewStyle>
   }
+  children?: ReactElement<MultiSelectListProps<V, L>>
 } & Partial<MultiSelectModes>
 
 export type MultiSelectListProps<V extends string, L extends string> = {
@@ -37,16 +40,11 @@ export type MultiSelectListProps<V extends string, L extends string> = {
     listItemTextWrap?: StyleProp<ViewStyle>
     checkbox?: StyleProp<ViewStyle>
   }
-  onItemSelect: (index: number, value?: boolean) => void
-  data: SelectedValueProps<V, L>[]
-  type?: MultiSelectModes['itemType']
+  onItemSelect?: (index: number, value?: boolean) => void
+  data?: SelectedValueProps<V, L>[]
   inRow?: boolean
+  children?: ReactElement<MultiSelectListProps<V, L>>
 }
-
-export type SpecifiedListProps<V extends string, L extends string> = Omit<
-  MultiSelectListProps<V, L>,
-  'type'
->
 
 export type SpecifiedMultiSelectInputProps = {
   style?: StyleProp<ViewStyle>

@@ -1,14 +1,14 @@
 import React from 'react'
 import ItemsList from '../list/ItemsList'
 import RowListItem from './RowListItem'
-import { SpecifiedListProps } from '../types'
+import { MultiSelectListProps } from '../types'
 
 export default function RowItemsList<V extends string, L extends string>({
-  data,
-  onItemSelect,
+  data = [],
+  onItemSelect = () => {},
   inRow,
   style,
-}: SpecifiedListProps<V, L>) {
+}: MultiSelectListProps<V, L>) {
   return (
     <ItemsList preventScroll={inRow} data={data} style={style?.container}>
       {({ label, value, selected }, index) => {

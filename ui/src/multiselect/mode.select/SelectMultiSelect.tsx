@@ -9,7 +9,6 @@ import { useModal } from '../hook.modal'
 
 export default function SelectMultiSelect<V extends string, L extends string>({
   containType = 'inside',
-  itemType,
   selectedItemsType,
   showGeneralItem,
   values,
@@ -18,7 +17,8 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   initialValue,
   onChange,
   style,
-}: Omit<MultiSelectProps<V, L>, 'type'>) {
+  children,
+}: MultiSelectProps<V, L>) {
   const { isVisible, setVisible } = useModal()
   const listController = useRef<SelectListController | null>(null)
   const { items, onItemSelect, mode } = useMultiSelectModel(
@@ -60,10 +60,11 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         style={listStyle}
         data={items}
         onItemSelect={onItemSelect}
-        itemType={itemType}
         onVisibleChange={setVisible}
         controller={listController}
-      />
+      >
+        {children}
+      </SelectList>
     </>
   )
 }

@@ -77,7 +77,7 @@ export function useMultiSelectModel<V extends string, L extends string>(
     topButtonBehavior = 'all',
     values,
     initialValue = [],
-  }: MultiSelectProps<V, L>,
+  }: Omit<MultiSelectProps<V, L>, 'children'>,
   { onSelect = () => {}, onChange }: MultiSelectActions<V> = {}
 ) {
   const mode = routeMultiSelectMode({

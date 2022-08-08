@@ -15,7 +15,7 @@ export default function RowMultiSelect<V extends string, L extends string>({
   style,
 }: Omit<
   MultiSelectProps<V, L>,
-  'type' | 'placeholder' | 'showGeneralItem' | 'itemType'
+  'placeholder' | 'showGeneralItem' | 'children'
 >) {
   const { items, onItemSelect } = useMultiSelectModel(
     {

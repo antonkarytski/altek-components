@@ -8,7 +8,6 @@ import { MultiSelectProps } from '../types'
 
 export default function ModalMultiSelect<V extends string, L extends string>({
   containType = 'inside',
-  itemType,
   selectedItemsType,
   showGeneralItem,
   values,
@@ -17,7 +16,7 @@ export default function ModalMultiSelect<V extends string, L extends string>({
   initialValue,
   onChange,
   style,
-}: Omit<MultiSelectProps<V, L>, 'type'>) {
+}: MultiSelectProps<V, L>) {
   const { isVisible, hide, show } = useModal()
   const { items, onItemSelect } = useMultiSelectModel(
     {
@@ -56,7 +55,6 @@ export default function ModalMultiSelect<V extends string, L extends string>({
           onItemSelect={onItemSelect}
           onBgClick={hide}
           onRequestClose={hide}
-          itemType={itemType}
         />
       ) : null}
     </>

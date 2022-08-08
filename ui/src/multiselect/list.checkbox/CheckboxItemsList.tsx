@@ -1,13 +1,13 @@
 import React from 'react'
 import ItemsList from '../list/ItemsList'
 import CheckboxListItem from './CheckboxListItem'
-import { SpecifiedListProps } from '../types'
+import { MultiSelectListProps } from '../types'
 
 export default function CheckboxItemsList<V extends string, L extends string>({
-  data,
-  onItemSelect,
+  data = [],
+  onItemSelect = () => {},
   inRow,
-}: SpecifiedListProps<V, L>) {
+}: MultiSelectListProps<V, L>) {
   return (
     <ItemsList preventScroll={inRow} data={data}>
       {({ label, value, selected, disabled }, index) => {
