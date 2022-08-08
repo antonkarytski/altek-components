@@ -4,15 +4,13 @@ import { ListItemProps } from '../types'
 import { StyleSheet } from 'react-native'
 import { GRAY } from '../../colors'
 
-type RowListItemProps = Omit<ListItemProps, 'style'>
-
-const RowListItem = React.memo((props: RowListItemProps) => {
-  return <ListItem style={styles} {...props} />
+const RowListItem = React.memo((props: ListItemProps) => {
+  return <ListItem style={props.style} {...props} />
 })
 
 export default RowListItem
 
-const styles = StyleSheet.create({
+export const rowListItemStyles = StyleSheet.create({
   item: {
     marginBottom: 0,
     height: 30,

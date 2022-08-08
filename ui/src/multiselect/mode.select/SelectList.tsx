@@ -65,13 +65,10 @@ const SelectList = React.memo(
       if (children) {
         return React.Children.map(children, (child) => {
           return React.cloneElement(child, {
+            ...child.props,
             onItemSelect,
             data,
-            ...child.props,
-            style: {
-              ...child.props.style,
-              container: [styles.list, child.props.style?.container],
-            },
+            containerStyle: styles.list,
           })
         })
       }

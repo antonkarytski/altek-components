@@ -1,16 +1,27 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import ItemsList from '../list/ItemsList'
-import RowListItem from './RowListItem'
+import RowListItem, { rowListItemStyles } from './RowListItem'
 import { MultiSelectListProps } from '../types'
+import { composeItemStylesWithListStyles } from '../helpers'
 
 export default function RowItemsList<V extends string, L extends string>({
   data = [],
   onItemSelect = () => {},
   inRow,
   style,
+  containerStyle,
 }: MultiSelectListProps<V, L>) {
+  const itemStyles = useMemo(
+    () => composeItemStylesWithListStyles(rowListItemStyles, style),
+    [style]
+  )
+
   return (
-    <ItemsList preventScroll={inRow} data={data} style={style?.container}>
+    <ItemsList
+      preventScroll={inRow}
+      data={data}
+      style={[style?.container, containerStyle]}
+    >
       {({ label, value, selected }, index) => {
         return (
           <RowListItem
@@ -19,6 +30,7 @@ export default function RowItemsList<V extends string, L extends string>({
             onPress={onItemSelect}
             label={label}
             selected={selected}
+            style={itemStyles}
           />
         )
       }}

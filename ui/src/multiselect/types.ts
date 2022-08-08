@@ -38,8 +38,12 @@ export type MultiSelectListProps<V extends string, L extends string> = {
     listItem?: StyleProp<ViewStyle>
     selectedListItem?: StyleProp<ViewStyle>
     listItemTextWrap?: StyleProp<ViewStyle>
+    selectedListItemTextWrap?: StyleProp<ViewStyle>
+    listItemText?: StyleProp<TextStyle>
+    selectedListItemText?: StyleProp<TextStyle>
     checkbox?: StyleProp<ViewStyle>
   }
+  containerStyle?: StyleProp<ViewStyle>
   onItemSelect?: (index: number, value?: boolean) => void
   data?: SelectedValueProps<V, L>[]
   inRow?: boolean
