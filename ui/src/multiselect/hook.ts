@@ -1,6 +1,14 @@
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
+import {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 import { MultiSelectStateProps, SelectedValueProps, SelectValue } from './types'
 import { MultiSelectModesRouter } from './helpers'
+import { Fn } from 'altek-toolkit'
 
 export function useNormalisedMultiSelectValues<
   V extends string,
@@ -15,32 +23,54 @@ export function useNormalisedMultiSelectValues<
 
 export type MultiSelectStates = ReturnType<typeof useMultiSelectStates>
 
+function useWillComponentUpdate(fn: Fn, deps: any[]) {
+  const prevDeps = useRef<any[] | null>(null)
+  if (!prevDeps.current) {
+    prevDeps.current = deps
+    return fn()
+  }
+  if (!prevDeps.current.length) return
+  const isChanged = prevDeps.current.some(
+    (value, index) => value !== deps[index]
+  )
+  if (!isChanged) return
+  prevDeps.current = deps
+  fn()
+}
+
 export function useMultiSelectStates<V extends string, L extends string>({
   values,
   topButtonBehavior,
 }: MultiSelectStateProps<V, L>) {
-  const topButtonSelected = values[0].selected
-  const allFieldsSelected = values.every(
-    ({ selected }, index) => index === 0 || selected
-  )
-  const allUnselected = values.every(({ selected }, index) => {
-    if (topButtonBehavior === 'none' && index === 0) return true
-    return !selected
+  const states = useRef({
+    topButtonSelected: false,
+    allFieldsSelected: false,
+    allUnselected: false,
+    someFieldsSelected: false,
+    topButtonActive: false,
   })
-  const someFieldsSelected = values.some(
-    ({ selected }, index) => index !== 0 && selected
-  )
-  const topButtonActive =
-    topButtonSelected ||
-    (topButtonBehavior === 'all' && (allFieldsSelected || allUnselected))
 
-  return {
-    topButtonSelected,
-    allFieldsSelected,
-    allUnselected,
-    someFieldsSelected,
-    topButtonActive,
-  }
+  useWillComponentUpdate(() => {
+    states.current.topButtonSelected = values[0].selected
+    states.current.allFieldsSelected = true
+    states.current.allUnselected = true
+    states.current.someFieldsSelected = false
+    values.forEach(({ selected }, index) => {
+      states.current.allFieldsSelected =
+        states.current.allFieldsSelected && (index === 0 || selected)
+      states.current.allUnselected =
+        states.current.allUnselected &&
+        ((topButtonBehavior === 'none' && index === 0) || !selected)
+      states.current.someFieldsSelected =
+        states.current.someFieldsSelected || (index !== 0 && selected)
+    })
+    states.current.topButtonActive =
+      states.current.topButtonSelected ||
+      (topButtonBehavior === 'all' &&
+        (states.current.allFieldsSelected || states.current.allUnselected))
+  }, [values, topButtonBehavior])
+
+  return states.current
 }
 
 type MultiSelectInitProps = {

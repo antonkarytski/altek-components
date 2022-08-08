@@ -1,5 +1,5 @@
 import { MultiSelectProps, SelectedValueProps } from './types'
-import { Dispatch, SetStateAction, useCallback, useEffect } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
 import {
   MultiSelectStates,
   useMultiSelectStates,
@@ -85,68 +85,69 @@ export function useMultiSelectModel<V extends string, L extends string>(
     topButtonBehavior,
   })
   const onSelectRef = useFnRef(onSelect)
+  const onChangeRef = useRef(onChange)
+  onChangeRef.current = onChange
+
   const [items, setItems] = useMultiSelectValues(values, { initialValue, mode })
   const states = useMultiSelectStates({ values: items, topButtonBehavior })
   useMultiSelectStatesActions({ mode, states, setItems })
 
   const onItemSelect = useCallback(
     (index: number, value?: boolean) => {
-      if (index === 0) {
-        if (value === true || !items[0].selected) {
-          setItems((currentValues) => {
-            const valuesList = [...currentValues]
-            return valuesList.map((setValue, setIndex) => {
-              setValue.selected = mode.topButtonAll
+      let isSelected = false
+      const isTobButtonNoneMode = topButtonBehavior === 'none'
+      setItems((currentItems) => {
+        if (index === 0) {
+          if (value || !currentItems[0].selected) {
+            const newItems = currentItems.map((setValue, setIndex) => {
+              setValue.selected = topButtonBehavior === 'all'
               if (setIndex === 0) {
                 setValue.selected = true
-                setValue.disabled = mode.topButtonNone
+                setValue.disabled = isTobButtonNoneMode
               }
               return setValue
             })
-          })
-          return onSelectRef.current()
-        }
-        setItems((currentValues) => {
-          const valuesList = [...currentValues]
-          if (mode.topButtonNone) {
-            valuesList[0].selected = false
-            return valuesList
+            isSelected = true
+            return newItems
           }
-          return valuesList.map((setValue) => {
+          if (isTobButtonNoneMode) {
+            const newItems = [...currentItems]
+            newItems[0].selected = false
+            return newItems
+          }
+          return currentItems.map((setValue) => {
             setValue.selected = false
             return setValue
           })
-        })
-        return
-      }
+        }
 
-      if (value !== undefined) {
-        setItems((currentValues) => {
-          const valuesList = [...currentValues]
-          valuesList[index].selected = value
-          return valuesList
-        })
-        if (value) onSelectRef.current()
-        return
-      }
-      setItems((currentValues) => {
-        const valuesList = [...currentValues]
-        if (!valuesList[index].selected) onSelectRef.current()
-        valuesList[index].selected = !valuesList[index].selected
-        return valuesList
+        if (value !== undefined) {
+          const newItems = [...currentItems]
+          newItems[index].selected = value
+          isSelected = value
+          return newItems
+        }
+
+        const newItems = [...currentItems]
+        const nextState = !newItems[index].selected
+        isSelected = nextState
+        newItems[index].selected = nextState
+        return newItems
       })
+
+      if (isSelected) onSelectRef.current()
     },
-    [setItems, items, mode.topButtonAll, mode.topButtonNone, onSelectRef]
+    [setItems, onSelectRef, topButtonBehavior]
   )
 
   useEffect(() => {
-    if (!onChange) return
+    if (!onChangeRef.current) return
     if (states.topButtonActive) {
-      onChange([items[0].value])
+      onChangeRef.current([items[0].value])
       return
     }
 
-    onChange(
+    onChangeRef.current(
       items
         .map(({ selected, value }, index) => {
           if (index !== 0 && selected) return value
@@ -154,7 +155,7 @@ export function useMultiSelectModel<V extends string, L extends string>(
         })
         .filter((value) => value) as V[]
     )
-  }, [states.topButtonActive, items, onChange])
+  }, [states.topButtonActive, items])
 
   return { items, onItemSelect, mode, states }
 }

@@ -28,79 +28,83 @@ type SelectListProps<V extends string, L extends string> = {
 
 const noop = () => {}
 
-export default function SelectList<V extends string, L extends string>({
-  style,
-  onItemSelect,
-  data,
-  controller,
-  onVisibleChange = noop,
-  children,
-}: SelectListProps<V, L>) {
-  const [isVisible, setVisible] = useState(false)
-  const onVisibleChangeRef = useFnRef(onVisibleChange)
+const SelectList = React.memo(
+  <V extends string, L extends string>({
+    style,
+    onItemSelect,
+    data,
+    controller,
+    onVisibleChange = noop,
+    children,
+  }: SelectListProps<V, L>) => {
+    const [isVisible, setVisible] = useState(false)
+    const onVisibleChangeRef = useFnRef(onVisibleChange)
 
-  useEffect(() => {
-    const backHandler = BackHandler.addEventListener(
-      'hardwareBackPress',
-      () => {
-        setVisible(false)
-        return true
-      }
-    )
+    useEffect(() => {
+      const backHandler = BackHandler.addEventListener(
+        'hardwareBackPress',
+        () => {
+          setVisible(false)
+          return true
+        }
+      )
 
-    return backHandler.remove
-  }, [])
+      return backHandler.remove
+    }, [])
 
-  useEffect(() => {
-    onVisibleChangeRef.current(isVisible)
-  }, [isVisible, onVisibleChangeRef])
+    useEffect(() => {
+      onVisibleChangeRef.current(isVisible)
+    }, [isVisible, onVisibleChangeRef])
 
-  controller.current = {
-    hide: () => setVisible(false),
-    show: () => setVisible(true),
-    toggle: () => setVisible((current) => !current),
-  }
-  const listWithProps = useMemo(() => {
-    if (children) {
-      return React.Children.map(children, (child) => {
-        return React.cloneElement(child, {
-          onItemSelect,
-          data,
-          ...child.props,
-          style: {
-            ...child.props.style,
-            container: [styles.list, child.props.style?.container],
-          },
-        })
-      })
+    controller.current = {
+      hide: () => setVisible(false),
+      show: () => setVisible(true),
+      toggle: () => setVisible((current) => !current),
     }
+    const listWithProps = useMemo(() => {
+      if (children) {
+        return React.Children.map(children, (child) => {
+          return React.cloneElement(child, {
+            onItemSelect,
+            data,
+            ...child.props,
+            style: {
+              ...child.props.style,
+              container: [styles.list, child.props.style?.container],
+            },
+          })
+        })
+      }
+
+      return (
+        <CheckboxItemsList
+          onItemSelect={onItemSelect}
+          data={data}
+          style={{ container: styles.list }}
+        />
+      )
+    }, [onItemSelect, data, children])
+    if (!isVisible) return null
 
     return (
-      <CheckboxItemsList
-        onItemSelect={onItemSelect}
-        data={data}
-        style={{ container: styles.list }}
-      />
+      <>
+        <TouchableOpacity
+          style={styles.closeOverlay}
+          onPress={() => setVisible(false)}
+        />
+        <View style={[styles.container, style?.selectListContainer]}>
+          {listWithProps}
+        </View>
+        <TouchableOpacity
+          style={[styles.closeOverlay, styles.closeOverlayBottom]}
+          onPress={() => setVisible(false)}
+        />
+      </>
     )
-  }, [onItemSelect, data, children])
-  if (!isVisible) return null
+  }
+)
 
-  return (
-    <>
-      <TouchableOpacity
-        style={styles.closeOverlay}
-        onPress={() => setVisible(false)}
-      />
-      <View style={[styles.container, style?.selectListContainer]}>
-        {listWithProps}
-      </View>
-      <TouchableOpacity
-        style={[styles.closeOverlay, styles.closeOverlayBottom]}
-        onPress={() => setVisible(false)}
-      />
-    </>
-  )
-}
+export default SelectList
 
 const screenWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
