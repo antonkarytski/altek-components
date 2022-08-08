@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
-import Step from './Step'
+import Step, { StepProps } from './Step'
 import { horizontalStepsStyles, stepsStyles } from './styles'
 import { CircleIcon } from '../icons'
 
@@ -11,6 +11,7 @@ type SpecifiedStepsProps<T> = {
   data: T[]
   children: NodeGenerator<T>
   stepStyle?: StyleProp<ViewStyle>
+  colors?: StepProps['colors']
 }
 
 type StepsProps<T> = {
@@ -32,6 +33,7 @@ function VerticalSteps<T>({
   data,
   children,
   stepStyle,
+  colors,
 }: SpecifiedStepsProps<T>) {
   return (
     <View style={[stepsStyles.container, style]}>
@@ -45,6 +47,7 @@ function VerticalSteps<T>({
               index !== data.length - 1 ? stepsStyles.step : null,
               stepStyle,
             ]}
+            colors={colors}
           >
             {children(props, index)}
           </Step>
