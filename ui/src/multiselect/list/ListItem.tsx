@@ -15,6 +15,7 @@ export const ListItem: FC<ListItemProps> = ({
   children,
   onPress,
   label,
+  index,
 }) => {
   return (
     <View
@@ -22,7 +23,7 @@ export const ListItem: FC<ListItemProps> = ({
     >
       {children}
       <TouchableOpacity
-        onPress={onPress}
+        onPress={() => onPress(index)}
         style={[style?.textWrap, selected ? style?.textWrapSelected : null]}
       >
         <Text

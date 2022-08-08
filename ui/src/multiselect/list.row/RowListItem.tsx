@@ -6,9 +6,11 @@ import { GRAY } from '../../colors'
 
 type RowListItemProps = Omit<ListItemProps, 'style'>
 
-export default function RowListItem(props: RowListItemProps) {
+const RowListItem = React.memo((props: RowListItemProps) => {
   return <ListItem style={styles} {...props} />
-}
+})
+
+export default RowListItem
 
 const styles = StyleSheet.create({
   item: {

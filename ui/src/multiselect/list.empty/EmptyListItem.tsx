@@ -4,20 +4,11 @@ import { Platform, StyleSheet } from 'react-native'
 import { multiSelectStyles } from '../styles'
 import { ListItemProps } from '../types'
 
-export default function EmptyListItem(props: Omit<ListItemProps, 'style'>) {
-  return (
-    <ListItem
-      style={{
-        item: [multiSelectStyles.emptyCard, styles.listItemEmpty],
-        selected: multiSelectStyles.emptyCardSelected,
-        textWrap: [multiSelectStyles.button, styles.textWrap],
-        text: [multiSelectStyles.cardText, styles.text],
-        textSelected: multiSelectStyles.emptyCardSelectedText,
-      }}
-      {...props}
-    />
-  )
-}
+const EmptyListItem = React.memo((props: Omit<ListItemProps, 'style'>) => {
+  return <ListItem style={listItemStyles} {...props} />
+})
+
+export default EmptyListItem
 
 const styles = StyleSheet.create({
   listItemEmpty: {
@@ -45,3 +36,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 })
+
+const listItemStyles = {
+  item: [multiSelectStyles.emptyCard, styles.listItemEmpty],
+  selected: multiSelectStyles.emptyCardSelected,
+  textWrap: [multiSelectStyles.button, styles.textWrap],
+  text: [multiSelectStyles.cardText, styles.text],
+  textSelected: multiSelectStyles.emptyCardSelectedText,
+}

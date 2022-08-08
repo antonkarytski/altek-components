@@ -14,8 +14,9 @@ export default function RowItemsList<V extends string, L extends string>({
       {({ label, value, selected }, index) => {
         return (
           <RowListItem
+            index={index}
             key={`${label}${value}${index}`}
-            onPress={() => onItemSelect(index)}
+            onPress={onItemSelect}
             label={label}
             selected={selected}
           />

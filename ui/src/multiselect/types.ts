@@ -72,6 +72,7 @@ export type ListItemProps = {
     checkbox?: ViewStyle | ViewStyle[] | null | undefined
   }
   selected?: boolean
-  onPress: () => void
+  onPress: (index: number) => void
   label: string
+  index: number
 }
