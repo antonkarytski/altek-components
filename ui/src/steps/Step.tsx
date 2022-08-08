@@ -9,6 +9,7 @@ export type StepProps = {
   hideLine?: boolean
   style?: StyleProp<ViewStyle>
   wrapperStyle?: StyleProp<ViewStyle>
+  marksStyle?: StyleProp<ViewStyle>
   colors?: {
     circleBody?: string
     circleBorder?: string
@@ -23,11 +24,12 @@ const Step: FC<StepProps> = ({
   hideLine,
   style,
   wrapperStyle,
+  marksStyle,
   colors,
 }) => {
   return (
     <View style={[stepStyles.container, wrapperStyle]}>
-      <View style={stepStyles.marks}>
+      <View style={[stepStyles.marks, marksStyle]}>
         <CircleIcon
           color={colors?.circleBody}
           borderColor={colors?.circleBorder}
