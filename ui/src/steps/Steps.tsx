@@ -11,6 +11,7 @@ type SpecifiedStepsProps<T> = {
   data: T[]
   children: NodeGenerator<T>
   stepStyle?: StyleProp<ViewStyle>
+  marksStyles?: StyleProp<ViewStyle>
   colors?: StepProps['colors']
 }
 
@@ -33,6 +34,7 @@ function VerticalSteps<T>({
   data,
   children,
   stepStyle,
+  marksStyles,
   colors,
 }: SpecifiedStepsProps<T>) {
   return (
@@ -47,6 +49,7 @@ function VerticalSteps<T>({
               index !== data.length - 1 ? stepsStyles.step : null,
               stepStyle,
             ]}
+            marksStyle={marksStyles}
             colors={colors}
           >
             {children(props, index)}
