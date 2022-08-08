@@ -1,4 +1,3 @@
-import { MutableRefObject } from 'react'
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
 
 export type SelectValue<V extends string, L extends string> = {
@@ -16,7 +15,6 @@ export type SelectedValueProps<
 export type MultiSelectModes = {
   itemType: 'checkbox' | 'row' | 'filled' | 'empty'
   containType: 'under' | 'inside'
-  type: 'modal' | 'select' | 'row'
   topButtonBehavior: 'all' | 'none'
   selectedItemsType: 'filled' | 'empty'
 }
@@ -24,7 +22,6 @@ export type MultiSelectProps<V extends string, L extends string> = {
   values: SelectValue<V, L>[]
   initialValue?: V[]
   onChange?: (values: V[]) => void
-  deleteAction?: MutableRefObject<((value: V) => void) | null>
   placeholder?: string
   showGeneralItem?: boolean
   style?: {

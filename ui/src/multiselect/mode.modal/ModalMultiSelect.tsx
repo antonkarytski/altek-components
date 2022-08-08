@@ -7,7 +7,7 @@ import { useModal } from '../hook.modal'
 import { MultiSelectProps } from '../types'
 
 export default function ModalMultiSelect<V extends string, L extends string>({
-  containType,
+  containType = 'inside',
   itemType,
   selectedItemsType,
   showGeneralItem,
@@ -24,7 +24,6 @@ export default function ModalMultiSelect<V extends string, L extends string>({
       values,
       initialValue,
       containType,
-      type: 'modal',
       topButtonBehavior,
     },
     {

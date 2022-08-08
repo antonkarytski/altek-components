@@ -6,10 +6,10 @@ import { useMultiSelectModel } from '../hook.model'
 import { MultiSelectProps } from '../types'
 
 export default function RowMultiSelect<V extends string, L extends string>({
-  containType,
+  containType = 'inside',
   selectedItemsType,
   values,
-  topButtonBehavior,
+  topButtonBehavior = 'all',
   initialValue,
   onChange,
   style,
@@ -22,7 +22,6 @@ export default function RowMultiSelect<V extends string, L extends string>({
       values,
       initialValue,
       containType,
-      type: 'row',
       topButtonBehavior,
     },
     { onChange }

@@ -8,7 +8,7 @@ import { MultiSelectProps } from '../types'
 import { useModal } from '../hook.modal'
 
 export default function SelectMultiSelect<V extends string, L extends string>({
-  containType,
+  containType = 'inside',
   itemType,
   selectedItemsType,
   showGeneralItem,
@@ -23,7 +23,6 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   const listController = useRef<SelectListController | null>(null)
   const { items, onItemSelect, mode } = useMultiSelectModel(
     {
-      type: 'select',
       values,
       initialValue,
       containType,

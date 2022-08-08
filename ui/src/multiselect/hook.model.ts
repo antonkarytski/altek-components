@@ -73,7 +73,6 @@ type MultiSelectActions<V extends string> = {
 
 export function useMultiSelectModel<V extends string, L extends string>(
   {
-    type = 'modal',
     containType = 'inside',
     topButtonBehavior = 'all',
     values,
@@ -82,7 +81,6 @@ export function useMultiSelectModel<V extends string, L extends string>(
   { onSelect = () => {}, onChange }: MultiSelectActions<V> = {}
 ) {
   const mode = routeMultiSelectMode({
-    type,
     containType,
     topButtonBehavior,
   })
