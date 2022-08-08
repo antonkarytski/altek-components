@@ -17,7 +17,8 @@ export default function CheckboxItemsList<V extends string, L extends string>({
             onCheckboxPress={(newValue) => {
               onItemSelect(index, newValue)
             }}
-            onPress={() => onItemSelect(index)}
+            index={index}
+            onPress={onItemSelect}
             label={label}
             selected={selected}
             disabled={disabled}

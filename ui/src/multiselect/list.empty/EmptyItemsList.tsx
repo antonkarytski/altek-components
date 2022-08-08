@@ -15,7 +15,8 @@ export default function EmptyItemsList<V extends string, L extends string>({
         return (
           <EmptyListItem
             key={`${label}${value}`}
-            onPress={() => onItemSelect(index)}
+            index={index}
+            onPress={onItemSelect}
             label={label}
             selected={selected}
           />
