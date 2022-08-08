@@ -10,45 +10,46 @@ export type SelectedItemsProps<V extends string, L extends string> = {
   onPressGeneralItem?: () => void
 } & MultiSelectStateProps<V, L>
 
-export default function SelectedItems<V extends string, L extends string>({
-  values,
-  topButtonBehavior,
-  showGeneralItem,
-  onPressItem,
-  onPressGeneralItem,
-  type,
-}: SelectedItemsProps<V, L>) {
-  const {
-    topButtonSelected,
-    allFieldsSelected,
-    allUnselected,
-  } = useMultiSelectStates({ values, topButtonBehavior })
+const SelectedItems = React.memo(
+  <V extends string, L extends string>({
+    values,
+    topButtonBehavior,
+    showGeneralItem,
+    onPressItem,
+    onPressGeneralItem,
+    type,
+  }: SelectedItemsProps<V, L>) => {
+    const { topButtonSelected, allFieldsSelected, allUnselected } =
+      useMultiSelectStates({ values, topButtonBehavior })
 
-  if (topButtonSelected || allFieldsSelected || allUnselected) {
-    if (!showGeneralItem) return null
+    if (topButtonSelected || allFieldsSelected || allUnselected) {
+      if (!showGeneralItem) return null
+      return (
+        <SelectedCard
+          type={type}
+          label={values[0].label}
+          hideRemoveButton
+          onPress={onPressGeneralItem}
+        />
+      )
+    }
+
     return (
-      <SelectedCard
-        type={type}
-        label={values[0].label}
-        hideRemoveButton
-        onPress={onPressGeneralItem}
-      />
+      <>
+        {values.map(({ selected, value, label }, index) => {
+          if (!selected) return null
+          return (
+            <SelectedCard
+              type={type}
+              key={`${value}${index}`}
+              label={label}
+              onPress={() => onPressItem(index, false)}
+            />
+          )
+        })}
+      </>
     )
   }
+)
 
-  return (
-    <>
-      {values.map(({ selected, value, label }, index) => {
-        if (!selected) return null
-        return (
-          <SelectedCard
-            type={type}
-            key={`${value}${index}`}
-            label={label}
-            onPress={() => onPressItem(index, false)}
-          />
-        )
-      })}
-    </>
-  )
-}
+export default SelectedItems

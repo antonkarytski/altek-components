@@ -21,7 +21,7 @@ export type SelectListController = {
 type SelectListProps<V extends string, L extends string> = {
   style?: MultiSelectListProps<V, L>['style'] & {
     selectListContainer?: StyleProp<ViewStyle>
-  }
+  } | null
   controller: MutableRefObject<SelectListController | null>
   onVisibleChange?: (state: boolean) => void
 } & Omit<MultiSelectListProps<V, L>, 'style'>

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useCallback, useRef } from 'react'
 import { StyleSheet } from 'react-native'
 import MultiSelectInput from '../input/MultiSelectInput'
 import SelectedItems from '../SelectedItems'
@@ -19,8 +19,8 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   style,
   children,
 }: MultiSelectProps<V, L>) {
-  const { isVisible, setVisible } = useModal()
   const listController = useRef<SelectListController | null>(null)
+  const { isVisible, setVisible } = useModal()
   const { items, onItemSelect, mode } = useMultiSelectModel(
     {
       values,
@@ -34,9 +34,13 @@ export default function SelectMultiSelect<V extends string, L extends string>({
     }
   )
 
-  const listStyle = {
-    selectListContainer: mode.containUnder ? styles.containUnder : null,
-  }
+  const listStyle = mode.containUnder ? {
+    selectListContainer: styles.containUnder
+  } : null
+
+  const showList = useCallback(() => {
+    listController.current?.show()
+  }, [])
 
   return (
     <>
@@ -53,7 +57,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
           topButtonBehavior={topButtonBehavior}
           values={items}
           onPressItem={onItemSelect}
-          onPressGeneralItem={() => listController.current?.show()}
+          onPressGeneralItem={showList}
         />
       </MultiSelectInput>
       <SelectList
