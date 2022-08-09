@@ -18,7 +18,7 @@ export default function ModalMultiSelect<V extends string, L extends string>({
   style,
 }: MultiSelectProps<V, L>) {
   const { isVisible, hide, show } = useModal()
-  const { items, onItemSelect } = useMultiSelectModel(
+  const { items, onItemSelect, states } = useMultiSelectModel(
     {
       values,
       initialValue,
@@ -41,9 +41,9 @@ export default function ModalMultiSelect<V extends string, L extends string>({
         style={style?.input}
       >
         <SelectedItems
+          states={states}
           showGeneralItem={showGeneralItem}
           type={selectedItemsType}
-          topButtonBehavior={topButtonBehavior}
           values={items}
           onPressItem={onItemSelect}
           onPressGeneralItem={show}

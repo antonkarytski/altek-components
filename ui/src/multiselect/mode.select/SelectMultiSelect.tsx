@@ -1,8 +1,8 @@
-import React, { useCallback, useRef } from 'react'
-import { StyleSheet } from 'react-native'
+import React, { useEffect } from 'react'
+import { BackHandler, StyleSheet } from 'react-native'
 import MultiSelectInput from '../input/MultiSelectInput'
 import SelectedItems from '../SelectedItems'
-import SelectList, { SelectListController } from './SelectList'
+import SelectList from './SelectList'
 import { useMultiSelectModel } from '../hook.model'
 import { MultiSelectProps } from '../types'
 import { useModal } from '../hook.modal'
@@ -19,9 +19,8 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   style,
   children,
 }: MultiSelectProps<V, L>) {
-  const listController = useRef<SelectListController | null>(null)
-  const { isVisible, setVisible } = useModal()
-  const { items, onItemSelect } = useMultiSelectModel(
+  const { isVisible, setVisible, hide, toggle, show } = useModal()
+  const { items, onItemSelect, states } = useMultiSelectModel(
     {
       values,
       initialValue,
@@ -29,12 +28,20 @@ export default function SelectMultiSelect<V extends string, L extends string>({
     },
     {
       onChange,
-      onSelect: () => listController.current?.hide(),
+      onSelect: hide,
     }
   )
 
-  const showList = useCallback(() => {
-    listController.current?.show()
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        setVisible(false)
+        return true
+      }
+    )
+
+    return backHandler.remove
   }, [])
 
   return (
@@ -43,24 +50,23 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         withShadow
         style={[isVisible ? styles.visibleModalInput : null, style?.input]}
         type={containType}
-        onPress={() => listController.current?.toggle()}
+        onPress={toggle}
         placeholder={placeholder}
       >
         <SelectedItems
           showGeneralItem={showGeneralItem}
           type={selectedItemsType}
-          topButtonBehavior={topButtonBehavior}
           values={items}
           onPressItem={onItemSelect}
-          onPressGeneralItem={showList}
+          onPressGeneralItem={show}
+          states={states}
         />
       </MultiSelectInput>
       <SelectList
         style={containType === 'under' ? containUnderListStyles : null}
         data={items}
         onItemSelect={onItemSelect}
-        onVisibleChange={setVisible}
-        controller={listController}
+        onOverlayPress={hide}
       >
         {children}
       </SelectList>

@@ -7,9 +7,9 @@ export function useModal() {
     setVisible((state) => !state)
   }
 
-  const show = () => {
+  const show = useCallback(() => {
     setVisible(true)
-  }
+  }, [])
 
   const hide = useCallback(() => {
     setVisible(false)

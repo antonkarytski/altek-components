@@ -1,22 +1,16 @@
-import React, { MutableRefObject, useEffect, useMemo, useState } from 'react'
+import React, { useMemo } from 'react'
 import {
   StyleProp,
   StyleSheet,
   TouchableOpacity,
   View,
   ViewStyle,
-  BackHandler,
   Dimensions,
 } from 'react-native'
 import { MultiSelectListProps } from '../types'
-import { Fn, useFnRef } from 'altek-toolkit'
+import { Fn } from 'altek-toolkit'
 import CheckboxItemsList from '../list.checkbox/CheckboxItemsList'
 
-export type SelectListController = {
-  show: Fn
-  hide: Fn
-  toggle: Fn
-}
 
 type SelectListProps<V extends string, L extends string> = {
   style?:
@@ -24,45 +18,20 @@ type SelectListProps<V extends string, L extends string> = {
         selectListContainer?: StyleProp<ViewStyle>
       })
     | null
-  controller: MutableRefObject<SelectListController | null>
-  onVisibleChange?: (state: boolean) => void
+  isVisible?: boolean
+  onOverlayPress?: Fn
 } & Omit<MultiSelectListProps<V, L>, 'style'>
 
-const noop = () => {}
 
 const SelectList = React.memo(
   <V extends string, L extends string>({
     style,
     onItemSelect,
     data,
-    controller,
-    onVisibleChange = noop,
+    onOverlayPress,
     children,
+    isVisible,
   }: SelectListProps<V, L>) => {
-    const [isVisible, setVisible] = useState(false)
-    const onVisibleChangeRef = useFnRef(onVisibleChange)
-
-    useEffect(() => {
-      const backHandler = BackHandler.addEventListener(
-        'hardwareBackPress',
-        () => {
-          setVisible(false)
-          return true
-        }
-      )
-
-      return backHandler.remove
-    }, [])
-
-    useEffect(() => {
-      onVisibleChangeRef.current(isVisible)
-    }, [isVisible, onVisibleChangeRef])
-
-    controller.current = {
-      hide: () => setVisible(false),
-      show: () => setVisible(true),
-      toggle: () => setVisible((current) => !current),
-    }
     const listWithProps = useMemo(() => {
       if (children) {
         return React.Children.map(children, (child) => {
@@ -88,7 +57,7 @@ const SelectList = React.memo(
       <>
         <TouchableOpacity
           style={[styles.closeOverlay, !isVisible ? styles.hidden : null]}
-          onPress={() => setVisible(false)}
+          onPress={onOverlayPress}
         />
         <View
           style={[
@@ -105,7 +74,7 @@ const SelectList = React.memo(
             styles.closeOverlayBottom,
             !isVisible ? styles.hidden : null,
           ]}
-          onPress={() => setVisible(false)}
+          onPress={onOverlayPress}
         />
       </>
     )
