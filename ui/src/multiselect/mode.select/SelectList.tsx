@@ -83,7 +83,6 @@ const SelectList = React.memo(
         />
       )
     }, [onItemSelect, data, children])
-    if (!isVisible) return null
 
     return (
       <>
