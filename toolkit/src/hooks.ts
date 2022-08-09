@@ -36,3 +36,18 @@ export function useConst<T>(initGenerator: () => T) {
 export function useModel<T>(Model: { new (): T }) {
   return useConst(() => new Model())
 }
+
+export function useWillComponentUpdate(fn: Fn, deps: any[]) {
+  const prevDeps = useRef<any[] | null>(null)
+  if (!prevDeps.current) {
+    prevDeps.current = deps
+    return fn()
+  }
+  if (!prevDeps.current.length) return
+  const isChanged = prevDeps.current.some(
+    (value, index) => value !== deps[index]
+  )
+  if (!isChanged) return
+  prevDeps.current = deps
+  fn()
+}

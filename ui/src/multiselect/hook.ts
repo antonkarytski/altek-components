@@ -2,24 +2,13 @@ import {
   Dispatch,
   SetStateAction,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react'
 import { MultiSelectStateProps, SelectedValueProps, SelectValue } from './types'
 import { MultiSelectModesRouter } from './helpers'
-import { Fn } from 'altek-toolkit'
-
-export function useNormalisedMultiSelectValues<
-  V extends string,
-  L extends string
->(values: SelectValue<V, L>[]) {
-  return useMemo(() => {
-    return values.map((value) => {
-      return { ...value, selected: false, disabled: false }
-    })
-  }, [values]) as SelectedValueProps<V, L>[]
-}
+import {Fn, useConst} from 'altek-toolkit'
+import { useNormalisedMultiSelectValues } from './model/hook.normalisedValues'
 
 export type MultiSelectStates = ReturnType<typeof useMultiSelectStates>
 
@@ -86,11 +75,12 @@ export function useMultiSelectValues<V extends string, L extends string>(
   Dispatch<SetStateAction<SelectedValueProps<V, L>[]>>
 ] {
   const normalisedValues = useNormalisedMultiSelectValues(values)
+  const isInitiated = useRef(false)
   const [renderItems, setRenderItems] = useState(normalisedValues)
-  const [isInitiated, setIsInitiated] = useState(false)
 
   useEffect(() => {
-    if (isInitiated) return
+    if (isInitiated.current) return
+
     setRenderItems((currentValues) => {
       if (mode.topButtonAll && initialValue?.includes('all')) {
         return currentValues.map((value) => {
@@ -104,14 +94,13 @@ export function useMultiSelectValues<V extends string, L extends string>(
         const selectedItem = valuesList.find(({ value }) => {
           return value === selectedValue
         })
-        if (selectedItem) {
-          selectedItem.selected = true
-        }
+        if (selectedItem) selectedItem.selected = true
       })
       return valuesList
     })
-    setIsInitiated(true)
-  }, [isInitiated, initialValue, mode.topButtonAll])
+
+    isInitiated.current = true
+  }, [initialValue, mode.topButtonAll])
 
   return [renderItems, setRenderItems]
 }
