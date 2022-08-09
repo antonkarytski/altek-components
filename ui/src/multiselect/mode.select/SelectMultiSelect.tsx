@@ -21,11 +21,10 @@ export default function SelectMultiSelect<V extends string, L extends string>({
 }: MultiSelectProps<V, L>) {
   const listController = useRef<SelectListController | null>(null)
   const { isVisible, setVisible } = useModal()
-  const { items, onItemSelect, mode } = useMultiSelectModel(
+  const { items, onItemSelect } = useMultiSelectModel(
     {
       values,
       initialValue,
-      containType,
       topButtonBehavior,
     },
     {
@@ -33,10 +32,6 @@ export default function SelectMultiSelect<V extends string, L extends string>({
       onSelect: () => listController.current?.hide(),
     }
   )
-
-  const listStyle = mode.containUnder ? {
-    selectListContainer: styles.containUnder
-  } : null
 
   const showList = useCallback(() => {
     listController.current?.show()
@@ -61,7 +56,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         />
       </MultiSelectInput>
       <SelectList
-        style={listStyle}
+        style={containType === 'under' ? containUnderListStyles : null}
         data={items}
         onItemSelect={onItemSelect}
         onVisibleChange={setVisible}
@@ -73,14 +68,17 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   )
 }
 
+const containUnderListStyles = StyleSheet.create({
+  selectListContainer: {
+    top: 34,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+})
+
 const styles = StyleSheet.create({
   visibleModalInput: {
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
-  },
-  containUnder: {
-    top: 34,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
   },
 })

@@ -1,18 +1,4 @@
-import { ListItemProps, MultiSelectListProps, MultiSelectModes } from './types'
-
-export type MultiSelectModesRouter = ReturnType<typeof routeMultiSelectMode>
-
-export function routeMultiSelectMode({
-  containType,
-  topButtonBehavior,
-}: Partial<Omit<MultiSelectModes, 'itemType' | 'selectedItemsType'>> = {}) {
-  return {
-    containInside: containType === 'inside',
-    containUnder: containType === 'under',
-    topButtonNone: topButtonBehavior === 'none',
-    topButtonAll: topButtonBehavior === 'all',
-  }
-}
+import { ListItemProps, MultiSelectListProps } from './types'
 
 type ListStyle = ListItemProps['style']
 function composeListStyles(styles1: ListStyle, styles2: ListStyle): ListStyle {

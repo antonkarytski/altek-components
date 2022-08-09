@@ -1,18 +1,14 @@
-import { MultiSelectProps, SelectedValueProps } from './types'
+import { MultiSelectModes, MultiSelectProps, SelectedValueProps } from './types'
 import { Dispatch, SetStateAction, useCallback, useEffect, useRef } from 'react'
-import {
-  MultiSelectStates,
-  useMultiSelectStates,
-  useMultiSelectValues,
-} from './hook'
-import { routeMultiSelectMode, MultiSelectModesRouter } from './helpers'
+import { useMultiSelectValues } from './hook'
 import { useFnRef } from 'altek-toolkit'
+import { MultiSelectStates, useMultiSelectStates } from './model/model.states'
 
 export type UseMultiSelectStatesActionsProps<
   V extends string,
   L extends string
 > = {
-  mode: MultiSelectModesRouter
+  topButtonBehavior: MultiSelectModes['topButtonBehavior']
   states: MultiSelectStates
   setItems: Dispatch<SetStateAction<SelectedValueProps<V, L>[]>>
 }
@@ -21,49 +17,30 @@ export function useMultiSelectStatesActions<
   V extends string,
   L extends string
 >({
-  mode,
+  topButtonBehavior,
   states: { topButtonSelected, allFieldsSelected, someFieldsSelected },
   setItems,
 }: UseMultiSelectStatesActionsProps<V, L>) {
   useEffect(() => {
-    if (!mode.topButtonAll) return
-    if (topButtonSelected && !allFieldsSelected) {
-      setItems((currentValues) => {
-        const valuesList = [...currentValues]
-        valuesList[0].selected = false
-        return valuesList
-      })
-    }
-    if (!topButtonSelected && allFieldsSelected) {
-      setItems((currentValues) => {
-        const valuesList = [...currentValues]
-        valuesList[0].selected = true
-        return valuesList
-      })
-    }
-    return
-  }, [topButtonSelected, allFieldsSelected, mode.topButtonAll, setItems])
+    const isTopButtonAll = topButtonBehavior === 'all'
+    if (!isTopButtonAll || topButtonSelected === allFieldsSelected) return
+    setItems((currentValues) => {
+      const valuesList = [...currentValues]
+      valuesList[0].selected = allFieldsSelected
+      return valuesList
+    })
+  }, [topButtonSelected, allFieldsSelected, topButtonBehavior, setItems])
 
   useEffect(() => {
-    if (!mode.topButtonNone) return
-    if (someFieldsSelected && topButtonSelected) {
-      setItems((currentValues) => {
-        const valuesList = [...currentValues]
-        valuesList[0].disabled = false
-        valuesList[0].selected = false
-        return valuesList
-      })
-    }
-
-    if (!someFieldsSelected && !topButtonSelected) {
-      setItems((currentValues) => {
-        const valuesList = [...currentValues]
-        valuesList[0].disabled = true
-        valuesList[0].selected = true
-        return valuesList
-      })
-    }
-  }, [someFieldsSelected, topButtonSelected, mode.topButtonNone, setItems])
+    const isTopButtonNone = topButtonBehavior === 'none'
+    if (!isTopButtonNone || someFieldsSelected !== topButtonSelected) return
+    setItems((currentValues) => {
+      const valuesList = [...currentValues]
+      valuesList[0].disabled = !topButtonSelected
+      valuesList[0].selected = !topButtonSelected
+      return valuesList
+    })
+  }, [someFieldsSelected, topButtonSelected, topButtonBehavior, setItems])
 }
 
 type MultiSelectActions<V extends string> = {
@@ -73,24 +50,22 @@ type MultiSelectActions<V extends string> = {
 
 export function useMultiSelectModel<V extends string, L extends string>(
   {
-    containType = 'inside',
     topButtonBehavior = 'all',
     values,
     initialValue = [],
   }: Omit<MultiSelectProps<V, L>, 'children'>,
   { onSelect = () => {}, onChange }: MultiSelectActions<V> = {}
 ) {
-  const mode = routeMultiSelectMode({
-    containType,
-    topButtonBehavior,
-  })
   const onSelectRef = useFnRef(onSelect)
   const onChangeRef = useRef(onChange)
   onChangeRef.current = onChange
 
-  const [items, setItems] = useMultiSelectValues(values, { initialValue, mode })
+  const [items, setItems] = useMultiSelectValues(values, {
+    initialValue,
+    topButtonBehavior,
+  })
   const states = useMultiSelectStates({ values: items, topButtonBehavior })
-  useMultiSelectStatesActions({ mode, states, setItems })
+  useMultiSelectStatesActions({ topButtonBehavior, states, setItems })
 
   const onItemSelect = useCallback(
     (index: number, value?: boolean) => {
@@ -157,5 +132,5 @@ export function useMultiSelectModel<V extends string, L extends string>(
     )
   }, [states.topButtonActive, items])
 
-  return { items, onItemSelect, mode, states }
+  return { items, onItemSelect, states }
 }

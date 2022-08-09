@@ -1,7 +1,7 @@
 import React from 'react'
 import SelectedCard from './SelectedCard'
-import { useMultiSelectStates } from './hook'
 import { MultiSelectModes, MultiSelectStateProps } from './types'
+import { useMultiSelectStates } from './model/model.states'
 
 export type SelectedItemsProps<V extends string, L extends string> = {
   showGeneralItem?: boolean
