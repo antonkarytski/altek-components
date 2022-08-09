@@ -10,7 +10,7 @@ import { mergeRowMultiselectStyles } from '../list.empty/helpers'
 export type RowMultiSelectProps<V extends string, L extends string> = {
   values: SelectValue<V, L>[]
   initialValue?: V[]
-  topButtonBehavior: MultiSelectProps<V, L>['topButtonBehavior']
+  topButtonBehavior?: MultiSelectProps<V, L>['topButtonBehavior']
   onChange: (values: V[]) => void
   style?: RowMultiSelectStyles
 }
