@@ -36,6 +36,7 @@ const SelectedCard = React.memo(
     index,
     style,
     textStyle,
+    iconStyle,
   }: SelectedCardProps) => {
     return (
       <TouchableOpacity onPress={() => onPress?.(index, false)}>
@@ -60,7 +61,7 @@ const SelectedCard = React.memo(
             {label}
           </Text>
           {!hideRemoveButton ? (
-            <CrossIcon size={10} color={BLUE.BORDER} />
+            <CrossIcon size={10} color={iconStyle?.color || BLUE.BORDER} />
           ) : null}
         </View>
       </TouchableOpacity>
