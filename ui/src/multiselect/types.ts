@@ -1,5 +1,5 @@
 import { StyleProp, TextStyle, ViewStyle } from 'react-native'
-import { ReactElement, ReactNode } from 'react'
+import { ReactElement } from 'react'
 
 export type SelectValue<V extends string, L extends string> = {
   value: V
@@ -74,16 +74,18 @@ export type MultiSelectStateProps<V extends string, L extends string> = {
   values: SelectedValueProps<V, L>[]
   topButtonBehavior: MultiSelectModes['topButtonBehavior']
 }
+
+export type ListItemStyles = {
+  item?: StyleProp<ViewStyle>
+  selected?: StyleProp<ViewStyle>
+  textWrap?: StyleProp<ViewStyle>
+  textWrapSelected?: StyleProp<ViewStyle>
+  text?: StyleProp<TextStyle>
+  textSelected?: StyleProp<TextStyle>
+  checkbox?: ViewStyle | ViewStyle[] | null | undefined
+}
 export type ListItemProps = {
-  style?: {
-    item?: StyleProp<ViewStyle>
-    selected?: StyleProp<ViewStyle>
-    textWrap?: StyleProp<ViewStyle>
-    textWrapSelected?: StyleProp<ViewStyle>
-    text?: StyleProp<TextStyle>
-    textSelected?: StyleProp<TextStyle>
-    checkbox?: ViewStyle | ViewStyle[] | null | undefined
-  }
+  style?: ListItemStyles
   selected?: boolean
   onPress: (index: number) => void
   label: string

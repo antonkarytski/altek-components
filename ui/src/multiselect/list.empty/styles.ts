@@ -1,14 +1,5 @@
-import React from 'react'
-import ListItem from '../list/ListItem'
 import { Platform, StyleSheet } from 'react-native'
 import { multiSelectStyles } from '../styles'
-import { ListItemProps } from '../types'
-
-const EmptyListItem = React.memo((props: Omit<ListItemProps, 'style'>) => {
-  return <ListItem style={listItemStyles} {...props} />
-})
-
-export default EmptyListItem
 
 const styles = StyleSheet.create({
   listItemEmpty: {
@@ -37,7 +28,7 @@ const styles = StyleSheet.create({
   },
 })
 
-const listItemStyles = {
+export const emptyListItemStyles = {
   item: [multiSelectStyles.emptyCard, styles.listItemEmpty],
   selected: multiSelectStyles.emptyCardSelected,
   textWrap: [multiSelectStyles.button, styles.textWrap],

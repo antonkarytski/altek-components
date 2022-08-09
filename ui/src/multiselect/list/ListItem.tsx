@@ -9,36 +9,35 @@ import {
 } from 'react-native'
 import { ListItemProps } from '../types'
 
-export const ListItem: FC<ListItemProps> = ({
-  style,
-  selected,
-  children,
-  onPress,
-  label,
-  index,
-}) => {
-  return (
-    <View
-      style={[styles.listItem, style?.item, selected ? style?.selected : null]}
-    >
-      {children}
-      <TouchableOpacity
-        onPress={() => onPress(index)}
-        style={[style?.textWrap, selected ? style?.textWrapSelected : null]}
+export const ListItem: FC<ListItemProps> = React.memo(
+  ({ style, selected, children, onPress, label, index }) => {
+    return (
+      <View
+        style={[
+          styles.listItem,
+          style?.item,
+          selected ? style?.selected : null,
+        ]}
       >
-        <Text
-          style={[
-            styles.text,
-            style?.text,
-            selected ? style?.textSelected : null,
-          ]}
+        {children}
+        <TouchableOpacity
+          onPress={() => onPress(index)}
+          style={[style?.textWrap, selected ? style?.textWrapSelected : null]}
         >
-          {label}
-        </Text>
-      </TouchableOpacity>
-    </View>
-  )
-}
+          <Text
+            style={[
+              styles.text,
+              style?.text,
+              selected ? style?.textSelected : null,
+            ]}
+          >
+            {label}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+)
 
 export default ListItem
 
