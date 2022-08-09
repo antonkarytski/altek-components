@@ -8,6 +8,7 @@ export const InsideMultiSelectInput: FC<SpecifiedMultiSelectInputProps> = ({
   withShadow,
   onPress,
   style,
+  textStyle,
   placeholder,
 }) => {
   return (
@@ -16,7 +17,9 @@ export const InsideMultiSelectInput: FC<SpecifiedMultiSelectInputProps> = ({
       onPress={onPress}
       activeOpacity={1}
     >
-      {children || <Text style={styles.placeholder}>{placeholder || ''}</Text>}
+      {children || (
+        <Text style={[styles.placeholder, textStyle]}>{placeholder || ''}</Text>
+      )}
     </TouchableOpacity>
   )
 }
