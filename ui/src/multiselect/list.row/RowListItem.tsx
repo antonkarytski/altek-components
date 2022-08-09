@@ -22,7 +22,4 @@ export const rowListItemStyles = StyleSheet.create({
     flex: 1,
     paddingVertical: 5,
   },
-  textWrapSelected: {
-    backgroundColor: GRAY.BODY,
-  },
 })

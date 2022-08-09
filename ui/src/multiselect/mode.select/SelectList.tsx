@@ -91,10 +91,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     height: 260,
-    backgroundColor: '#FFF',
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-    paddingBottom: 10,
+    //backgroundColor: '#FFF',
+    //borderBottomLeftRadius: 10,
+    //borderBottomRightRadius: 10,
+    //paddingBottom: 10,
     zIndex: 100,
     width: screenWidth - 32,
     marginHorizontal: 16,
@@ -112,6 +112,8 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
+    paddingBottom: 10,
+    backgroundColor: '#FFF',
   },
   closeOverlay: {
     position: 'absolute',
