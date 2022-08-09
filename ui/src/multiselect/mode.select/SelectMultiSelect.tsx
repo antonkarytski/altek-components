@@ -67,6 +67,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         data={items}
         onItemSelect={onItemSelect}
         onOverlayPress={hide}
+        isVisible={isVisible}
       >
         {children}
       </SelectList>

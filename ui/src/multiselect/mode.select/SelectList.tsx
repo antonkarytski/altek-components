@@ -18,7 +18,7 @@ type SelectListProps<V extends string, L extends string> = {
         selectListContainer?: StyleProp<ViewStyle>
       })
     | null
-  isVisible?: boolean
+  isVisible: boolean
   onOverlayPress?: Fn
 } & Omit<MultiSelectListProps<V, L>, 'style'>
 
