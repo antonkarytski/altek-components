@@ -11,17 +11,14 @@ import { MultiSelectListProps } from '../types'
 import { Fn } from 'altek-toolkit'
 import CheckboxItemsList from '../list.checkbox/CheckboxItemsList'
 
-
 type SelectListProps<V extends string, L extends string> = {
-  style?:
-    | (MultiSelectListProps<V, L>['style'] & {
-        selectListContainer?: StyleProp<ViewStyle>
-      })
-    | null
+  data: MultiSelectListProps<V, L>['data']
+  onItemSelect: MultiSelectListProps<V, L>['onItemSelect']
+  children: MultiSelectListProps<V, L>['children']
+  style?: StyleProp<ViewStyle>
   isVisible: boolean
   onOverlayPress?: Fn
-} & Omit<MultiSelectListProps<V, L>, 'style'>
-
+}
 
 const SelectList = React.memo(
   <V extends string, L extends string>({
@@ -32,6 +29,12 @@ const SelectList = React.memo(
     children,
     isVisible,
   }: SelectListProps<V, L>) => {
+    const containerStyles = useMemo(() => {
+      return React.Children.map(
+        children,
+        (child) => child?.props.style?.container
+      )
+    }, [children])
     const listWithProps = useMemo(() => {
       if (children) {
         return React.Children.map(children, (child) => {
@@ -60,11 +63,7 @@ const SelectList = React.memo(
           onPress={onOverlayPress}
         />
         <View
-          style={[
-            styles.container,
-            style?.selectListContainer,
-            !isVisible ? styles.hidden : null,
-          ]}
+          style={[styles.container, style, containerStyles, !isVisible ? styles.hidden : null]}
         >
           {listWithProps}
         </View>
@@ -91,10 +90,10 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     height: 260,
-    //backgroundColor: '#FFF',
-    //borderBottomLeftRadius: 10,
-    //borderBottomRightRadius: 10,
-    //paddingBottom: 10,
+    backgroundColor: '#FFF',
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    paddingBottom: 10,
     zIndex: 100,
     width: screenWidth - 32,
     marginHorizontal: 16,
@@ -112,8 +111,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
-    paddingBottom: 10,
-    backgroundColor: '#FFF',
   },
   closeOverlay: {
     position: 'absolute',

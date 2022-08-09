@@ -63,7 +63,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
         />
       </MultiSelectInput>
       <SelectList
-        style={containType === 'under' ? containUnderListStyles : null}
+        style={containType === 'under' ? styles.selectListUnderStyle : null}
         data={items}
         onItemSelect={onItemSelect}
         onOverlayPress={hide}
@@ -75,17 +75,14 @@ export default function SelectMultiSelect<V extends string, L extends string>({
   )
 }
 
-const containUnderListStyles = StyleSheet.create({
-  selectListContainer: {
-    top: 34,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-})
-
 const styles = StyleSheet.create({
   visibleModalInput: {
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
+  },
+  selectListUnderStyle: {
+    top: 34,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
 })
