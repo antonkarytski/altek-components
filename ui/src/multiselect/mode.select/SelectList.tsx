@@ -19,9 +19,11 @@ export type SelectListController = {
 }
 
 type SelectListProps<V extends string, L extends string> = {
-  style?: MultiSelectListProps<V, L>['style'] & {
-    selectListContainer?: StyleProp<ViewStyle>
-  } | null
+  style?:
+    | (MultiSelectListProps<V, L>['style'] & {
+        selectListContainer?: StyleProp<ViewStyle>
+      })
+    | null
   controller: MutableRefObject<SelectListController | null>
   onVisibleChange?: (state: boolean) => void
 } & Omit<MultiSelectListProps<V, L>, 'style'>
@@ -86,14 +88,24 @@ const SelectList = React.memo(
     return (
       <>
         <TouchableOpacity
-          style={styles.closeOverlay}
+          style={[styles.closeOverlay, !isVisible ? styles.hidden : null]}
           onPress={() => setVisible(false)}
         />
-        <View style={[styles.container, style?.selectListContainer]}>
+        <View
+          style={[
+            styles.container,
+            style?.selectListContainer,
+            !isVisible ? styles.hidden : null,
+          ]}
+        >
           {listWithProps}
         </View>
         <TouchableOpacity
-          style={[styles.closeOverlay, styles.closeOverlayBottom]}
+          style={[
+            styles.closeOverlay,
+            styles.closeOverlayBottom,
+            !isVisible ? styles.hidden : null,
+          ]}
           onPress={() => setVisible(false)}
         />
       </>
@@ -105,6 +117,9 @@ export default SelectList
 
 const screenWidth = Dimensions.get('window').width
 const styles = StyleSheet.create({
+  hidden: {
+    display: 'none',
+  },
   container: {
     position: 'absolute',
     height: 260,
