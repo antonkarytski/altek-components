@@ -13,6 +13,7 @@ export type {
   MultiSelectListStyles,
   MultiSelectStyles,
 } from './multiselect/types'
+export type { RowMultiSelectStyles } from './multiselect/mode.row/types'
 export { useMultiSelectScrollBlock } from './multiselect/blockScroll'
 export { default as ScreenWrapper } from './screenWrapper/ScreenWrapper'
 export type { ScreenWrapperProps } from './screenWrapper/ScreenWrapper'
