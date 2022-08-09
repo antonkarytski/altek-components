@@ -20,33 +20,37 @@ export type MultiSelectModes = {
   selectedItemsType: 'filled' | 'empty'
 }
 
+export type MultiSelectStyles = {
+  input?: StyleProp<ViewStyle>
+  inputText?: StyleProp<TextStyle>
+  selectedItemCard?: StyleProp<ViewStyle>
+  selectedItemText?: StyleProp<TextStyle>
+  selectedItemIcon?: { color: string }
+}
+
 export type MultiSelectProps<V extends string, L extends string> = {
   values: SelectValue<V, L>[]
   initialValue?: V[]
   onChange?: (values: V[]) => void
   placeholder?: string
   showGeneralItem?: boolean
-  style?: {
-    input?: StyleProp<ViewStyle>
-    inputText?: StyleProp<TextStyle>
-    selectedItemCard?: StyleProp<ViewStyle>
-    selectedItemText?: StyleProp<TextStyle>
-    selectedItemIcon?: { color: string }
-  }
+  style?: MultiSelectStyles
   children?: ReactElement<MultiSelectListProps<V, L>>
 } & Partial<MultiSelectModes>
 
+export type MultiSelectListStyles = {
+  container?: StyleProp<ViewStyle>
+  listItem?: StyleProp<ViewStyle>
+  selectedListItem?: StyleProp<ViewStyle>
+  listItemTextWrap?: StyleProp<ViewStyle>
+  selectedListItemTextWrap?: StyleProp<ViewStyle>
+  listItemText?: StyleProp<TextStyle>
+  selectedListItemText?: StyleProp<TextStyle>
+  checkbox?: StyleProp<ViewStyle>
+}
+
 export type MultiSelectListProps<V extends string, L extends string> = {
-  style?: {
-    container?: StyleProp<ViewStyle>
-    listItem?: StyleProp<ViewStyle>
-    selectedListItem?: StyleProp<ViewStyle>
-    listItemTextWrap?: StyleProp<ViewStyle>
-    selectedListItemTextWrap?: StyleProp<ViewStyle>
-    listItemText?: StyleProp<TextStyle>
-    selectedListItemText?: StyleProp<TextStyle>
-    checkbox?: StyleProp<ViewStyle>
-  }
+  style?: MultiSelectListStyles
   containerStyle?: StyleProp<ViewStyle>
   onItemSelect?: (index: number, value?: boolean) => void
   data?: SelectedValueProps<V, L>[]

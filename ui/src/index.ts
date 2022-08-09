@@ -9,6 +9,10 @@ export { default as ExpandableCard } from './expandableCard'
 export { default as Avatar } from './avatar/Avatar'
 export { default as ImageEditor } from './cameraHandler/ImageEditor'
 export { default as MultiSelect, MultiSelectItemsList } from './multiselect'
+export type {
+  MultiSelectListStyles,
+  MultiSelectStyles,
+} from './multiselect/types'
 export { useMultiSelectScrollBlock } from './multiselect/blockScroll'
 export { default as ScreenWrapper } from './screenWrapper/ScreenWrapper'
 export type { ScreenWrapperProps } from './screenWrapper/ScreenWrapper'
