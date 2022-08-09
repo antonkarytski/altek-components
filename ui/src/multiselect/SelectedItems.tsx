@@ -1,6 +1,6 @@
 import React from 'react'
-import SelectedCard from './SelectedCard'
-import { MultiSelectModes, MultiSelectStateProps } from './types'
+import SelectedCard, { SelectCardStyles } from './SelectedCard'
+import { MultiSelectModes, SelectedValueProps } from './types'
 import { MultiSelectStates } from './model/model.states'
 
 export type SelectedItemsProps<V extends string, L extends string> = {
@@ -9,7 +9,8 @@ export type SelectedItemsProps<V extends string, L extends string> = {
   onPressItem: (index: number, state: boolean) => void
   onPressGeneralItem?: () => void
   states: MultiSelectStates
-} & Omit<MultiSelectStateProps<V, L>, 'topButtonBehavior'>
+  values: SelectedValueProps<V, L>[]
+} & SelectCardStyles
 
 const SelectedItems = React.memo(
   <V extends string, L extends string>({
@@ -19,6 +20,7 @@ const SelectedItems = React.memo(
     onPressGeneralItem,
     type,
     states: { topButtonSelected, allFieldsSelected, allUnselected },
+    ...styles
   }: SelectedItemsProps<V, L>) => {
     if (topButtonSelected || allFieldsSelected || allUnselected) {
       if (!showGeneralItem) return null
@@ -28,6 +30,8 @@ const SelectedItems = React.memo(
           label={values[0].label}
           hideRemoveButton
           onPress={onPressGeneralItem}
+          index={0}
+          {...styles}
         />
       )
     }
@@ -41,7 +45,9 @@ const SelectedItems = React.memo(
               type={type}
               key={`${value}${index}`}
               label={label}
-              onPress={() => onPressItem(index, false)}
+              onPress={onPressItem}
+              index={index}
+              {...styles}
             />
           )
         })}

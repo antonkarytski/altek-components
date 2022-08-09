@@ -1,48 +1,74 @@
 import React from 'react'
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+} from 'react-native'
 import { CrossIcon } from '../icons'
 import { MultiSelectModes } from './types'
 import { multiSelectStyles } from './styles'
 import { BLUE } from '../colors'
 
-type SelectedCardProps = {
-  label: string
-  onPress?: () => void
-  hideRemoveButton?: boolean
-  type?: MultiSelectModes['selectedItemsType']
+export type SelectCardStyles = {
+  style?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
+  iconStyle?: { color: string }
 }
 
-export default function SelectedCard({
-  label,
-  onPress,
-  hideRemoveButton,
-  type = 'empty',
-}: SelectedCardProps) {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View
-        style={[
-          styles.card,
-          type === 'empty'
-            ? multiSelectStyles.emptyCard
-            : multiSelectStyles.filledCard,
-          !hideRemoveButton ? styles.cardWithRemoveButton : null,
-        ]}
-      >
-        <Text
+type SelectedCardProps = {
+  label: string
+  onPress?: (index: number, value: boolean) => void
+  hideRemoveButton?: boolean
+  type?: MultiSelectModes['selectedItemsType']
+  index: number
+} & SelectCardStyles
+
+const SelectedCard = React.memo(
+  ({
+    label,
+    onPress,
+    hideRemoveButton,
+    type = 'empty',
+    index,
+    style,
+    textStyle,
+  }: SelectedCardProps) => {
+    return (
+      <TouchableOpacity onPress={() => onPress?.(index, false)}>
+        <View
           style={[
-            styles.text,
-            type === 'filled' ? multiSelectStyles.cardText : null,
-            !hideRemoveButton ? styles.textWithRemoveButton : null,
+            styles.card,
+            type === 'empty'
+              ? multiSelectStyles.emptyCard
+              : multiSelectStyles.filledCard,
+            style,
+            !hideRemoveButton ? styles.cardWithRemoveButton : null,
           ]}
         >
-          {label}
-        </Text>
-        {!hideRemoveButton ? <CrossIcon size={10} color={BLUE.BORDER} /> : null}
-      </View>
-    </TouchableOpacity>
-  )
-}
+          <Text
+            style={[
+              styles.text,
+              type === 'filled' ? multiSelectStyles.cardText : null,
+              textStyle,
+              !hideRemoveButton ? styles.textWithRemoveButton : null,
+            ]}
+          >
+            {label}
+          </Text>
+          {!hideRemoveButton ? (
+            <CrossIcon size={10} color={BLUE.BORDER} />
+          ) : null}
+        </View>
+      </TouchableOpacity>
+    )
+  }
+)
+
+export default SelectedCard
 
 const styles = StyleSheet.create({
   card: {

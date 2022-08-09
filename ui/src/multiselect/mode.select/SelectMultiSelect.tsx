@@ -49,6 +49,7 @@ export default function SelectMultiSelect<V extends string, L extends string>({
       <MultiSelectInput
         withShadow
         style={[isVisible ? styles.visibleModalInput : null, style?.input]}
+        textStyle={style?.inputText}
         type={containType}
         onPress={toggle}
         placeholder={placeholder}
@@ -60,6 +61,9 @@ export default function SelectMultiSelect<V extends string, L extends string>({
           onPressItem={onItemSelect}
           onPressGeneralItem={show}
           states={states}
+          style={style?.selectedItemCard}
+          textStyle={style?.selectedItemText}
+          iconStyle={style?.selectedItemIcon}
         />
       </MultiSelectInput>
       <SelectList

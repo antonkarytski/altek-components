@@ -28,6 +28,10 @@ export type MultiSelectProps<V extends string, L extends string> = {
   showGeneralItem?: boolean
   style?: {
     input?: StyleProp<ViewStyle>
+    inputText?: StyleProp<TextStyle>
+    selectedItemCard?: StyleProp<ViewStyle>
+    selectedItemText?: StyleProp<TextStyle>
+    selectedItemIcon?: { color: string }
   }
   children?: ReactElement<MultiSelectListProps<V, L>>
 } & Partial<MultiSelectModes>
@@ -52,6 +56,7 @@ export type MultiSelectListProps<V extends string, L extends string> = {
 
 export type SpecifiedMultiSelectInputProps = {
   style?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
   withShadow?: boolean
   onPress?: () => void
   placeholder?: string
