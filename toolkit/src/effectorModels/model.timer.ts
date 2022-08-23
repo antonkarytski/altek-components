@@ -73,7 +73,7 @@ export class TimerModel {
     tick = 1000,
     defaultTime = 0,
     realTime,
-  }: TimerModelProps) {
+  }: TimerModelProps = {}) {
     if (persistIn) this.db = createDbRequest<DbSaveFormat>(persistIn)
     this.tickTime = tick
     this.setUpStartEvent(defaultTime)
