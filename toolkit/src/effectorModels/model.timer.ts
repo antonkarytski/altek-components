@@ -31,7 +31,6 @@ type TimerModelProps = {
   persistIn?: string
   tick?: number
   defaultTime?: number | { current: number } | Store<number>
-  preventInitialValueSave?: boolean
   realTime?: boolean
 }
 
@@ -60,10 +59,10 @@ export class TimerModel {
   public readonly onFinish = createEvent()
   public readonly $timer = createStore(0)
     .on(this.startWithDefaultTime, (_, initialValue) =>
-      toSeconds(Math.max(initialValue, 0))
+      Math.max(initialValue, 0)
     )
     .on(this.tick, (state, newValue) => {
-      if (!newValue) Math.max(0, state - this.tickTime / 1000)
+      if (!newValue) Math.max(0, state - this.tickTime)
       return newValue
     })
     .reset(this.reset)
@@ -85,14 +84,13 @@ export class TimerModel {
         startValue: payload,
       }
       this.startTimer()
-      if (!this.currentTimerSettings) this.currentTimerSettings = settings
-      if (!this.db) return
-      this.db.setSync(settings)
+      this.currentTimerSettings = settings
+      if (this.db) this.db.setSync(settings)
     })
 
     this.currentTick = realTime ? this.realTick : this.tick
     this.realTick.watch(() => {
-      const newValue = toSeconds(this.getTimeLeft())
+      const newValue = this.getTimeLeft()
       this.tick(newValue)
     })
 
@@ -148,7 +146,6 @@ export class TimerModel {
   }
 
   private getTimeLeft() {
-    //startValue: number = this.defaultTimeProvider.current || this.defaultTime //startFrom: number,
     if (!this.currentTimerSettings) return 0
     return (
       this.currentTimerSettings.startValue -
@@ -163,7 +160,10 @@ export class TimerModel {
     if (!saved) return
     this.currentTimerSettings = saved
     const timeLeft = this.getTimeLeft()
-    if (timeLeft <= 0) return this.db.reset()
+    if (timeLeft <= 0) {
+      this.currentTimerSettings = null
+      return this.db.reset()
+    }
     this.start(timeLeft)
   }
 }
