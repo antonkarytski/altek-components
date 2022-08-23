@@ -62,6 +62,10 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
     expandedValue.value = Number(isExpanded)
   }, [isExpanded, openedValue])
 
+  useEffect(() => {
+    setIsInitiated(true)
+  }, [])
+
   return (
     <Animated.View
       style={[
@@ -70,7 +74,6 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
         expandableCardStyles.container,
         style,
       ]}
-      onLayout={() => setIsInitiated(true)}
     >
       <ExpandableCardHeader
         label={headerLabel || t?.info}

@@ -14,6 +14,7 @@ import { createDbRequest } from '../asyncDbManager/AsyncDbRequest'
 type CreateTimerModelSettings = {
   realTime?: boolean
   persistIn?: string
+  tick?: number
 }
 
 type AsyncTickSource = {
@@ -22,7 +23,7 @@ type AsyncTickSource = {
 
 export function createTimerModel(
   time: number | { current: number },
-  { realTime, persistIn }: CreateTimerModelSettings = {}
+  { realTime, persistIn, tick: tickTime = 1000 }: CreateTimerModelSettings = {}
 ) {
   const db = persistIn ? createDbRequest<number>(persistIn) : null
   function getTimeValue() {
@@ -104,7 +105,7 @@ export function createTimerModel(
   createStore<Timer | null>(null)
     .on(start, (state) => {
       if (state) clearInterval(state)
-      return setInterval(modelTick, 1000)
+      return setInterval(modelTick, tickTime)
     })
     .on(reset, (state) => {
       if (!state) return
