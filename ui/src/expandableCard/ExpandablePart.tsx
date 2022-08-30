@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -7,13 +7,14 @@ import Animated, {
 import { StyleProp, ViewStyle } from 'react-native'
 
 type ExpandablePartProps = {
-  isInitiated: boolean
   animateValue: SharedValue<number>
   style?: StyleProp<ViewStyle>
+  onLayout?: () => void
 }
 
 const ExpandablePart: FC<ExpandablePartProps> = React.memo(
-  ({ animateValue, isInitiated, children, style }) => {
+  ({ animateValue, children, style }) => {
+    const [isInitiated, setIsInitiated] = useState(false)
     const height = useRef(0)
     const aStyle = useAnimatedStyle(() => {
       return {
@@ -26,8 +27,9 @@ const ExpandablePart: FC<ExpandablePartProps> = React.memo(
     return (
       <Animated.View
         onLayout={(e) => {
-          if (height.current) return
+          if (isInitiated) return
           height.current = e.nativeEvent.layout.height
+          setIsInitiated(true)
         }}
         style={[style, isInitiated ? aStyle : null]}
       >

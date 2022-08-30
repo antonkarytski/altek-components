@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useState } from 'react'
+import React, { FC, ReactNode, useEffect } from 'react'
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
 import Animated, {
   SharedValue,
@@ -49,7 +49,6 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
   expandableContent,
   buttonsColor,
 }) => {
-  const [isInitiated, setIsInitiated] = useState(false)
   const [isExpanded, toggleExpanded] = useToggle(false)
   const [openedValue, toggleOpened] = useSharedToggle(1, 0)
   const expandedValue = useSharedValue(0)
@@ -61,10 +60,6 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
   useEffect(() => {
     expandedValue.value = Number(isExpanded)
   }, [isExpanded, openedValue])
-
-  useEffect(() => {
-    setIsInitiated(true)
-  }, [])
 
   return (
     <Animated.View
@@ -82,7 +77,6 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
         textColor={buttonsColor}
       />
       <ExpandablePart
-        isInitiated={isInitiated}
         animateValue={openedValue}
         style={expandableCardStyles.part}
       >
@@ -91,13 +85,12 @@ const ExpandableCard: FC<ExpandableCardProps> = ({
       {expandableContent ? (
         <>
           <ExpandablePart
-            isInitiated={isInitiated}
             animateValue={openedAndExpanded}
             style={expandableCardStyles.part}
           >
             {expandableContent}
           </ExpandablePart>
-          <ExpandablePart isInitiated={isInitiated} animateValue={openedValue}>
+          <ExpandablePart animateValue={openedValue}>
             <TouchableOpacity
               onPress={toggleExpanded}
               style={expandableCardStyles.expandButton}
