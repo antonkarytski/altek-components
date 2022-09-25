@@ -1,8 +1,14 @@
-import React, { FC } from 'react'
-import { Keyboard, StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
-import SafeArea from './SafeArea'
+import React, { FC, PropsWithChildren } from 'react'
+import {
+  Keyboard,
+  Platform,
+  SafeAreaView,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native'
 import ConditionalKeyboardDismiss from '../conditional/ConditionalKeyboardDismiss'
-import { GRAY } from '../colors'
 import { Fn } from 'altek-toolkit'
 
 export type ScreenWrapperProps = {
@@ -12,32 +18,32 @@ export type ScreenWrapperProps = {
   onTouch?: Fn
 }
 
-const ScreenWrapper: FC<ScreenWrapperProps> = ({
+const ScreenWrapper = ({
   children,
   style,
   disableKeyBoardClose,
   useKeyboardDismiss: shouldDismissKeyboard,
   onTouch,
-}) => {
+}: PropsWithChildren<ScreenWrapperProps>) => {
   const closeKeyboard = () => {
     if (disableKeyBoardClose || shouldDismissKeyboard) return
     Keyboard.dismiss()
   }
 
   return (
-    <SafeArea>
+    <SafeAreaView style={[styles.safeArea, style]}>
       <ConditionalKeyboardDismiss isWrap={shouldDismissKeyboard}>
         <View
           onTouchStart={() => {
             onTouch?.()
             closeKeyboard()
           }}
-          style={[styles.container, style]}
+          style={styles.container}
         >
           {children}
         </View>
       </ConditionalKeyboardDismiss>
-    </SafeArea>
+    </SafeAreaView>
   )
 }
 
@@ -45,7 +51,10 @@ export default ScreenWrapper
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: GRAY.SCREEN_BACKGROUND,
-    height: '100%',
+    flex: 1,
+  },
+  safeArea: {
+    flex: 1,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
 })

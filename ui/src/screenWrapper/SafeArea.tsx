@@ -1,26 +1,20 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import {
   SafeAreaView,
   StyleProp,
   StyleSheet,
   ViewStyle,
   Platform,
+  ViewProps,
 } from 'react-native'
 
 type SafeAreaProps = {
   style?: StyleProp<ViewStyle>
-}
-const SafeArea: React.FC<SafeAreaProps> = ({ children, style }) => {
+} & ViewProps
+
+const SafeArea = ({ children, style }: PropsWithChildren<SafeAreaProps>) => {
   return (
-    <SafeAreaView
-      style={[
-        styles.container,
-        Platform.OS === 'ios' ? styles.iosPadding : null,
-        style,
-      ]}
-    >
-      {children}
-    </SafeAreaView>
+    <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>
   )
 }
 
@@ -29,8 +23,6 @@ export default SafeArea
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-  },
-  iosPadding: {
-    paddingBottom: 20,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
 })
