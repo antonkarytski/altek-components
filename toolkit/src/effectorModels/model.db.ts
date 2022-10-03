@@ -26,6 +26,7 @@ type StorePersistProps<F extends string, S, R = S> =
   | StorePersistPropsWithMap<F, S, R>
 
 export class StorePersist<F extends string, S, R> {
+  private previousValue: R | null = null
   private isInitiated = false
   private db
 
@@ -45,11 +46,16 @@ export class StorePersist<F extends string, S, R> {
 
     if (map) {
       $store.watch((state) => {
+        const newValue = map(state)
+        if (this.previousValue === newValue) return
+        this.previousValue = newValue
         if (this.isInitiated) this.db.setSync(map(state))
       })
       return
     } else {
       $store.watch((state) => {
+        if (this.previousValue === state) return
+        this.previousValue = state
         if (this.isInitiated) this.db.setSync(state)
       })
     }
