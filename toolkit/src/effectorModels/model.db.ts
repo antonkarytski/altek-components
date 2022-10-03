@@ -21,17 +21,20 @@ type StorePersistPropsWithMap<F extends string, S, R> = {
   map: (state: S) => R
 }
 
-type StorePersistProps<F extends string, S, R = S> =
+type StorePersistProps<F extends string, S, R> =
   | StorePersistPropsDirect<F, S, R>
   | StorePersistPropsWithMap<F, S, R>
 
 export class StorePersist<F extends string, S, R> {
   private previousValue: R | null = null
-  private isInitiated = false
+  private _isInitiated = false
+  public get isInitiated() {
+    return this._isInitiated
+  }
   private db
 
   private init = createEffect(() => {
-    if (!this.isInitiated) return this.db.get()
+    if (!this._isInitiated) return this.db.get()
   })
 
   public readonly onInit = this.init.done
@@ -41,7 +44,7 @@ export class StorePersist<F extends string, S, R> {
     this.db = createDbRequest<R>(saveTo)
     this.resetDb = this.db.reset
     this.init.finally.watch(() => {
-      this.isInitiated = true
+      this._isInitiated = true
     })
 
     if (map) {
@@ -49,14 +52,14 @@ export class StorePersist<F extends string, S, R> {
         const newValue = map(state)
         if (this.previousValue === newValue) return
         this.previousValue = newValue
-        if (this.isInitiated) this.db.setSync(map(state))
+        if (this._isInitiated) this.db.setSync(map(state))
       })
       return
     } else {
       $store.watch((state) => {
         if (this.previousValue === state) return
         this.previousValue = state
-        if (this.isInitiated) this.db.setSync(state)
+        if (this._isInitiated) this.db.setSync(state)
       })
     }
 

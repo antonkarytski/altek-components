@@ -23,6 +23,6 @@ export default SafeArea
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
+    // paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
 })

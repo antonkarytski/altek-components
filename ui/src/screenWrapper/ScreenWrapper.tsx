@@ -54,7 +54,6 @@ export default ScreenWrapper
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
   safeArea: {
     flex: 1,
