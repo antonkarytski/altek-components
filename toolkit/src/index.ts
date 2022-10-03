@@ -11,7 +11,11 @@ export { useMountedModel } from './effectorModels/hook.mount'
 export * from './effectorModels/model.mount'
 export * from './effectorModels/model.state'
 export { useStateStore } from './effectorModels/hook.state'
-export { addPersist } from './effectorModels/model.db'
+export {
+  addPersist,
+  addStorePersist,
+  StorePersist,
+} from './effectorModels/model.db'
 export { AsyncDbManager } from './asyncDbManager/AsyncDbManager'
 export {
   AsyncDbRequest,

@@ -9,48 +9,59 @@ import {
 import { noop } from '../helpers'
 import { createDbRequest } from '../asyncDbManager/AsyncDbRequest'
 
-class StorePersist<F extends string, S> {
-  private previousStoredValue = undefined
-  private readonly setIsInitiated = createEvent()
-  public readonly $isInitiated = createStore(false).on(
-    this.setIsInitiated,
-    () => true
-  )
+type StorePersistPropsDirect<F extends string, S, R = S> = {
+  $store: Store<R>
+  saveTo: F
+  map?: never
+}
 
-  private readonly db
-  private readonly init = attach({
-    source: this.$isInitiated,
-    mapParams: (_: void, isInitiated) => ({ isInitiated }),
-    effect: createEffect(async ({ isInitiated }: { isInitiated: boolean }) => {
-      if (!isInitiated) return this.db.get()
-    }),
+type StorePersistPropsWithMap<F extends string, S, R> = {
+  $store: Store<S>
+  saveTo: F
+  map: (state: S) => R
+}
+
+type StorePersistProps<F extends string, S, R = S> =
+  | StorePersistPropsDirect<F, S, R>
+  | StorePersistPropsWithMap<F, S, R>
+
+export class StorePersist<F extends string, S, R> {
+  private isInitiated = false
+  private db
+
+  private init = createEffect(() => {
+    if (!this.isInitiated) return this.db.get()
   })
 
-  public readonly onInit = this.init.done.watch
+  public readonly onInit = this.init.done
   public readonly resetDb
 
-  constructor($store: Store<S>, saveTo: F) {
-    this.db = createDbRequest<S>(saveTo)
+  constructor({ saveTo, $store, map }: StorePersistProps<F, S, R>) {
+    this.db = createDbRequest<R>(saveTo)
     this.resetDb = this.db.reset
-
-    sample({
-      source: this.$isInitiated,
-      clock: $store,
-      fn: (isInitiated, state) => ({ isInitiated, state }),
-    }).watch(({ isInitiated, state }) => {
-      if (isInitiated) this.db.setSync(state)
+    this.init.finally.watch(() => {
+      this.isInitiated = true
     })
 
-    this.init.finally.watch(() => this.setIsInitiated())
-    this.init().catch()
+    if (map) {
+      $store.watch((state) => {
+        if (this.isInitiated) this.db.setSync(map(state))
+      })
+      return
+    } else {
+      $store.watch((state) => {
+        if (this.isInitiated) this.db.setSync(state)
+      })
+    }
+
+    this.init().catch(noop)
   }
 }
 
-export function addPersistExperimental<F extends string, S>(
-  $store: Store<S>,
-  saveTo: F
+export function addStorePersist<F extends string, S, R = S>(
+  props: StorePersistProps<F, S, R>
 ) {
-  return new StorePersist($store, saveTo)
+  return new StorePersist(props)
 }
 
 export function addPersist<F extends string, S>($store: Store<S>, saveTo: F) {

@@ -15,6 +15,7 @@ export type ScreenWrapperProps = {
   style?: StyleProp<ViewStyle>
   disableKeyBoardClose?: boolean
   useKeyboardDismiss?: boolean
+  backgroundColor?: string
   onTouch?: Fn
 }
 
@@ -23,6 +24,7 @@ const ScreenWrapper = ({
   style,
   disableKeyBoardClose,
   useKeyboardDismiss: shouldDismissKeyboard,
+  backgroundColor,
   onTouch,
 }: PropsWithChildren<ScreenWrapperProps>) => {
   const closeKeyboard = () => {
@@ -31,14 +33,14 @@ const ScreenWrapper = ({
   }
 
   return (
-    <SafeAreaView style={[styles.safeArea, style]}>
+    <SafeAreaView style={[styles.safeArea, { backgroundColor }]}>
       <ConditionalKeyboardDismiss isWrap={shouldDismissKeyboard}>
         <View
           onTouchStart={() => {
             onTouch?.()
             closeKeyboard()
           }}
-          style={styles.container}
+          style={[styles.container, style]}
         >
           {children}
         </View>
@@ -52,9 +54,9 @@ export default ScreenWrapper
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
   safeArea: {
     flex: 1,
-    paddingBottom: Platform.OS === 'ios' ? 20 : 0,
   },
 })
