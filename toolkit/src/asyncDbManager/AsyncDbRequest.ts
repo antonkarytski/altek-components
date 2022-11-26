@@ -50,12 +50,12 @@ export class AsyncDbRequest<T = string> {
     return this
   }
 
-  public getMap<U>(mapper: (value: U) => T | undefined) {
+  public getMap<U>(mapper: (value: U | undefined) => T | undefined) {
     this.getMapFn = mapper
     return this
   }
 
-  public resetMap<U>(mapper: (value: U) => U) {
+  public resetMap<U>(mapper: (value: U | undefined) => U | undefined) {
     this.resetFn = mapper
     return this
   }
