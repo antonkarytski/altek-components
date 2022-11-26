@@ -3,9 +3,9 @@ import { noop } from '../helpers'
 
 export class AsyncDbRequest<T = string> {
   public readonly key
-  private getMapFn: null | (<U>(value: U) => T | undefined) = null
-  private setMapFn: null | (<U>(value: T | undefined) => U | null) = null
-  private resetFn: null | (<U>(value: U) => U) = null
+  private getMapFn: null | ((value: any) => T | undefined) = null
+  private setMapFn: null | ((value: T | undefined) => any | null) = null
+  private resetFn: null | ((value: any) => any) = null
 
   constructor(key: string) {
     this.key = key
@@ -45,17 +45,17 @@ export class AsyncDbRequest<T = string> {
     })
   }
 
-  public setMap(mapper: <U>(value: T | undefined) => U | null) {
+  public setMap<U>(mapper: <U>(value: T | undefined) => U | null) {
     this.setMapFn = mapper
     return this
   }
 
-  public getMap(mapper: <U>(value: U) => T | undefined) {
+  public getMap<U>(mapper: (value: U) => T | undefined) {
     this.getMapFn = mapper
     return this
   }
 
-  public resetMap(mapper: <U>(value: U) => U) {
+  public resetMap<U>(mapper: (value: U) => U) {
     this.resetFn = mapper
     return this
   }
