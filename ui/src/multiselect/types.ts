@@ -21,11 +21,11 @@ export type MultiSelectModes = {
 }
 
 export type MultiSelectStyles = {
-  input?: StyleProp<ViewStyle>
-  inputText?: StyleProp<TextStyle>
-  selectedItemCard?: StyleProp<ViewStyle>
-  selectedItemText?: StyleProp<TextStyle>
-  selectedItemIcon?: { color: string }
+  input?: ViewStyle
+  inputText?: TextStyle
+  selectedItemCard?: ViewStyle
+  selectedItemText?: TextStyle
+  selectedItemIcon?: TextStyle
 }
 
 export type MultiSelectProps<V extends string, L extends string> = {
@@ -39,14 +39,14 @@ export type MultiSelectProps<V extends string, L extends string> = {
 } & Partial<MultiSelectModes>
 
 export type MultiSelectListStyles = {
-  container?: StyleProp<ViewStyle>
-  listItem?: StyleProp<ViewStyle>
-  selectedListItem?: StyleProp<ViewStyle>
-  listItemTextWrap?: StyleProp<ViewStyle>
-  selectedListItemTextWrap?: StyleProp<ViewStyle>
-  listItemText?: StyleProp<TextStyle>
-  selectedListItemText?: StyleProp<TextStyle>
-  checkbox?: StyleProp<ViewStyle>
+  container?: ViewStyle
+  listItem?: ViewStyle
+  selectedListItem?: ViewStyle
+  listItemTextWrap?: ViewStyle
+  selectedListItemTextWrap?: ViewStyle
+  listItemText?: TextStyle
+  selectedListItemText?: TextStyle
+  checkbox?: ViewStyle
 }
 
 export type MultiSelectListProps<V extends string, L extends string> = {

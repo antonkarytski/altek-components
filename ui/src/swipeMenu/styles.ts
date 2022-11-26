@@ -23,6 +23,7 @@ export const swipeContainerStyles = StyleSheet.create({
   },
   content: {
     justifyContent: 'space-between',
+    width: '100%',
   },
   swipeLineWrapper: {
     paddingTop: 12,

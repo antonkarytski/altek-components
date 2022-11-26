@@ -16,7 +16,7 @@ import { BLUE } from '../colors'
 export type SelectCardStyles = {
   style?: StyleProp<ViewStyle>
   textStyle?: StyleProp<TextStyle>
-  iconStyle?: { color: string }
+  iconStyle?: TextStyle
 }
 
 type SelectedCardProps = {

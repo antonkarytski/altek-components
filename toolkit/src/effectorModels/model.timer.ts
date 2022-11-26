@@ -8,16 +8,16 @@ import {
 } from '../asyncDbManager/AsyncDbRequest'
 import { MutableRefObject } from 'react'
 
-type TimerModelProps = {
-  persistIn?: string
-  tick?: number
-  defaultTime?: number | { current: number } | Store<number>
-  realTime?: boolean
-}
-
 type DbSaveFormat = {
   startFrom: number
   startValue: number
+}
+
+type TimerModelProps = {
+  persistIn?: string | AsyncDbRequest<DbSaveFormat>
+  tick?: number
+  defaultTime?: number | { current: number } | Store<number>
+  realTime?: boolean
 }
 
 export class TimerModel {
@@ -55,7 +55,13 @@ export class TimerModel {
     defaultTime = 0,
     realTime,
   }: TimerModelProps = {}) {
-    if (persistIn) this.db = createDbRequest<DbSaveFormat>(persistIn)
+    if (persistIn) {
+      if (typeof persistIn === 'string') {
+        this.db = createDbRequest<DbSaveFormat>(persistIn)
+      } else {
+        this.db = persistIn
+      }
+    }
     this.tickTime = tick
     this.setUpStartEvent(defaultTime)
 
