@@ -45,7 +45,12 @@ export class AsyncDbRequest<T = string> {
     })
   }
 
-  public getMap(mapper: <U>(value: U) => T) {
+  public setMap(mapper: <U>(value: T | undefined) => U | null) {
+    this.setMapFn = mapper
+    return this
+  }
+
+  public getMap(mapper: <U>(value: U) => T | undefined) {
     this.getMapFn = mapper
     return this
   }
