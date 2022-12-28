@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, PropsWithChildren } from 'react'
 import { Animated, StyleProp, View, ViewStyle } from 'react-native'
 import { SwipeLine } from './SwipeLine'
 import { AnimatedModel } from 'altek-toolkit'
@@ -11,12 +11,12 @@ type SwipeMenuProps = {
   model: AnimatedModel
 }
 
-const SwipeMenu: FC<SwipeMenuProps> = ({
+const SwipeMenu = ({
   children,
   model,
   style,
   swipeLineStyle,
-}) => {
+}: PropsWithChildren<SwipeMenuProps>) => {
   const controller = useSwipeController(model)
 
   return (

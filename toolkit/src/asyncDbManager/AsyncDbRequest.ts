@@ -4,7 +4,7 @@ import { noop } from '../helpers'
 export class AsyncDbRequest<T = string> {
   public readonly key
   private getMapFn: null | ((value: any) => T | undefined) = null
-  private setMapFn: null | ((value: T | undefined) => any | null) = null
+  private setMapFn: null | ((value: T, currentValue: any) => any | null) = null
   private resetFn: null | ((value: any) => any) = null
 
   constructor(key: string) {
@@ -23,11 +23,15 @@ export class AsyncDbRequest<T = string> {
     }
   }
 
-  public readonly set = (value: T) => {
+  public readonly set = async (value: T) => {
     if (!this.setMapFn) {
       return AsyncStorage.setItem(this.key, JSON.stringify(value))
     }
-    const valueToSave = this.setMapFn(value)
+    let current = await AsyncStorage.getItem(this.key)
+    if (current) {
+      current = JSON.parse(current)
+    }
+    const valueToSave = this.setMapFn(value, current)
     return AsyncStorage.setItem(this.key, JSON.stringify(valueToSave))
   }
 
@@ -45,7 +49,7 @@ export class AsyncDbRequest<T = string> {
     })
   }
 
-  public setMap<U>(mapper: <U>(value: T | undefined) => U | null) {
+  public setMap<U>(mapper: (value: T, currentValue: U | undefined) => U) {
     this.setMapFn = mapper
     return this
   }
