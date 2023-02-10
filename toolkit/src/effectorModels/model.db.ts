@@ -1,47 +1,41 @@
-import {
-  attach,
-  createEffect,
-  createEvent,
-  createStore,
-  sample,
-  Store,
-} from 'effector'
+import { createEffect, Store } from 'effector'
 import { noop } from '../helpers'
 import { createDbRequest } from '../asyncDbManager/AsyncDbRequest'
 
-type StorePersistPropsDirect<F extends string, S, R = S> = {
-  $store: Store<R>
-  saveTo: F
-  map?: never
-}
-
-type StorePersistPropsWithMap<F extends string, S, R> = {
+type StorePersistProps<S> = {
   $store: Store<S>
-  saveTo: F
-  map: (state: S) => R
+  saveTo: string
+  map?: (state: S) => any
 }
 
-type StorePersistProps<F extends string, S, R> =
-  | StorePersistPropsDirect<F, S, R>
-  | StorePersistPropsWithMap<F, S, R>
-
-export class StorePersist<F extends string, S, R> {
-  private previousValue: R | null = null
+export class StorePersist<
+  P extends StorePersistProps<any>,
+  T = P['map'] extends (...p: any[]) => any
+    ? ReturnType<P['map']>
+    : P['$store'] extends Store<infer S>
+    ? S
+    : never
+> {
+  private previousValue: T | null = null
   private _isInitiated = false
   public get isInitiated() {
     return this._isInitiated
   }
   private db
+  public readonly resetDb
 
   private init = createEffect(() => {
     if (!this._isInitiated) return this.db.get()
   })
 
-  public readonly onInit = this.init.done
-  public readonly resetDb
+  public readonly onInit = (watcher: (props: T | undefined) => void) => {
+    this.init.done.watch(({ result }) => {
+      watcher(result)
+    })
+  }
 
-  constructor({ saveTo, $store, map }: StorePersistProps<F, S, R>) {
-    this.db = createDbRequest<R>(saveTo)
+  constructor({ saveTo, $store, map }: P) {
+    this.db = createDbRequest<T>(saveTo)
     this.resetDb = this.db.reset
     this.init.finally.watch(() => {
       this._isInitiated = true
@@ -67,38 +61,6 @@ export class StorePersist<F extends string, S, R> {
   }
 }
 
-export function addStorePersist<F extends string, S, R = S>(
-  props: StorePersistProps<F, S, R>
-) {
+export function addStorePersist<P extends StorePersistProps<any>>(props: P) {
   return new StorePersist(props)
-}
-
-export function addPersist<F extends string, S>($store: Store<S>, saveTo: F) {
-  const setInitiated = createEvent()
-  const $isInitiated = createStore(false).on(setInitiated, () => true)
-  const db = createDbRequest<S>(saveTo)
-
-  sample({
-    source: $isInitiated,
-    clock: $store,
-    fn: (isInitiated, state) => ({ isInitiated, state }),
-  }).watch(({ isInitiated, state }) => {
-    if (isInitiated) db.setSync(state)
-  })
-
-  const init = attach({
-    source: $isInitiated,
-    mapParams: (_: void, isInitiated) => ({ isInitiated }),
-    effect: createEffect(async ({ isInitiated }: { isInitiated: boolean }) => {
-      if (!isInitiated) return db.get()
-    }),
-  })
-
-  init.finally.watch(() => setInitiated())
-  init().catch(noop)
-
-  return {
-    onInit: init.done.watch,
-    resetDb: db.reset,
-  }
 }
