@@ -1,5 +1,5 @@
 import { AsyncDbRequest } from '../asyncDbManager/AsyncDbRequest'
-import { noop } from '../helpers'
+import { noop, removeLastSlash, removeSlashes } from '../helpers'
 
 type ServerManagerProps = {
   initialRoot: string
@@ -55,18 +55,18 @@ export class ServerManager {
   }
 
   constructor({ apiGenerator, initialRoot, saveTo }: ServerManagerProps) {
-    this._domain = initialRoot
-    this._server = `https://${initialRoot}`
+    this._domain = removeSlashes(initialRoot)
+    this._server = `https://${this._domain}`
     this.apiGenerator = apiGenerator
-    this._api = apiGenerator(initialRoot)
+    this._api = removeLastSlash(apiGenerator(initialRoot))
     if (saveTo) this.dbManager = new AsyncDbRequest(saveTo)
     this.initFromDb().catch(noop)
   }
 
   private changeDomain(value: string) {
-    this._domain = value
-    this._server = `https://${value}`
-    this._api = this.apiGenerator(value)
+    this._domain = removeSlashes(value)
+    this._server = `https://${this._domain}`
+    this._api = removeLastSlash(this.apiGenerator(value))
   }
 
   public init = async () => {
@@ -77,6 +77,6 @@ export class ServerManager {
 
   public setDomain = async (domain: string) => {
     this.changeDomain(domain)
-    if (this.dbManager) return this.dbManager.set(domain)
+    if (this.dbManager) return this.dbManager.set(this._domain)
   }
 }
