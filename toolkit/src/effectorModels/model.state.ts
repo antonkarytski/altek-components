@@ -11,15 +11,14 @@ import {
 class StateModelClass<T> {
   public readonly $state: Store<T>
   public readonly set = createEvent<T>()
-  public readonly reset = createEvent<void | Event<any>>()
 
   constructor(initial: T) {
-    this.$state = restore(this.set, initial).on(this.reset, (_, payload) => {
-      if (!payload) return initial
-    })
-    this.reset.watch((payload) => {
-      if (payload) this.$state.reset(payload)
-    })
+    this.$state = restore(this.set, initial)
+  }
+
+  public reset(event?: void | Event<any>){
+    if (!event) return this.set(this.$state.defaultState)
+    this.$state.reset(event)
   }
 
   on<E>(trigger: Unit<E>, reducer: (state: T, payload: E) => T | void): this
