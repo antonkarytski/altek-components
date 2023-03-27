@@ -41,7 +41,7 @@ export function createStateModel<T>(initial: T) {
 }
 
 export type StateModel<T> = {
-  reset: Event<void | (() => void)>
+  reset: () => void
   $state: Store<T>
   set: Event<T>
 }
