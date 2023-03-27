@@ -16,9 +16,12 @@ class StateModelClass<T> {
     this.$state = restore(this.set, initial)
   }
 
-  public reset(event?: void | Event<any>){
+  public reset(event: Event<any>): this
+  public reset(event?: void): void
+  public reset(event: any){
     if (!event) return this.set(this.$state.defaultState)
     this.$state.reset(event)
+    return this
   }
 
   on<E>(trigger: Unit<E>, reducer: (state: T, payload: E) => T | void): this
@@ -42,3 +45,4 @@ export type StateModel<T> = {
   $state: Store<T>
   set: Event<T>
 }
+
