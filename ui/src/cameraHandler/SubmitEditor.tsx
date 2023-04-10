@@ -1,13 +1,13 @@
 import React from 'react'
-import { Image, Modal, StyleSheet } from 'react-native'
+import { Image, Modal, StyleSheet, View } from 'react-native'
 import BackButton from '../buttons/Button.Back'
 import SendButton from '../buttons/Button.Send'
 import { EditorProps } from './types'
 import { commonEditorStyles } from './styles'
 
-export default function SubmitEditor({ onAccept, onCancel, uri }: EditorProps) {
+export default function SubmitEditor({ onAccept, onCancel, uri, style }: EditorProps) {
   return (
-    <Modal style={styles.container} onRequestClose={onCancel}>
+    <View style={[StyleSheet.absoluteFill, style]}>
       <Image style={styles.preview} source={{ uri }} />
       <BackButton style={commonEditorStyles.backButton} onPress={onCancel} />
       <SendButton
@@ -16,7 +16,7 @@ export default function SubmitEditor({ onAccept, onCancel, uri }: EditorProps) {
         color={'#FFF'}
         size={30}
       />
-    </Modal>
+    </View>
   )
 }
 
