@@ -52,7 +52,6 @@ export const submitModalStyles = StyleSheet.create({
   },
   label: {
     fontSize: 18,
-    fontFamily: 'IBMPlex-600',
     lineHeight: 23,
   },
   part: {
