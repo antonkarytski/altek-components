@@ -1,5 +1,4 @@
 import { BLACK, BLUE, GRAY } from '../colors'
-import { StyleSheet } from 'react-native'
 
 const FONTS = {
   REGULAR: 'IBMPlex-400',
@@ -17,7 +16,7 @@ type SetDefaultFontsProps = {
   color?: string
 }
 
-export const textStyles = StyleSheet.create({
+export const textStyles = {
   defaults: {
     color: BLACK.COMMON as string,
     fontSize: 14,
@@ -65,7 +64,7 @@ export const textStyles = StyleSheet.create({
   font18: {
     fontSize: 18,
   },
-})
+}
 
 export function setDefaults({
   regular,
