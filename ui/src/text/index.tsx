@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Text as RawText, TextProps as NativeTextProps } from 'react-native'
-import { textStyles } from './styles'
+import { textStyles, setDefaults } from './styles'
 
 export type TextProps = {
   medium?: boolean
@@ -35,5 +35,7 @@ export default function Text({
     </RawText>
   )
 }
+
+Text.setDefaults = setDefaults
 
 export { textStyles }

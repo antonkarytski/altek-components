@@ -1,15 +1,25 @@
 import { BLACK, BLUE, GRAY } from '../colors'
+import { StyleSheet } from 'react-native'
 
 const FONTS = {
   REGULAR: 'IBMPlex-400',
   MEDIUM: 'IBMPlex-500',
   BOLD: 'IBMPlex-600',
   EXTRA_BOLD: 'IBMPlex-700',
-} as const
+}
 
-export const textStyles = {
+type SetDefaultFontsProps = {
+  regular?: string
+  medium?: string
+  bold?: string
+  extraBold?: string
+  size?: number
+  color?: string
+}
+
+export const textStyles = StyleSheet.create({
   defaults: {
-    color: BLACK.COMMON,
+    color: BLACK.COMMON as string,
     fontSize: 14,
   },
   regular: {
@@ -55,4 +65,28 @@ export const textStyles = {
   font18: {
     fontSize: 18,
   },
-} as const
+})
+
+export function setDefaults({
+  regular,
+  medium,
+  bold,
+  extraBold,
+  size,
+  color,
+}: SetDefaultFontsProps) {
+  if (regular) textStyles.regular.fontFamily = regular
+  if (medium) {
+    textStyles.medium.fontFamily = medium
+    textStyles.subLine.fontFamily = medium
+    textStyles.titleSmall.fontFamily = medium
+  }
+  if (bold) {
+    textStyles.bold.fontFamily = bold
+    textStyles.title.fontFamily = bold
+    textStyles.link.fontFamily = bold
+  }
+  if (extraBold) textStyles.extraBold.fontFamily = extraBold
+  if (size) textStyles.defaults.fontSize = size
+  if (color) textStyles.defaults.color = color
+}
