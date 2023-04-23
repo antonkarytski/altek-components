@@ -2,10 +2,10 @@ import { BLACK, BLUE, GRAY } from '../colors'
 import { StyleSheet } from 'react-native'
 
 const FONTS = {
-  REGULAR: 'Arial-Regular',
-  MEDIUM: 'Arial-Medium',
-  BOLD: 'Arial-Bold',
-  EXTRA_BOLD: 'Arial-ExtraBold',
+  REGULAR: 'IBMPlex-400',
+  MEDIUM: 'IBMPlex-500',
+  BOLD: 'IBMPlex-600',
+  EXTRA_BOLD: 'IBMPlex-700',
 }
 
 type SetDefaultFontsProps = {
