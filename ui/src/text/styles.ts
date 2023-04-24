@@ -1,4 +1,5 @@
 import { BLACK, BLUE, GRAY } from '../colors'
+import { TextStyle } from 'react-native'
 
 const FONTS = {
   REGULAR: 'IBMPlex-400',
@@ -20,51 +21,59 @@ export const textStyles = {
   defaults: {
     color: BLACK.COMMON as string,
     fontSize: 14,
-  },
+  } as TextStyle,
   regular: {
     fontFamily: FONTS.REGULAR,
-  },
+  } as TextStyle,
   medium: {
     fontFamily: FONTS.MEDIUM,
-  },
+  } as TextStyle,
   bold: {
     fontFamily: FONTS.BOLD,
-  },
+  } as TextStyle,
   extraBold: {
     fontFamily: FONTS.EXTRA_BOLD,
-  },
+  } as TextStyle,
   titleSmall: {
     fontSize: 18,
     lineHeight: 23,
     fontFamily: FONTS.MEDIUM,
-  },
+  } as TextStyle,
   title: {
     fontSize: 22,
     textAlign: 'center',
     fontFamily: FONTS.BOLD,
-  },
+  } as TextStyle,
   link: {
     color: BLUE.COMMON,
     fontFamily: FONTS.BOLD,
-  },
+  } as TextStyle,
   center: {
     textAlign: 'center',
-  },
+  } as TextStyle,
   subLine: {
     fontSize: 12,
     fontFamily: FONTS.MEDIUM,
     color: GRAY.COMMON,
-  },
+  } as TextStyle,
   font10: {
     fontSize: 10,
-  },
+  } as TextStyle,
   font12: {
     fontSize: 12,
-  },
+  } as TextStyle,
   font18: {
     fontSize: 18,
-  },
+  } as TextStyle,
 }
+
+const initProps = {
+  isInitiated: false,
+  timeoutExpired: false,
+}
+setTimeout(() => {
+  initProps.timeoutExpired = true
+}, 100)
 
 export function setDefaults({
   regular,
@@ -74,6 +83,12 @@ export function setDefaults({
   size,
   color,
 }: SetDefaultFontsProps) {
+  if (initProps.isInitiated) return
+  if (!initProps.timeoutExpired) {
+    console.warn('You are trying ti set defaults after app init')
+    return
+  }
+  initProps.isInitiated = true
   if (regular) textStyles.regular.fontFamily = regular
   if (medium) {
     textStyles.medium.fontFamily = medium
