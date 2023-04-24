@@ -67,14 +67,6 @@ export const textStyles = {
   } as TextStyle,
 }
 
-const initProps = {
-  isInitiated: false,
-  timeoutExpired: false,
-}
-setTimeout(() => {
-  initProps.timeoutExpired = true
-}, 100)
-
 export function setDefaults({
   regular,
   medium,
@@ -83,12 +75,6 @@ export function setDefaults({
   size,
   color,
 }: SetDefaultFontsProps) {
-  if (initProps.isInitiated) return
-  if (!initProps.timeoutExpired) {
-    console.warn('You are trying ti set defaults after app init')
-    return
-  }
-  initProps.isInitiated = true
   if (regular) textStyles.regular.fontFamily = regular
   if (medium) {
     textStyles.medium.fontFamily = medium
