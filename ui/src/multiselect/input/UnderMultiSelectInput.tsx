@@ -1,13 +1,13 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { InsideMultiSelectInput } from './InsideMultiSelectInput'
 import { SpecifiedMultiSelectInputProps } from '../types'
 import { StyleSheet, View } from 'react-native'
 
-export const UnderMultiSelectInput: FC<SpecifiedMultiSelectInputProps> = ({
+export const UnderMultiSelectInput = ({
   children,
   style,
   ...props
-}) => {
+}: PropsWithChildren<SpecifiedMultiSelectInputProps>) => {
   return (
     <>
       <InsideMultiSelectInput

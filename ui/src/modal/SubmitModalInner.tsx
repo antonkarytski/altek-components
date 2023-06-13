@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { COLOR_PRESET, ColorPresetStructure } from '../styles/presets'
 import { Fn } from 'altek-toolkit'
@@ -16,7 +16,7 @@ export type SubmitModalInnerProps = {
   onReject?: Fn
 }
 
-export const SubmitModalInner: React.FC<SubmitModalInnerProps> = ({
+export const SubmitModalInner = ({
   disableSubmit,
   rejectLabel = '',
   submitLabel,
@@ -25,7 +25,7 @@ export const SubmitModalInner: React.FC<SubmitModalInnerProps> = ({
   preset = COLOR_PRESET.BLUE,
   onSubmit,
   onReject,
-}) => {
+}: PropsWithChildren<SubmitModalInnerProps>) => {
   return (
     <View style={[submitModalStyles.container, shadowsStyles.elevation5]}>
       <View style={submitModalStyles.modal}>

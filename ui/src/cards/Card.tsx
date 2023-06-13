@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { StyleProp, ViewStyle, View, StyleSheet } from 'react-native'
 import { shadowsStyles } from '../styles'
 import { COMMON } from '../colors'
@@ -8,7 +8,11 @@ type CardProps = {
   shadowStyle?: ViewStyle
 }
 
-const Card: FC<CardProps> = ({ children, style, shadowStyle }) => {
+const Card = ({
+  children,
+  style,
+  shadowStyle,
+}: PropsWithChildren<CardProps>) => {
   return (
     <View
       style={[styles.container, shadowStyle ?? shadowsStyles.elevation2, style]}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import { Animated, View } from 'react-native'
 import SubmitModalInner, { SubmitModalInnerProps } from './SubmitModalInner'
 import { overlayStyles } from '../styles'
@@ -8,11 +8,11 @@ type SubmitModalProps = {
   animStyle: any
 } & SubmitModalInnerProps
 
-export const SubmitModal: React.FC<SubmitModalProps> = ({
+export const SubmitModal = ({
   children,
   animStyle,
   ...props
-}) => {
+}: PropsWithChildren<SubmitModalProps>) => {
   return (
     <Animated.View style={[submitModalStyles.wrapper, animStyle]}>
       <View style={overlayStyles.dark}>

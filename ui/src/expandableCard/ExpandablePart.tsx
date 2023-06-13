@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from 'react'
+import React, { PropsWithChildren, useRef, useState } from 'react'
 import Animated, {
   SharedValue,
   useAnimatedStyle,
@@ -12,8 +12,12 @@ type ExpandablePartProps = {
   onLayout?: () => void
 }
 
-const ExpandablePart: FC<ExpandablePartProps> = React.memo(
-  ({ animateValue, children, style }) => {
+const ExpandablePart = React.memo(
+  ({
+    animateValue,
+    children,
+    style,
+  }: PropsWithChildren<ExpandablePartProps>) => {
     const [isInitiated, setIsInitiated] = useState(false)
     const height = useRef(0)
     const aStyle = useAnimatedStyle(() => {

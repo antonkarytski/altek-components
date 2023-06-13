@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { StyleProp, View, ViewStyle } from 'react-native'
 import { CircleIcon } from '../icons'
 import { stepStyles } from './styles'
@@ -18,7 +18,7 @@ export type StepProps = {
   }
 }
 
-const Step: FC<StepProps> = ({
+const Step = ({
   value,
   children,
   hideLine,
@@ -26,7 +26,7 @@ const Step: FC<StepProps> = ({
   wrapperStyle,
   marksStyle,
   colors,
-}) => {
+}: PropsWithChildren<StepProps>) => {
   return (
     <View style={[stepStyles.container, wrapperStyle]}>
       <View style={[stepStyles.marks, marksStyle]}>

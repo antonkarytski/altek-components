@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect } from 'react'
+import React, {  PropsWithChildren, ReactNode, useEffect } from 'react'
 import { StyleProp, TouchableOpacity, ViewStyle } from 'react-native'
 import Animated, {
   SharedValue,
@@ -41,14 +41,14 @@ function useSharedToggle(initialValue: number, secondValue: number) {
   return [shared, toggle] as [SharedValue<number>, Fn]
 }
 
-const ExpandableCard: FC<ExpandableCardProps> = ({
+const ExpandableCard = ({
   style,
   headerLabel = '',
   textPreset: t = PHRASES,
   children,
   expandableContent,
   buttonsColor,
-}) => {
+}: PropsWithChildren<ExpandableCardProps>) => {
   const [isExpanded, toggleExpanded] = useToggle(false)
   const [openedValue, toggleOpened] = useSharedToggle(1, 0)
   const expandedValue = useSharedValue(0)

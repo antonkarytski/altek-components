@@ -1,13 +1,13 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { MultiSelectInputProps } from '../types'
 import InsideMultiSelectInput from './InsideMultiSelectInput'
 import UnderMultiSelectInput from './UnderMultiSelectInput'
 
-const MultiSelectInput: FC<MultiSelectInputProps> = ({
+const MultiSelectInput = ({
   type = 'inside',
   children,
   ...props
-}) => {
+}: PropsWithChildren<MultiSelectInputProps>) => {
   if (type === 'inside') {
     return (
       <InsideMultiSelectInput {...props}>{children}</InsideMultiSelectInput>

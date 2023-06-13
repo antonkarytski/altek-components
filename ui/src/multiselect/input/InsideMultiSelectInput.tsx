@@ -1,16 +1,16 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import Text from '../../text'
 import { SpecifiedMultiSelectInputProps } from '../types'
 
-export const InsideMultiSelectInput: FC<SpecifiedMultiSelectInputProps> = ({
+export const InsideMultiSelectInput = ({
   children,
   withShadow,
   onPress,
   style,
   textStyle,
   placeholder,
-}) => {
+}: PropsWithChildren<SpecifiedMultiSelectInputProps>) => {
   return (
     <TouchableOpacity
       style={[styles.input, withShadow ? styles.inputShadow : null, style]}

@@ -10,6 +10,8 @@ type CheckboxListItemProps = {
   disabled?: boolean
 } & Omit<ListItemProps, 'style'>
 
+const CheckBoxWrapper = CheckBox as any
+
 export default function CheckboxListItem({
   selected,
   onCheckboxPress,
@@ -24,7 +26,7 @@ export default function CheckboxListItem({
       selected={selected}
       {...props}
     >
-      <CheckBox
+      <CheckBoxWrapper
         style={styles.checkbox}
         tintColors={{ true: BLUE.COMMON }}
         disabled={disabled ?? false}

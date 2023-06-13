@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { BLACK } from '../../colors'
 import {
   Platform,
@@ -9,8 +9,15 @@ import {
 } from 'react-native'
 import { ListItemProps } from '../types'
 
-export const ListItem: FC<ListItemProps> = React.memo(
-  ({ style, selected, children, onPress, label, index }) => {
+export const ListItem = React.memo(
+  ({
+    style,
+    selected,
+    children,
+    onPress,
+    label,
+    index,
+  }: PropsWithChildren<ListItemProps>) => {
     return (
       <View
         style={[

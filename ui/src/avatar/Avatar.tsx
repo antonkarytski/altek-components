@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { PropsWithChildren } from 'react'
 import { Image, StyleProp, View, ViewStyle } from 'react-native'
 import { avatarStyles } from './styles'
 import ProfileIcon from '../icons/Icon.Profile'
@@ -11,13 +11,13 @@ type AvatarProps = {
   avatarColor?: string
 }
 
-const Avatar: FC<AvatarProps> = ({
+const Avatar = ({
   children,
   size = 80,
   uri,
   avatarColor = GRAY.COMMON,
   style,
-}) => {
+}: PropsWithChildren<AvatarProps>) => {
   const sizeStyle = {
     height: size,
     width: size,
