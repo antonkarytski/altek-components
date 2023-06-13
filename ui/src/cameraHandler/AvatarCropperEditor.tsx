@@ -11,7 +11,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import { manipulateAsync } from 'expo-image-manipulator'
-import MaskedView from '@react-native-community/masked-view'
+import MaskedView from '@react-native-masked-view/masked-view'
 import BackButton from '../buttons/Button.Back'
 import SendButton from '../buttons/Button.Send'
 import { getImageSize } from 'altek-toolkit'
